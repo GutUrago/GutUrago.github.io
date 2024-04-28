@@ -3,12 +3,22 @@ project:
   output-dir: docs
 
 website:
-  title: "My Website"
+  search: true
+  title: "GutUrago"
   navbar:
+    background: "#0E3952"
+    foreground: light
     left:
       - href: index.qmd
         text: Home
-      - about.qmd
+      - href: post-list.qmd
+        text: Posts
+      - href: about.qmd
+        text: About
+  page-footer: 
+    center: 
+      - text: "All rights are reserved!"
+    background: "#0E3952"
 
 format:
   html:

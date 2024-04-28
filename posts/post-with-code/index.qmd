@@ -1,0 +1,39 @@
+---
+title: "My first post"
+author: "Gutama Girja Urago"
+date: "2024-04-02"
+categories: [R, code, analysis]
+image: "image.jpg"
+---
+
+This is a post with executable code.
+
+```{r}
+#| warning: false
+#| message: false
+
+library(tidyverse)
+library(gt)
+
+
+```
+
+```{r}
+head(iris) |> 
+        gt() |> 
+        tab_header(
+                title = "Big title",
+                subtitle = "Small one"
+        ) |> 
+        tab_style(
+                style = cell_text(color = "blue", weight = "bold"),
+                locations = cells_title(groups = "title")
+        ) |> 
+        tab_style(
+                style = cell_fill(color = "grey90"),
+                locations = cells_body(rows = seq(1, 6, 2))
+        ) |> 
+        tab_options(
+                column_labels.background.color = "steelblue",
+                heading.align = "left")
+```

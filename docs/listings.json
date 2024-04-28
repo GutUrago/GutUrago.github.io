@@ -1,0 +1,10 @@
+[
+  {
+    "listing": "/post-list.html",
+    "items": [
+      "/posts/post-with-code/index.html",
+      "/posts/visualizing-functions/visualizing-fuctions.html",
+      "/posts/welcome/index.html"
+    ]
+  }
+]
