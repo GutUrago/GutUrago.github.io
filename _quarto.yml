@@ -4,7 +4,8 @@ project:
 
 website:
   search: true
-  google-analytics: "G-Z0V3MRMSK1"
+  google-analytics:
+    tracking-id: "G-Z0V3MRMSK1"
   title: "GutUrago"
   navbar:
     background: "#0E3952"
