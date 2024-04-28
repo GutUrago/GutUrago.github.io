@@ -9,7 +9,7 @@ website:
     background: "#0E3952"
     foreground: light
     left:
-      - href: index.qmd
+      - href: home.qmd
         text: Home
       - href: post-list.qmd
         text: Posts

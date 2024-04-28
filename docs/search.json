@@ -40,5 +40,12 @@
     "title": "Welcome To My Blog",
     "section": "",
     "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+  },
+  {
+    "objectID": "home.html",
+    "href": "home.html",
+    "title": "Welcome",
+    "section": "",
+    "text": "My name is Gutama Girja Urago, born and raised in a small village called Sokora Legu in the southern part of Ethiopia."
   }
 ]
