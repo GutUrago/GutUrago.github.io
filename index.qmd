@@ -1,11 +1,18 @@
 ---
-title: "My Website"
+title: "Welcome"
+image: images/profile.jpg
+about:
+  template: jolla
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/Gutama_Girja
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/gutama-girja/
+    - icon: github
+      text: Github
+      href: https://github.com/GutUrago/
 ---
 
-This is a Quarto website.
-
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
-
-```{r}
-1 + 1
-```
+My name is Gutama Girja Urago, born and raised in a small village called Sokora Legu in the southern part of Ethiopia.
