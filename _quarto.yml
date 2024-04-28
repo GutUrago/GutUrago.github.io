@@ -4,6 +4,7 @@ project:
 
 website:
   search: true
+  google-analytics: "G-Z0V3MRMSK1"
   title: "GutUrago"
   navbar:
     background: "#0E3952"
@@ -19,6 +20,7 @@ website:
     center: 
       - text: "All rights are reserved!"
     background: "#0E3952"
+  
 
 format:
   html:
