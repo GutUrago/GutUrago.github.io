@@ -1,6 +1,6 @@
 ---
 title: "Welcome"
-image: "/images/profile.JPG"
+image: "./images/profile.JPG"
 about:
   template: jolla
   links:
@@ -15,6 +15,6 @@ about:
       href: https://github.com/GutUrago/
 ---
 
-![](/images/profile.JPG)
+![](./images/profile.JPG)
 
 My name is Gutama Girja Urago, born and raised in a small village called Sokora Legu in the southern part of Ethiopia.

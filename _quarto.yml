@@ -13,7 +13,7 @@ website:
     left:
       - href: home.qmd
         text: Home
-      - href: posts.qmd
+      - href: blogs.qmd
         text: Blogs
       - href: about.qmd
         text: About

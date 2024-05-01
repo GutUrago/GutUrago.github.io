@@ -1,26 +1,10 @@
 [
   {
-    "listing": "/post-list.html",
-    "items": [
-      "/posts/post-with-code/index.html",
-      "/posts/visualizing-functions/visualizing-fuctions.html",
-      "/posts/welcome/index.html"
-    ]
-  },
-  {
-    "listing": "/posts.html",
-    "items": [
-      "/posts/post-with-code/index.html",
-      "/posts/visualizing-functions/visualizing-fuctions.html",
-      "/posts/welcome/index.html"
-    ]
-  },
-  {
     "listing": "/blogs.html",
     "items": [
-      "/posts/post-with-code/index.html",
-      "/posts/visualizing-functions/visualizing-fuctions.html",
-      "/posts/welcome/index.html"
+      "/blogs/post-with-code/index.html",
+      "/blogs/visualizing-functions/visualizing-fuctions.html",
+      "/blogs/welcome/index.html"
     ]
   }
 ]
