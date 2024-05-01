@@ -13,8 +13,8 @@ website:
     left:
       - href: home.qmd
         text: Home
-      - href: post-list.qmd
-        text: Posts
+      - href: posts.qmd
+        text: Blogs
       - href: about.qmd
         text: About
   page-footer: 
@@ -25,6 +25,14 @@ website:
 
 format:
   html:
+    fontsize: 0.9em
+    mainfont: arial
+    linkcolor: "blue"
+    code-fold: true
+    code-tools: false
+    code-link: true
+    code-block-border-left: true
+    code-overflow: wrap
     theme: cosmo
     css: styles.css
     toc: true
