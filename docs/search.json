@@ -1,10 +1,24 @@
 [
   {
-    "objectID": "home.html",
-    "href": "home.html",
-    "title": "Welcome",
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Gutama Girja Urago",
     "section": "",
-    "text": "My name is Gutama Girja Urago, born and raised in a small village called Sokora Legu in the southern part of Ethiopia."
+    "text": "Gutama Girja Urago is a young Agricultural Economist, who enjoys playing with R and has keen interest in quantitative analysis without leaving qualitative aside. Currently, he is pursuing Erasmus Mundus Joint Masters Degree organized by Ghent University."
+  },
+  {
+    "objectID": "index.html#education",
+    "href": "index.html#education",
+    "title": "Gutama Girja Urago",
+    "section": "Education",
+    "text": "Education\nGhent University, Belgium | International Master of Science in Rural Development | Sept 2022 - Sep 2024\nOndokuz Mayis University, Turkey | Master of Science in Agricultural Economics | Sept 2020 - July 2022\nHaramaya University, Ethiopia | Bachelor of Science in Agricultural Economics | Sept 2015 - July 2018"
+  },
+  {
+    "objectID": "index.html#experience",
+    "href": "index.html#experience",
+    "title": "Gutama Girja Urago",
+    "section": "Experience",
+    "text": "Experience\nGraduate Teaching Assistant | August 2018 - September 2019"
   },
   {
     "objectID": "blogs/welcome/index.html",

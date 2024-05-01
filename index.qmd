@@ -1,0 +1,34 @@
+---
+title: "Gutama Girja Urago"
+image: "./images/profile.JPG"
+about:
+  template: jolla
+  links:
+    - icon: twitter
+      text: Twitter
+      href: https://twitter.com/Gutama_Girja
+    - icon: linkedin
+      text: LinkedIn
+      href: https://www.linkedin.com/in/gutama-girja/
+    - icon: github
+      text: Github
+      href: https://github.com/GutUrago/
+---
+
+Gutama Girja Urago is a young Agricultural Economist, who enjoys playing with R and has keen interest in quantitative analysis without leaving qualitative aside. Currently, he is pursuing Erasmus Mundus Joint Masters Degree organized by Ghent University. 
+
+## Education
+
+Ghent University, Belgium | International Master of Science in Rural Development | Sept 2022 - Sep 2024
+
+Ondokuz Mayis University, Turkey | Master of Science in Agricultural Economics | Sept 2020 - July 2022
+
+Haramaya University, Ethiopia | Bachelor of Science in Agricultural Economics  | Sept 2015 - July 2018
+
+
+## Experience
+
+Graduate Teaching Assistant | August 2018 - September 2019
+
+
+

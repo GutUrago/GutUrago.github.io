@@ -4,18 +4,18 @@ project:
 
 website:
   search: true
-  google-analytics:
-    tracking-id: "G-Z0V3MRMSK1"
+  google-analytics: "G-Z0V3MRMSK1"
   title: "GutUrago"
+  image: "./images/profile.JPG"
   navbar:
     background: "#0E3952"
     foreground: light
     left:
-      - href: home.qmd
+      - href: index.html
         text: Home
-      - href: blogs.qmd
+      - href: blogs.html
         text: Blogs
-      - href: about.qmd
+      - href: about.html
         text: About
   page-footer: 
     center: 
@@ -26,7 +26,6 @@ website:
 format:
   html:
     fontsize: 0.9em
-    mainfont: arial
     linkcolor: "blue"
     code-fold: true
     code-tools: false
