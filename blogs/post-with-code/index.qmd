@@ -2,7 +2,7 @@
 title: "My first post"
 author: "Gutama Girja Urago"
 date: "2024-04-02"
-categories: [R, code, analysis]
+categories: [R, gt, analysis]
 image: "image.jpg"
 ---
 
