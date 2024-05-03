@@ -13,7 +13,7 @@ website:
     left:
       - href: index.html
         text: Home
-      - href: blogs.html
+      - href: posts.html
         text: Blogs
       - href: about.html
         text: About

@@ -1,10 +1,10 @@
 [
   {
-    "listing": "/blogs.html",
+    "listing": "/posts.html",
     "items": [
-      "/blogs/post-with-code/index.html",
-      "/blogs/visualizing-functions/visualizing-fuctions.html",
-      "/blogs/welcome/index.html"
+      "/posts/post-with-code/index.html",
+      "/posts/visualizing-functions/visualizing-fuctions.html",
+      "/posts/welcome/index.html"
     ]
   }
 ]
