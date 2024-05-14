@@ -4,30 +4,33 @@ project:
 
 website:
   search: true
-  google-analytics: "G-Z0V3MRMSK1"
-  title: "GutUrago"
-  image: "./images/profile.JPG"
+  google-analytics: "G-Z0V3MRMSK1" 
+  title: "Gutama Girja Urago"
+  image: "./images/microData logo.png"
+  favicon: "./images/microData logo.png"
   navbar:
-    background: "#0E3952"
-    foreground: light
+    background: "#DCE3E3"
+    logo: "./images/microData logo.png"
+    title: "Home"
     left:
-      - href: index.html
-        text: Home
       - href: posts.html
-        text: Blogs
+        text: "All Blog Posts"
+      - href: articles/microData.html
+        text: microData
       - href: about.html
         text: About
   page-footer: 
     center: 
       - text: "All rights are reserved!"
-    background: "#0E3952"
+    background: "#DCE3E3"
   
 
 format:
   html:
     fontsize: 0.9em
     linkcolor: "blue"
-    code-fold: true
+    code-copy: true
+    code-fold: false
     code-tools: false
     code-link: true
     code-block-border-left: true
@@ -35,6 +38,8 @@ format:
     theme: cosmo
     css: styles.css
     toc: true
+    grid: 
+      content-mode: auto
 
 execute:
   freeze: auto
