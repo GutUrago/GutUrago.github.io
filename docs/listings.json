@@ -2,10 +2,10 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/blog/web-craping/index.html",
       "/blog/gt-table-template/index.html",
       "/blog/visualizing-functions/visualizing-fuctions.html",
-      "/blog/welcome/index.html",
-      "/blog/web-craping/index.html"
+      "/blog/welcome/index.html"
     ]
   }
 ]

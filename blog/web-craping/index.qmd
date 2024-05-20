@@ -1,7 +1,7 @@
 ---
 title: "Web Scraping in R: Import table directly from website"
 author: "Gutama Girja Urago"
-date: "2023-05-20"
+date: "2024-05-20"
 categories: [web scraping, rvest, ggplot2]
 editor_options: 
   chunk_output_type: console
