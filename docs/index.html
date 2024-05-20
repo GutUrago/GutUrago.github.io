@@ -66,14 +66,14 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-Z0V3MRMSK1"></script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-VVGT96KRKH"></script>
 
 <script type="text/javascript">
 
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
-gtag('config', 'G-Z0V3MRMSK1', { 'anonymize_ip': true});
+gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 </script>
 
 
@@ -101,11 +101,11 @@ gtag('config', 'G-Z0V3MRMSK1', { 'anonymize_ip': true});
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link" href="./posts.html"> 
-<span class="menu-text">All Blog Posts</span></a>
+    <a class="nav-link" href="./blogs.html"> 
+<span class="menu-text">All Blogs</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./articles/microData.html"> 
+    <a class="nav-link" href="./microData.html"> 
 <span class="menu-text">microData</span></a>
   </li>  
   <li class="nav-item">
@@ -115,6 +115,7 @@ gtag('config', 'G-Z0V3MRMSK1', { 'anonymize_ip': true});
 </ul>
           </div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools">
+    <a href="https://guturago.github.io/blogs/index.xml" title="GutUrago Blog RSS" class="quarto-navigation-tool px-1" aria-label="GutUrago Blog RSS"><i class="bi bi-rss"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
@@ -129,7 +130,6 @@ gtag('config', 'G-Z0V3MRMSK1', { 'anonymize_ip': true});
   <ul>
   <li><a href="#education" id="toc-education" class="nav-link active" data-scroll-target="#education">Education</a></li>
   <li><a href="#experience" id="toc-experience" class="nav-link" data-scroll-target="#experience">Experience</a></li>
-  <li><a href="#social-media" id="toc-social-media" class="nav-link" data-scroll-target="#social-media">Social Media</a></li>
   </ul>
 </nav>
     </div>
@@ -155,9 +155,6 @@ gtag('config', 'G-Z0V3MRMSK1', { 'anonymize_ip': true});
 <section id="experience" class="level2">
 <h2 data-anchor-id="experience">Experience</h2>
 <p>Graduate Teaching Assistant | Haramaya University | August 2018 - September 2019</p>
-</section>
-<section id="social-media" class="level2">
-<h2 data-anchor-id="social-media">Social Media</h2>
 
 
 </section>
@@ -261,7 +258,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
   });
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
-      var filterRegex = new RegExp('/' + window.location.host + '/');
+      var filterRegex = new RegExp("https:\/\/guturago\.github\.io");
     var isInternal = (href) => {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }

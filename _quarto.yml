@@ -4,7 +4,8 @@ project:
 
 website:
   search: true
-  google-analytics: "G-Z0V3MRMSK1" 
+  site-url: https://guturago.github.io
+  google-analytics: "G-VVGT96KRKH" 
   title: "Gutama Girja Urago"
   image: "./images/microData logo.png"
   favicon: "./images/microData logo.png"
@@ -13,12 +14,16 @@ website:
     logo: "./images/microData logo.png"
     title: "Home"
     left:
-      - href: posts.html
-        text: "All Blog Posts"
-      - href: articles/microData.html
+      - href: blogs.html
+        text: "All Blogs"
+      - href: microData.html
         text: microData
       - href: about.html
         text: About
+    tools: 
+      - icon: rss
+        href: https://guturago.github.io/blogs/index.xml
+        text: GutUrago Blog RSS
   page-footer: 
     center: 
       - text: "All rights are reserved!"
@@ -35,6 +40,7 @@ format:
     code-link: true
     code-block-border-left: true
     code-overflow: wrap
+    code-block-bg: true
     theme: cosmo
     css: styles.css
     toc: true

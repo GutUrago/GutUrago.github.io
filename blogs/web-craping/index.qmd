@@ -1,0 +1,106 @@
+---
+title: "Web Scraping in R: Import table directly from website"
+author: "Gutama Girja Urago"
+date: "2023-05-20"
+categories: [web scraping, rvest, ggplot2]
+editor_options: 
+  chunk_output_type: console
+---
+
+# What and why?
+
+In this blog, we are going to import table from website into R. This is very important because it saves a time to copy the table manually and going through a lot of pain in excel to import the table into R. Doing it in that way is time consuming, tedious and prone to mistake. That's why `rvest` (harvest) package is there for you on CRAN. Install the package from CRAN using `install.packages()` function and let's dive in.
+
+# Getting started
+
+First we need to have the url for the website from which we are planning to import the data as a dataframe in R. Here I am using Ethiopian GDP table from *worldmeters* website. Once we have the link to the website, we have to load the package and read html file from that page of website, which also contains the table of interest.
+
+
+```{r}
+# install.packages(rvest)         # Install the package if you do
+
+library(rvest)
+
+tbl_url <- "https://www.worldometers.info/gdp/ethiopia-gdp/"
+
+raw_html <- read_html(tbl_url)
+
+```
+
+
+```{r}
+ 
+html_element(raw_html, "table") |> 
+html_table()
+```
+
+
+```{r}
+html_elements(raw_html, "table") |> 
+html_table()
+```
+
+
+
+
+```{r}
+gdp_tbl <- html_elements(raw_html, "table") |> 
+        html_table() |> 
+        _[[2]] |> 
+        janitor::clean_names()
+```
+
+
+```{r}
+#| warning: false
+#| message: false
+library(tidyverse)
+
+glimpse(gdp_tbl)
+
+
+
+convert_to_numeric <- function(x) {
+  as.numeric(str_remove_all(x, "[$,%\\s]"))
+}
+
+gdp_tbl <- gdp_tbl |> 
+        mutate_all(convert_to_numeric)
+
+```
+
+
+
+```{r}
+gdp_tbl |> 
+        ggplot() + 
+        geom_line(aes(x = factor(year), 
+                      y = gdp_nominal_current_usd,
+                      group = 1),
+                  color = "blue", linewidth = 1) + 
+        scale_y_continuous(labels = scales::dollar_format(scale = 1/1000000000,
+                                                          suffix = " billion")) +
+ 
+        labs(x = "Year",
+             y = "Nominal GDP",
+             title = "Ethiopia GDP (Nominal, $USD) 2003-2022",
+             caption = "Source: https://www.worldometers.info/gdp/ethiopia-gdp/") + 
+        theme_bw() + 
+        theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
+```
+
+
+
+
+
+```{r}
+gdp_tbl |> 
+        ggplot() + 
+        geom_line(aes(x = year, y = gdp_change)) +
+        geom_line(aes(x = year, y = pop_change))
+```
+
+
+
+
+
