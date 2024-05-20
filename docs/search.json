@@ -1,5 +1,19 @@
 [
   {
+    "objectID": "posts/welcome/index.html",
+    "href": "posts/welcome/index.html",
+    "title": "Welcome To My Blog",
+    "section": "",
+    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
+  },
+  {
+    "objectID": "posts/visualizing-functions/visualizing-fuctions.html",
+    "href": "posts/visualizing-functions/visualizing-fuctions.html",
+    "title": "Visualizing Functions using ggplot2\n",
+    "section": "",
+    "text": "This is the first post in a Quarto blog. Welcome!\n\n\nWe are going to make this\n\n\nlibrary(ggplot2)\n\nLet’s say the function is: \\[ Y = -7x^2 + 2x  \\]\nThe we write it in such a way that R understands.\n\nf &lt;- function(x){\n         -x^3+5*x^2-x\n}\n\nThen generate data set based in the function\n\nx &lt;- seq(from = 0, to = 17, by = 0.1)\n\n\n\ndf &lt;- data.frame(x = x,\n                 y = f(x))\n\ndf |&gt; ggplot(aes(x, y)) + \n        geom_line(linewidth = 0.7, color = \"blue\") + \n        theme_bw()"
+  },
+  {
     "objectID": "microData.html#what",
     "href": "microData.html#what",
     "title": "microData",
@@ -21,39 +35,11 @@
     "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nMy first post\n\n\n\n\n\n\nR\n\n\ngt\n\n\nanalysis\n\n\n\n\n\n\n\n\n\nApr 2, 2024\n\n\nGutama Girja Urago\n\n\n\n\n\n\n\n\n\n\n\n\nVisualizing Functions using ggplot2\n\n\n\n\n\n\nggplot2\n\n\n\n\n\n\n\n\n\nApr 2, 2024\n\n\nGutama Girja Urago\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\nDec 19, 2023\n\n\nTristan O’Malley\n\n\n\n\n\n\n\n\n\n\n\n\nWeb Scraping in R: Import table directly from website\n\n\n\n\n\n\nweb scraping\n\n\nrvest\n\n\nggplot2\n\n\n\n\n\n\n\n\n\nMay 20, 2023\n\n\nGutama Girja Urago\n\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "blogs/web-craping/index.html",
-    "href": "blogs/web-craping/index.html",
-    "title": "Web Scraping in R: Import table directly from website",
-    "section": "",
-    "text": "What and why?\nIn this blog, we are going to import table from website into R. This is very important because it saves a time to copy the table manually and going through a lot of pain in excel to import the table into R. Doing it in that way is time consuming, tedious and prone to mistake. That’s why rvest (harvest) package is there for you on CRAN. Install the package from CRAN using install.packages() function and let’s dive in.\nGetting started\nFirst we need to have the url for the website from which we are planning to import the data as a dataframe in R. Here I am using Ethiopian GDP table from worldmeters website. Once we have the link to the website, we have to load the package and read html file from that page of website, which also contains the table of interest.\n\n# install.packages(rvest)         # Install the package if you do\n\nlibrary(rvest)\n\ntbl_url &lt;- \"https://www.worldometers.info/gdp/ethiopia-gdp/\"\n\nraw_html &lt;- read_html(tbl_url)\n\n\nhtml_element(raw_html, \"table\") |&gt; \nhtml_table()\n\n# A tibble: 2 × 1\n  X1                                    \n  &lt;chr&gt;                                 \n1 Ethiopia GDP (Nominal, $USD) 2003-2022\n2 GDP change (%)                        \n\n\n\nhtml_elements(raw_html, \"table\") |&gt; \nhtml_table()\n\n[[1]]\n# A tibble: 2 × 1\n  X1                                    \n  &lt;chr&gt;                                 \n1 Ethiopia GDP (Nominal, $USD) 2003-2022\n2 GDP change (%)                        \n\n[[2]]\n# A tibble: 30 × 7\n    Year `GDP Nominal (Current USD)` `GDP Real  (Inflation adj.)` `GDP change`\n   &lt;int&gt; &lt;chr&gt;                       &lt;chr&gt;                        &lt;chr&gt;       \n 1  2022 $126,783,000,000            $105,776,000,000             5.32%       \n 2  2021 $111,262,000,000            $100,435,000,000             5.64%       \n 3  2020 $107,658,000,000            $95,071,776,945              6.06%       \n 4  2019 $95,912,607,970             $89,640,012,689              8.36%       \n 5  2018 $84,269,196,152             $82,721,145,212              6.82%       \n 6  2017 $81,770,886,909             $77,442,546,767              9.56%       \n 7  2016 $74,296,745,599             $70,682,352,527              9.43%       \n 8  2015 $64,589,329,345             $64,589,329,345              10.39%      \n 9  2014 $55,612,228,234             $58,508,821,687              10.26%      \n10  2013 $47,648,276,190             $53,065,619,502              10.58%      \n# ℹ 20 more rows\n# ℹ 3 more variables: `GDP per capita` &lt;chr&gt;, `Pop. change` &lt;chr&gt;,\n#   Population &lt;chr&gt;\n\n\n\ngdp_tbl &lt;- html_elements(raw_html, \"table\") |&gt; \n        html_table() |&gt; \n        _[[2]] |&gt; \n        janitor::clean_names()\n\n\nlibrary(tidyverse)\n\nglimpse(gdp_tbl)\n\nRows: 30\nColumns: 7\n$ year                    &lt;int&gt; 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015…\n$ gdp_nominal_current_usd &lt;chr&gt; \"$126,783,000,000\", \"$111,262,000,000\", \"$107,…\n$ gdp_real_inflation_adj  &lt;chr&gt; \"$105,776,000,000\", \"$100,435,000,000\", \"$95,0…\n$ gdp_change              &lt;chr&gt; \"5.32%\", \"5.64%\", \"6.06%\", \"8.36%\", \"6.82%\", \"…\n$ gdp_per_capita          &lt;chr&gt; \"$857\", \"$835\", \"$811\", \"$785\", \"$744\", \"$716\"…\n$ pop_change              &lt;chr&gt; \"2.57 %\", \"2.64 %\", \"2.69 %\", \"2.69 %\", \"2.71 …\n$ population              &lt;chr&gt; \"123,379,924\", \"120,283,026\", \"117,190,911\", \"…\n\nconvert_to_numeric &lt;- function(x) {\n  as.numeric(str_remove_all(x, \"[$,%\\\\s]\"))\n}\n\ngdp_tbl &lt;- gdp_tbl |&gt; \n        mutate_all(convert_to_numeric)\n\n\ngdp_tbl |&gt; \n        ggplot() + \n        geom_line(aes(x = factor(year), \n                      y = gdp_nominal_current_usd,\n                      group = 1),\n                  color = \"blue\", linewidth = 1) + \n        scale_y_continuous(labels = scales::dollar_format(scale = 1/1000000000,\n                                                          suffix = \" billion\")) +\n \n        labs(x = \"Year\",\n             y = \"Nominal GDP\",\n             title = \"Ethiopia GDP (Nominal, $USD) 2003-2022\",\n             caption = \"Source: https://www.worldometers.info/gdp/ethiopia-gdp/\") + \n        theme_bw() + \n        theme(axis.text.x = element_text(angle = 45, vjust = 0.5))\n\n\n\n\n\n\n\n\ngdp_tbl |&gt; \n        ggplot() + \n        geom_line(aes(x = year, y = gdp_change)) +\n        geom_line(aes(x = year, y = pop_change))"
-  },
-  {
-    "objectID": "blogs/post-with-code/index.html",
-    "href": "blogs/post-with-code/index.html",
-    "title": "My first post",
-    "section": "",
-    "text": "This is a post with executable code.\n\nlibrary(tidyverse)\nlibrary(gt)\n\n\nhead(iris) |&gt; \n        gt() |&gt; \n        tab_header(\n                title = \"Big title\",\n                subtitle = \"Small one\"\n        ) |&gt; \n        tab_style(\n                style = cell_text(color = \"blue\", weight = \"bold\"),\n                locations = cells_title(groups = \"title\")\n        ) |&gt; \n        tab_style(\n                style = cell_fill(color = \"grey90\"),\n                locations = cells_body(rows = seq(1, 6, 2))\n        ) |&gt; \n        tab_options(\n                column_labels.background.color = \"steelblue\",\n                heading.align = \"left\")\n\n\n\n\n\n\n\nBig title\n\n\nSmall one\n\n\nSepal.Length\nSepal.Width\nPetal.Length\nPetal.Width\nSpecies\n\n\n\n\n5.1\n3.5\n1.4\n0.2\nsetosa\n\n\n4.9\n3.0\n1.4\n0.2\nsetosa\n\n\n4.7\n3.2\n1.3\n0.2\nsetosa\n\n\n4.6\n3.1\n1.5\n0.2\nsetosa\n\n\n5.0\n3.6\n1.4\n0.2\nsetosa\n\n\n5.4\n3.9\n1.7\n0.4\nsetosa"
-  },
-  {
     "objectID": "about.html",
     "href": "about.html",
     "title": "About",
     "section": "",
     "text": "About this site\n\n1 + 1\n\n[1] 2"
-  },
-  {
-    "objectID": "blogs/visualizing-functions/visualizing-fuctions.html",
-    "href": "blogs/visualizing-functions/visualizing-fuctions.html",
-    "title": "Visualizing Functions using ggplot2\n",
-    "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!\n\n\nWe are going to make this\n\n\nlibrary(ggplot2)\n\nLet’s say the function is: \\[ Y = -7x^2 + 2x  \\]\nThe we write it in such a way that R understands.\n\nf &lt;- function(x){\n         -x^3+5*x^2-x\n}\n\nThen generate data set based in the function\n\nx &lt;- seq(from = 0, to = 17, by = 0.1)\n\n\n\ndf &lt;- data.frame(x = x,\n                 y = f(x))\n\ndf |&gt; ggplot(aes(x, y)) + \n        geom_line(linewidth = 0.7, color = \"blue\") + \n        theme_bw()"
-  },
-  {
-    "objectID": "blogs/welcome/index.html",
-    "href": "blogs/welcome/index.html",
-    "title": "Welcome To My Blog",
-    "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
   },
   {
     "objectID": "index.html",
@@ -75,5 +61,19 @@
     "title": "Gutama Girja Urago",
     "section": "Experience",
     "text": "Experience\nGraduate Teaching Assistant | Haramaya University | August 2018 - September 2019"
+  },
+  {
+    "objectID": "posts/post-with-code/index.html",
+    "href": "posts/post-with-code/index.html",
+    "title": "My first post",
+    "section": "",
+    "text": "This is a post with executable code.\n\nlibrary(tidyverse)\nlibrary(gt)\n\n\nhead(iris) |&gt; \n        gt() |&gt; \n        tab_header(\n                title = \"Big title\",\n                subtitle = \"Small one\"\n        ) |&gt; \n        tab_style(\n                style = cell_text(color = \"blue\", weight = \"bold\"),\n                locations = cells_title(groups = \"title\")\n        ) |&gt; \n        tab_style(\n                style = cell_fill(color = \"grey90\"),\n                locations = cells_body(rows = seq(1, 6, 2))\n        ) |&gt; \n        tab_options(\n                column_labels.background.color = \"steelblue\",\n                heading.align = \"left\")\n\n\n\n\n\n\n\nBig title\n\n\nSmall one\n\n\nSepal.Length\nSepal.Width\nPetal.Length\nPetal.Width\nSpecies\n\n\n\n\n5.1\n3.5\n1.4\n0.2\nsetosa\n\n\n4.9\n3.0\n1.4\n0.2\nsetosa\n\n\n4.7\n3.2\n1.3\n0.2\nsetosa\n\n\n4.6\n3.1\n1.5\n0.2\nsetosa\n\n\n5.0\n3.6\n1.4\n0.2\nsetosa\n\n\n5.4\n3.9\n1.7\n0.4\nsetosa"
+  },
+  {
+    "objectID": "posts/web-craping/index.html",
+    "href": "posts/web-craping/index.html",
+    "title": "Web Scraping in R: Import table directly from website",
+    "section": "",
+    "text": "What and why?\nIn this blog, we are going to import table from website into R. This is very important because it saves a time to copy the table manually and going through a lot of pain in excel to import the table into R. Doing it in that way is time consuming, tedious and prone to mistake. That’s why rvest (harvest) package is there for you on CRAN. Install the package from CRAN using install.packages() function and let’s dive in.\nGetting started\nFirst we need to have the url for the website from which we are planning to import the data as a dataframe in R. Here I am using Ethiopian GDP table from worldmeters website. Once we have the link to the website, we have to load the package and read html file from that page of website, which also contains the table of interest.\n\n# install.packages(rvest)         # Install the package if you do\n\nlibrary(rvest)\n\ntbl_url &lt;- \"https://www.worldometers.info/gdp/ethiopia-gdp/\"\n\nraw_html &lt;- read_html(tbl_url)\n\n\nhtml_element(raw_html, \"table\") |&gt; \nhtml_table()\n\n# A tibble: 2 × 1\n  X1                                    \n  &lt;chr&gt;                                 \n1 Ethiopia GDP (Nominal, $USD) 2003-2022\n2 GDP change (%)                        \n\n\n\nhtml_elements(raw_html, \"table\") |&gt; \nhtml_table()\n\n[[1]]\n# A tibble: 2 × 1\n  X1                                    \n  &lt;chr&gt;                                 \n1 Ethiopia GDP (Nominal, $USD) 2003-2022\n2 GDP change (%)                        \n\n[[2]]\n# A tibble: 30 × 7\n    Year `GDP Nominal (Current USD)` `GDP Real  (Inflation adj.)` `GDP change`\n   &lt;int&gt; &lt;chr&gt;                       &lt;chr&gt;                        &lt;chr&gt;       \n 1  2022 $126,783,000,000            $105,776,000,000             5.32%       \n 2  2021 $111,262,000,000            $100,435,000,000             5.64%       \n 3  2020 $107,658,000,000            $95,071,776,945              6.06%       \n 4  2019 $95,912,607,970             $89,640,012,689              8.36%       \n 5  2018 $84,269,196,152             $82,721,145,212              6.82%       \n 6  2017 $81,770,886,909             $77,442,546,767              9.56%       \n 7  2016 $74,296,745,599             $70,682,352,527              9.43%       \n 8  2015 $64,589,329,345             $64,589,329,345              10.39%      \n 9  2014 $55,612,228,234             $58,508,821,687              10.26%      \n10  2013 $47,648,276,190             $53,065,619,502              10.58%      \n# ℹ 20 more rows\n# ℹ 3 more variables: `GDP per capita` &lt;chr&gt;, `Pop. change` &lt;chr&gt;,\n#   Population &lt;chr&gt;\n\n\n\ngdp_tbl &lt;- html_elements(raw_html, \"table\") |&gt; \n        html_table() |&gt; \n        _[[2]] |&gt; \n        janitor::clean_names()\n\n\nlibrary(tidyverse)\n\nglimpse(gdp_tbl)\n\nRows: 30\nColumns: 7\n$ year                    &lt;int&gt; 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015…\n$ gdp_nominal_current_usd &lt;chr&gt; \"$126,783,000,000\", \"$111,262,000,000\", \"$107,…\n$ gdp_real_inflation_adj  &lt;chr&gt; \"$105,776,000,000\", \"$100,435,000,000\", \"$95,0…\n$ gdp_change              &lt;chr&gt; \"5.32%\", \"5.64%\", \"6.06%\", \"8.36%\", \"6.82%\", \"…\n$ gdp_per_capita          &lt;chr&gt; \"$857\", \"$835\", \"$811\", \"$785\", \"$744\", \"$716\"…\n$ pop_change              &lt;chr&gt; \"2.57 %\", \"2.64 %\", \"2.69 %\", \"2.69 %\", \"2.71 …\n$ population              &lt;chr&gt; \"123,379,924\", \"120,283,026\", \"117,190,911\", \"…\n\nconvert_to_numeric &lt;- function(x) {\n  as.numeric(str_remove_all(x, \"[$,%\\\\s]\"))\n}\n\ngdp_tbl &lt;- gdp_tbl |&gt; \n        mutate_all(convert_to_numeric)\n\n\ngdp_tbl |&gt; \n        ggplot() + \n        geom_line(aes(x = factor(year), \n                      y = gdp_nominal_current_usd,\n                      group = 1),\n                  color = \"blue\", linewidth = 1) + \n        scale_y_continuous(labels = scales::dollar_format(scale = 1/1000000000,\n                                                          suffix = \" billion\")) +\n \n        labs(x = \"Year\",\n             y = \"Nominal GDP\",\n             title = \"Ethiopia GDP (Nominal, $USD) 2003-2022\",\n             caption = \"Source: https://www.worldometers.info/gdp/ethiopia-gdp/\") + \n        theme_bw() + \n        theme(axis.text.x = element_text(angle = 45, vjust = 0.5))\n\n\n\n\n\n\n\n\ngdp_tbl |&gt; \n        ggplot() + \n        geom_line(aes(x = year, y = gdp_change)) +\n        geom_line(aes(x = year, y = pop_change))"
   }
 ]

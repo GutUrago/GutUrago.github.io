@@ -2,10 +2,10 @@
   {
     "listing": "/blogs.html",
     "items": [
-      "/blogs/post-with-code/index.html",
-      "/blogs/visualizing-functions/visualizing-fuctions.html",
-      "/blogs/welcome/index.html",
-      "/blogs/web-craping/index.html"
+      "/posts/post-with-code/index.html",
+      "/posts/visualizing-functions/visualizing-fuctions.html",
+      "/posts/welcome/index.html",
+      "/posts/web-craping/index.html"
     ]
   }
 ]
