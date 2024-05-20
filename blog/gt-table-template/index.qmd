@@ -1,12 +1,12 @@
 ---
-title: "My first post"
+title: "Table Template: Create your own {gt} table template"
 author: "Gutama Girja Urago"
 date: "2024-04-02"
-categories: [R, gt, analysis]
+categories: [gt, table]
 image: "image.jpg"
 ---
 
-This is a post with executable code.
+Creating template table.
 
 ```{r}
 #| warning: false

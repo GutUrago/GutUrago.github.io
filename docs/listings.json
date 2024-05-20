@@ -1,11 +1,11 @@
 [
   {
-    "listing": "/blogs.html",
+    "listing": "/blog.html",
     "items": [
-      "/posts/post-with-code/index.html",
-      "/posts/visualizing-functions/visualizing-fuctions.html",
-      "/posts/welcome/index.html",
-      "/posts/web-craping/index.html"
+      "/blog/gt-table-template/index.html",
+      "/blog/visualizing-functions/visualizing-fuctions.html",
+      "/blog/welcome/index.html",
+      "/blog/web-craping/index.html"
     ]
   }
 ]

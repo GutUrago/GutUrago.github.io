@@ -14,7 +14,7 @@ website:
     logo: "./images/microData logo.png"
     title: "Home"
     left:
-      - href: blogs.html
+      - href: blog.html
         text: "All Blogs"
       - href: microData.html
         text: microData
