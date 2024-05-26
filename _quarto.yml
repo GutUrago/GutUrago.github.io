@@ -22,7 +22,7 @@ website:
         text: About
     tools: 
       - icon: rss
-        href: https://guturago.github.io/blog/index.xml
+        href: blog.xml
         text: GutUrago Blog RSS
   page-footer: 
     center: 

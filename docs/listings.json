@@ -2,10 +2,9 @@
   {
     "listing": "/blog.html",
     "items": [
-      "/blog/web-craping/index.html",
-      "/blog/gt-table-template/index.html",
-      "/blog/visualizing-functions/visualizing-fuctions.html",
-      "/blog/welcome/index.html"
+      "/blog/web-craping-using-rvest/index.html",
+      "/blog/gt-table-theme/index.html",
+      "/blog/visualizing-functions/index.html"
     ]
   }
 ]

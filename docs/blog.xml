@@ -21,7 +21,7 @@
 <item>
   <title>Web Scraping in R: Import table directly from website</title>
   <dc:creator>Gutama Girja Urago</dc:creator>
-  <link>https://guturago.github.io/blog/web-craping/</link>
+  <link>https://guturago.github.io/blog/web-craping-using-rvest/</link>
   <description><![CDATA[ <section id="what-and-why" class="level1"><h1>What and why?</h1>
 <p>In this blog, we are going to import table from website into R. This is very important because it saves a time to copy the table manually and going through a lot of pain in excel to import the table into R. Doing it in that way is time consuming, tedious and prone to mistake. That’s why <code>rvest</code> (harvest) package is there for you on CRAN. Install the package from CRAN using <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> function and let’s dive in.</p>
 </section><section id="getting-started" class="level1"><h1>Getting started</h1>
@@ -434,7 +434,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://guturago.github.io/blog/web-craping/index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://guturago.github.io/blog/web-craping-using-rvest/index_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -500,7 +500,7 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://guturago.github.io/blog/web-craping/index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://guturago.github.io/blog/web-craping-using-rvest/index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -511,13 +511,13 @@ font-style: inherit;">)</span></span></code></pre></div>
   <category>web scraping</category>
   <category>rvest</category>
   <category>ggplot2</category>
-  <guid>https://guturago.github.io/blog/web-craping/</guid>
+  <guid>https://guturago.github.io/blog/web-craping-using-rvest/</guid>
   <pubDate>Sun, 19 May 2024 22:00:00 GMT</pubDate>
 </item>
 <item>
   <title>Table Template: Create your own {gt} table template</title>
   <dc:creator>Gutama Girja Urago</dc:creator>
-  <link>https://guturago.github.io/blog/gt-table-template/</link>
+  <link>https://guturago.github.io/blog/gt-table-theme/</link>
   <description><![CDATA[ <p>Creating template table.</p>
 <div class="cell">
 <div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw" style="color: #003B4F;
@@ -685,23 +685,23 @@ background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
-<div id="gktmfjybex" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#gktmfjybex table {
+<div id="svkamkyika" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#svkamkyika table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#gktmfjybex thead, #gktmfjybex tbody, #gktmfjybex tfoot, #gktmfjybex tr, #gktmfjybex td, #gktmfjybex th {
+#svkamkyika thead, #svkamkyika tbody, #svkamkyika tfoot, #svkamkyika tr, #svkamkyika td, #svkamkyika th {
   border-style: none;
 }
 
-#gktmfjybex p {
+#svkamkyika p {
   margin: 0;
   padding: 0;
 }
 
-#gktmfjybex .gt_table {
+#svkamkyika .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -727,12 +727,12 @@ font-style: inherit;">)</span></span></code></pre></div>
   border-left-color: #D3D3D3;
 }
 
-#gktmfjybex .gt_caption {
+#svkamkyika .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#gktmfjybex .gt_title {
+#svkamkyika .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -744,7 +744,7 @@ font-style: inherit;">)</span></span></code></pre></div>
   border-bottom-width: 0;
 }
 
-#gktmfjybex .gt_subtitle {
+#svkamkyika .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -756,7 +756,7 @@ font-style: inherit;">)</span></span></code></pre></div>
   border-top-width: 0;
 }
 
-#gktmfjybex .gt_heading {
+#svkamkyika .gt_heading {
   background-color: #FFFFFF;
   text-align: left;
   border-bottom-color: #FFFFFF;
@@ -768,13 +768,13 @@ font-style: inherit;">)</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#gktmfjybex .gt_bottom_border {
+#svkamkyika .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#gktmfjybex .gt_col_headings {
+#svkamkyika .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -789,7 +789,7 @@ font-style: inherit;">)</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#gktmfjybex .gt_col_heading {
+#svkamkyika .gt_col_heading {
   color: #FFFFFF;
   background-color: #4682B4;
   font-size: 100%;
@@ -809,7 +809,7 @@ font-style: inherit;">)</span></span></code></pre></div>
   overflow-x: hidden;
 }
 
-#gktmfjybex .gt_column_spanner_outer {
+#svkamkyika .gt_column_spanner_outer {
   color: #FFFFFF;
   background-color: #4682B4;
   font-size: 100%;
@@ -821,15 +821,15 @@ font-style: inherit;">)</span></span></code></pre></div>
   padding-right: 4px;
 }
 
-#gktmfjybex .gt_column_spanner_outer:first-child {
+#svkamkyika .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#gktmfjybex .gt_column_spanner_outer:last-child {
+#svkamkyika .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#gktmfjybex .gt_column_spanner {
+#svkamkyika .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -841,11 +841,11 @@ font-style: inherit;">)</span></span></code></pre></div>
   width: 100%;
 }
 
-#gktmfjybex .gt_spanner_row {
+#svkamkyika .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#gktmfjybex .gt_group_heading {
+#svkamkyika .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -871,7 +871,7 @@ font-style: inherit;">)</span></span></code></pre></div>
   text-align: left;
 }
 
-#gktmfjybex .gt_empty_group_heading {
+#svkamkyika .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -886,15 +886,15 @@ font-style: inherit;">)</span></span></code></pre></div>
   vertical-align: middle;
 }
 
-#gktmfjybex .gt_from_md > :first-child {
+#svkamkyika .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#gktmfjybex .gt_from_md > :last-child {
+#svkamkyika .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#gktmfjybex .gt_row {
+#svkamkyika .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -913,7 +913,7 @@ font-style: inherit;">)</span></span></code></pre></div>
   overflow-x: hidden;
 }
 
-#gktmfjybex .gt_stub {
+#svkamkyika .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -926,7 +926,7 @@ font-style: inherit;">)</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#gktmfjybex .gt_stub_row_group {
+#svkamkyika .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -940,15 +940,15 @@ font-style: inherit;">)</span></span></code></pre></div>
   vertical-align: top;
 }
 
-#gktmfjybex .gt_row_group_first td {
+#svkamkyika .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#gktmfjybex .gt_row_group_first th {
+#svkamkyika .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#gktmfjybex .gt_summary_row {
+#svkamkyika .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -958,16 +958,16 @@ font-style: inherit;">)</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#gktmfjybex .gt_first_summary_row {
+#svkamkyika .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#gktmfjybex .gt_first_summary_row.thick {
+#svkamkyika .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#gktmfjybex .gt_last_summary_row {
+#svkamkyika .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -977,7 +977,7 @@ font-style: inherit;">)</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#gktmfjybex .gt_grand_summary_row {
+#svkamkyika .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -987,7 +987,7 @@ font-style: inherit;">)</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#gktmfjybex .gt_first_grand_summary_row {
+#svkamkyika .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -997,7 +997,7 @@ font-style: inherit;">)</span></span></code></pre></div>
   border-top-color: #D3D3D3;
 }
 
-#gktmfjybex .gt_last_grand_summary_row_top {
+#svkamkyika .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1007,11 +1007,11 @@ font-style: inherit;">)</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#gktmfjybex .gt_striped {
+#svkamkyika .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#gktmfjybex .gt_table_body {
+#svkamkyika .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1020,7 +1020,7 @@ font-style: inherit;">)</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#gktmfjybex .gt_footnotes {
+#svkamkyika .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1034,7 +1034,7 @@ font-style: inherit;">)</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#gktmfjybex .gt_footnote {
+#svkamkyika .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1043,7 +1043,7 @@ font-style: inherit;">)</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#gktmfjybex .gt_sourcenotes {
+#svkamkyika .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1057,7 +1057,7 @@ font-style: inherit;">)</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#gktmfjybex .gt_sourcenote {
+#svkamkyika .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1065,63 +1065,63 @@ font-style: inherit;">)</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#gktmfjybex .gt_left {
+#svkamkyika .gt_left {
   text-align: left;
 }
 
-#gktmfjybex .gt_center {
+#svkamkyika .gt_center {
   text-align: center;
 }
 
-#gktmfjybex .gt_right {
+#svkamkyika .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#gktmfjybex .gt_font_normal {
+#svkamkyika .gt_font_normal {
   font-weight: normal;
 }
 
-#gktmfjybex .gt_font_bold {
+#svkamkyika .gt_font_bold {
   font-weight: bold;
 }
 
-#gktmfjybex .gt_font_italic {
+#svkamkyika .gt_font_italic {
   font-style: italic;
 }
 
-#gktmfjybex .gt_super {
+#svkamkyika .gt_super {
   font-size: 65%;
 }
 
-#gktmfjybex .gt_footnote_marks {
+#svkamkyika .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#gktmfjybex .gt_asterisk {
+#svkamkyika .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#gktmfjybex .gt_indent_1 {
+#svkamkyika .gt_indent_1 {
   text-indent: 5px;
 }
 
-#gktmfjybex .gt_indent_2 {
+#svkamkyika .gt_indent_2 {
   text-indent: 10px;
 }
 
-#gktmfjybex .gt_indent_3 {
+#svkamkyika .gt_indent_3 {
   text-indent: 15px;
 }
 
-#gktmfjybex .gt_indent_4 {
+#svkamkyika .gt_indent_4 {
   text-indent: 20px;
 }
 
-#gktmfjybex .gt_indent_5 {
+#svkamkyika .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1196,15 +1196,15 @@ font-style: inherit;">)</span></span></code></pre></div>
  ]]></description>
   <category>gt</category>
   <category>table</category>
-  <guid>https://guturago.github.io/blog/gt-table-template/</guid>
+  <guid>https://guturago.github.io/blog/gt-table-theme/</guid>
   <pubDate>Mon, 01 Apr 2024 22:00:00 GMT</pubDate>
-  <media:content url="https://guturago.github.io/blog/gt-table-template/image.jpg" medium="image" type="image/jpeg"/>
+  <media:content url="https://guturago.github.io/blog/gt-table-theme/image.jpg" medium="image" type="image/jpeg"/>
 </item>
 <item>
   <title>Visualizing Functions using ggplot2
 </title>
   <dc:creator>Gutama Girja Urago</dc:creator>
-  <link>https://guturago.github.io/blog/visualizing-functions/visualizing-fuctions.html</link>
+  <link>https://guturago.github.io/blog/visualizing-functions/</link>
   <description><![CDATA[ <p>This is the first post in a Quarto blog. Welcome!</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure"><p><img src="https://guturago.github.io/blog/visualizing-functions/Fun.png" class="img-fluid figure-img"></p>
@@ -1221,7 +1221,7 @@ font-style: inherit;"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span>
 background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 </div>
-<p>Let’s say the function is: <img src="https://latex.codecogs.com/png.latex?%20Y%20=%20-7x%5E2%20+%202x%20%20"></p>
+<p>Let’s say the function is: <img src="https://latex.codecogs.com/png.latex?%20Q%20=%20L%5E%7B0.5%7D%20%20"></p>
 <p>The we write it in such a way that R understands.</p>
 <div class="cell">
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
@@ -1234,36 +1234,46 @@ font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">(</span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">x</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">A</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">alpha</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">beta</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">L</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">K</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">{</span></span>
-<span>         <span class="op" style="color: #5E5E5E;
+<span>        <span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">-</span><span class="va" style="color: #111111;
+font-style: inherit;">A</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">x</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">*</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">^</span><span class="fl" style="color: #AD0000;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">3</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">L</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">+</span><span class="fl" style="color: #AD0000;
+font-style: inherit;">^</span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">5</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">alpha</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">*</span><span class="va" style="color: #111111;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">x</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">*</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">^</span><span class="fl" style="color: #AD0000;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">K</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">-</span><span class="va" style="color: #111111;
+font-style: inherit;">^</span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">x</span></span>
+font-style: inherit;">beta</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
 <span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">}</span></span></code></pre></div>
@@ -1272,62 +1282,89 @@ font-style: inherit;">}</span></span></code></pre></div>
 <div class="cell">
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+font-style: inherit;">A</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+font-style: inherit;">&lt;-</span> <span class="fl" style="color: #AD0000;
 background-color: null;
-font-style: inherit;"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">(</span>from <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0</span>, to <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">17</span>, by <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">0.1</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">)</span></span>
-<span></span>
-<span></span>
-<span></span>
+font-style: inherit;">1</span></span>
 <span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">df</span> <span class="op" style="color: #5E5E5E;
+font-style: inherit;">alpha</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.4</span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">beta</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.6</span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">L</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">K</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">20</span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">Q</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">(</span>x <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">x</span>,</span>
-<span>                 y <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">f</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">(</span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">x</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">A</span>, <span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">alpha</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">beta</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">L</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">K</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span></span>
 <span></span>
-<span><span class="va" style="color: #111111;
+<span><span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">df</span> <span class="op" style="color: #5E5E5E;
+font-style: inherit;"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">|&gt;</span> <span class="fu" style="color: #4758AB;
+font-style: inherit;">(</span>L <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">L</span>,</span>
+<span>           K <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">K</span>,</span>
+<span>           Q <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">Q</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span>        <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1337,9 +1374,9 @@ font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/aes.html"
 background-color: null;
 font-style: inherit;">(</span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">x</span>, <span class="va" style="color: #111111;
+font-style: inherit;">L</span>, <span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">y</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">Q</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -1372,9 +1409,221 @@ background-color: null;
 font-style: inherit;">)</span> </span></code></pre></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="https://guturago.github.io/blog/visualizing-functions/visualizing-fuctions_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="https://guturago.github.io/blog/visualizing-functions/index_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Define the production function with two inputs</span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">production_function</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">a</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">b</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">c</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">d</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">L</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">K</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span>  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Calculate the output Q</span></span>
+<span>  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">Q</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">a</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">L</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">K</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">b</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">L</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">K</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">^</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">c</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">L</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">K</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">d</span></span>
+<span>  <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Return the output</span></span>
+<span>  <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">Q</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span></span>
+<span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Example usage:</span></span>
+<span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Coefficients: a = -0.1, b = 0.5, c = 1, d = 0</span></span>
+<span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Inputs: L = 10 (labor), K = 20 (capital)</span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">a</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.1</span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">b</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">c</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">d</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">L</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">K</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span></span>
+<span></span>
+<span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Calculate the output</span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">output</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">production_function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">a</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">b</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">c</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">d</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">L</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">K</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span></span>
+<span><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Print the output</span></span>
+<span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">output</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  1.4  3.2  4.8  5.6  5.0  2.4 -2.8</code></pre>
 </div>
 </div>
 
@@ -1382,30 +1631,9 @@ font-style: inherit;">)</span> </span></code></pre></div>
 
  ]]></description>
   <category>ggplot2</category>
-  <guid>https://guturago.github.io/blog/visualizing-functions/visualizing-fuctions.html</guid>
+  <guid>https://guturago.github.io/blog/visualizing-functions/</guid>
   <pubDate>Mon, 01 Apr 2024 22:00:00 GMT</pubDate>
   <media:content url="https://guturago.github.io/blog/visualizing-functions/Fun.png" medium="image" type="image/png" height="96" width="144"/>
-</item>
-<item>
-  <title>Welcome To My Blog</title>
-  <dc:creator>Tristan O&#39;Malley</dc:creator>
-  <link>https://guturago.github.io/blog/welcome/</link>
-  <description><![CDATA[ 
-
-
-
-
-
-<p>This is the first post in a Quarto blog. Welcome!</p>
-<p><img src="https://guturago.github.io/blog/welcome/thumbnail.jpg" class="img-fluid"></p>
-<p>Since this post doesn’t specify an explicit <code>image</code>, the first image in the post will be used in the listing page of posts.</p>
-
-
-
- ]]></description>
-  <category>news</category>
-  <guid>https://guturago.github.io/blog/welcome/</guid>
-  <pubDate>Mon, 18 Dec 2023 23:00:00 GMT</pubDate>
 </item>
 </channel>
 </rss>

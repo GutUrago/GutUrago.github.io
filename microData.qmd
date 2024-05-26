@@ -127,7 +127,7 @@ kableExtra::kable(mdt)
 ```
 
 
-Then you can prepare another data that contains metadata like this. I will be explained in detail in vignettes later.
+Then you can prepare another data that contains metadata like this. It will be explained in detail in vignettes later.
 
 
 ```{r echo=FALSE}
