@@ -1,39 +1,160 @@
 ---
-title: "Table Template: Create your own {gt} table template"
+title: "Table Template: Create your own {gt} table theme"
 author: "Gutama Girja Urago"
 date: "2024-04-02"
 categories: [gt, table]
 image: "image.jpg"
 ---
 
-Creating template table.
+Creating visually appealing and informative tables is a key aspect of data presentation, and the `gt` package in R provides powerful tools for this purpose. In this post, we will walk through creating a customizable table template using gt. By following these steps, you can easily create tables that are both functional and aesthetically pleasing, tailored to your specific needs.
+
+## Load Required Libraries
+
+First, ensure that you have the `gt` package loaded. All function used below are from `gt` package, except the data setup which I showed where it comes from. 
 
 ```{r}
 #| warning: false
 #| message: false
 
-library(tidyverse)
+# install.packages("gt")        Run only once if don't have the package installed
 library(gt)
-
-
 ```
+
+
+## Prepare Your Data
+
+For this example, we'll use the iris dataset and select a subset of it. We'll group the data by species and take the first two entries from each group.
+
 
 ```{r}
-head(iris) |> 
-        gt() |> 
+tbl <- iris |> 
+        dplyr::mutate(Species = stringr::str_to_title(Species)) |> 
+        dplyr::group_by(Species) |> 
+        dplyr::slice_head(n = 2) |>
+        dplyr::ungroup() |> 
+        gt()
+
+tbl
+```
+
+## Add a Header
+Next, add a title and subtitle to your table for better context and readability.
+
+```{r}
+tbl <- tbl |> 
         tab_header(
-                title = "Big title",
-                subtitle = "Small one"
-        ) |> 
+                title = "Main Title",
+                subtitle = "Subtitle"
+        )
+
+tbl
+```
+
+## Style the Header
+
+Apply styling to the header to make it stand out. Here, we set the text color to blue and make it bold.
+
+
+```{r}
+tbl <- tbl |> 
         tab_style(
-                style = cell_text(color = "blue", weight = "bold"),
+                style = cell_text(color = "blue", 
+                                  weight = "bold"),
                 locations = cells_title(groups = "title")
-        ) |> 
-        tab_style(
+        )
+
+tbl
+```
+
+## Style the Body
+To enhance readability, apply a background color to alternating rows in the table body.
+
+
+```{r}
+tbl <- tbl |> 
+               tab_style(
                 style = cell_fill(color = "grey90"),
                 locations = cells_body(rows = seq(1, 6, 2))
-        ) |> 
+        )
+
+tbl
+```
+
+## Adjust Table Options
+Customize the table width, column label background color, and heading alignment to suit your design preferences.
+
+
+```{r}
+tbl <- tbl |>
         tab_options(
+                table.width = pct(100),
                 column_labels.background.color = "steelblue",
                 heading.align = "left")
+
+tbl
 ```
+
+## Add Spanners
+If your table has grouped columns, add spanners to better organize and present these groups.
+
+
+
+```{r}
+tbl <- tbl |> 
+        tab_spanner_delim(".")
+
+tbl
+```
+
+## Style Column Labels and Spanners
+Ensure that your column labels and spanners are easily distinguishable by applying bold text and adjusting the size for spanners.
+
+```{r}
+tbl <- tbl |> 
+        tab_style(
+                style = cell_text(weight = "bold"),
+                locations = cells_column_labels()
+        ) |> 
+        tab_style(
+                style = cell_text(weight = "bold",
+                                  size = "medium"),
+                locations = cells_column_spanners()
+        )
+
+tbl
+```
+
+
+## Reorder Columns
+Finally, adjust the order of your columns as needed. In this example, we move the "Species" column to the start.
+
+
+```{r}
+tbl <- tbl |> 
+        cols_move_to_start("Species")
+
+tbl
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

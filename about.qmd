@@ -1,6 +1,7 @@
 ---
 title: "Gutama Girja Urago"
 image: "./images/profile.JPG"
+toc: false
 about:
   template: jolla
   links:
@@ -21,17 +22,52 @@ about:
       text: "Facebook"
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+
+```
+
 Gutama Girja Urago is a young agricultural economist who enjoys playing with R and has a keen interest in quantitative analysis without leaving qualitative aside. Currently, he is pursuing the Erasmus Mundus Joint Masters Degree organized by six European Universities hosting at Ghent University.
 
 ## Education
 
-International Master of Science in Rural Development | Ghent University, Belgium |  Sept 2022 - Sep 2024
+```{r}
+data.frame(
+  Period = c("Sept 2022 - Sep 2024", "Sept 2020 - July 2022", "Sept 2015 - July 2018"),
+  Program = c("International Master of Science in Rural Development", "aster of Science in Agricultural Economics", "Bachelor of Science in Agricultural Economics"),
+  University = c("Ghent University", "Ondokuz Mayis University", "Haramaya University"),
+  Country = c("Belgium", "Turkey", "Ethiopia")
+) |> 
+  kableExtra::kable()
+```
 
-Master of Science in Agricultural Economics | Ondokuz Mayis University, Turkey | Sept 2020 - July 2022
-
-Bachelor of Science in Agricultural Economics | Haramaya University, Ethiopia | Sept 2015 - July 2018
 
 
 ## Experience
 
-Graduate Teaching Assistant | Haramaya University | August 2018 - September 2019
+```{r}
+data.frame(
+  Period = c("August 2018 - September 2019"),
+  Position = c("Graduate Teaching Assistant"),
+  Company = c("Haramaya University"),
+  Country = c("Ethiopia")
+) |> 
+  kableExtra::kable()
+```
+
+
+## Awards
+
+
+```{r}
+data.frame(
+  Date = c("May 2022", "July 2019", "July 2018"),
+  Award = c("Erasmus Mundus Scholarship", "Turkish Government Scholarship", "Gold Medal (Outstanding achievement)")
+) |> 
+  kableExtra::kable()
+```
+
+
+
+
+

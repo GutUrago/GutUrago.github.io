@@ -3,8 +3,7 @@
     "listing": "/blog.html",
     "items": [
       "/blog/web-craping-using-rvest/index.html",
-      "/blog/gt-table-theme/index.html",
-      "/blog/visualizing-functions/index.html"
+      "/blog/gt-table-theme/index.html"
     ]
   }
 ]
