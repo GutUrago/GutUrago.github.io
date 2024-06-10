@@ -18,9 +18,17 @@ website:
         text: "All Blogs"
       - href: microData.html
         text: microData
+      - href: cv.html
+        text: CV
       - href: about.html
         text: About
     tools: 
+      - icon: github
+        href: https://github.com/GutUrago
+        text: GutUrago Github
+      - icon: linkedin
+        href: https://www.linkedin.com/in/gutama-girja/
+        text: Linkedin
       - icon: rss
         href: blog.xml
         text: GutUrago Blog RSS
