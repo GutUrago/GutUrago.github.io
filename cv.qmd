@@ -1,4 +1,0 @@
----
----
-
-<iframe src="files/CV - Gutama Girja Urago.pdf" width="100%" height="600px"></iframe>
