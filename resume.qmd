@@ -10,7 +10,7 @@ format:
 
 :::{.left-section}
 
-![](./images/resume_img.jpg){.image #profile-img}
+![Profile Picture](./images/resume_img.jpg){.image #profile-img}
 
 
 

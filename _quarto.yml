@@ -13,9 +13,9 @@ website:
     background: "#DCE3E3"
     logo: "./images/microData logo.png"
     title: "Home"
-    left:
+    right:
       - href: blog.html
-        text: "All Blogs"
+        text: All Blog Posts
       - href: microData.html
         text: microData
       - href: resume.html
