@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://guturago.github.io/microData.html</loc>
-    <lastmod>2024-05-26T12:34:08.948Z</lastmod>
+    <loc>https://guturago.github.io/resume.html</loc>
+    <lastmod>2024-07-18T18:52:44.725Z</lastmod>
   </url>
   <url>
-    <loc>https://guturago.github.io/cv.html</loc>
-    <lastmod>2024-06-10T13:15:21.139Z</lastmod>
+    <loc>https://guturago.github.io/index.html</loc>
+    <lastmod>2024-06-09T13:14:38.522Z</lastmod>
   </url>
   <url>
     <loc>https://guturago.github.io/blog/web-craping-using-rvest/index.html</loc>
@@ -25,7 +25,7 @@
     <lastmod>2024-05-26T22:57:09.256Z</lastmod>
   </url>
   <url>
-    <loc>https://guturago.github.io/index.html</loc>
-    <lastmod>2024-06-09T13:14:38.522Z</lastmod>
+    <loc>https://guturago.github.io/microData.html</loc>
+    <lastmod>2024-05-26T12:34:08.948Z</lastmod>
   </url>
 </urlset>

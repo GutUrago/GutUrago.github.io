@@ -18,8 +18,8 @@ website:
         text: "All Blogs"
       - href: microData.html
         text: microData
-      - href: cv.html
-        text: CV
+      - href: resume.html
+        text: Resume
       - href: about.html
         text: About
     tools: 

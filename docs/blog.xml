@@ -16,7 +16,7 @@
 <height>166</height>
 <width>144</width>
 </image>
-<generator>quarto-1.4.553</generator>
+<generator>quarto-1.4.555</generator>
 <lastBuildDate>Sun, 19 May 2024 22:00:00 GMT</lastBuildDate>
 <item>
   <title>Web Scraping in R: Import table directly from website</title>
@@ -679,7 +679,6 @@ font-style: inherit;">)</span></span>
 background-color: null;
 font-style: inherit;">tbl</span></span></code></pre></div>
 <div class="cell-output-display">
-<div>
 <div id="dgntilwzbo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#dgntilwzbo table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -1120,7 +1119,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   text-indent: 25px;
 }
 </style>
-<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead><tr class="header gt_col_headings">
 <th id="Sepal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Length</th>
 <th id="Sepal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Width</th>
@@ -1176,7 +1175,6 @@ font-style: inherit;">tbl</span></span></code></pre></div>
 </div>
 </div>
 </div>
-</div>
 </section><section id="add-a-header" class="level2"><h2 class="anchored" data-anchor-id="add-a-header">Add a Header</h2>
 <p>Next, add a title and subtitle to your table for better context and readability.</p>
 <div class="cell">
@@ -1212,7 +1210,6 @@ font-style: inherit;">)</span></span>
 background-color: null;
 font-style: inherit;">tbl</span></span></code></pre></div>
 <div class="cell-output-display">
-<div>
 <div id="nxovcedvuv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#nxovcedvuv table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -1653,7 +1650,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   text-indent: 25px;
 }
 </style>
-<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="header gt_heading">
 <th colspan="5" class="gt_heading gt_title gt_font_normal">Main Title</th>
@@ -1717,7 +1714,6 @@ font-style: inherit;">tbl</span></span></code></pre></div>
 </div>
 </div>
 </div>
-</div>
 </section><section id="style-the-header" class="level2"><h2 class="anchored" data-anchor-id="style-the-header">Style the Header</h2>
 <p>Apply styling to the header to make it stand out. Here, we set the text color to blue and make it bold.</p>
 <div class="cell">
@@ -1774,7 +1770,6 @@ font-style: inherit;">)</span></span>
 background-color: null;
 font-style: inherit;">tbl</span></span></code></pre></div>
 <div class="cell-output-display">
-<div>
 <div id="auppsztrrl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#auppsztrrl table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -2215,7 +2210,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   text-indent: 25px;
 }
 </style>
-<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="header gt_heading">
 <th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #0000FF; font-weight: bold">Main Title</th>
@@ -2276,7 +2271,6 @@ font-style: inherit;">tbl</span></span></code></pre></div>
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 </div>
 </div>
@@ -2341,7 +2335,6 @@ font-style: inherit;">)</span></span>
 background-color: null;
 font-style: inherit;">tbl</span></span></code></pre></div>
 <div class="cell-output-display">
-<div>
 <div id="jhhosttxvv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#jhhosttxvv table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -2782,7 +2775,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   text-indent: 25px;
 }
 </style>
-<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="header gt_heading">
 <th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #0000FF; font-weight: bold">Main Title</th>
@@ -2846,7 +2839,6 @@ font-style: inherit;">tbl</span></span></code></pre></div>
 </div>
 </div>
 </div>
-</div>
 </section><section id="adjust-table-options" class="level2"><h2 class="anchored" data-anchor-id="adjust-table-options">Adjust Table Options</h2>
 <p>Customize the table width, column label background color, and heading alignment to suit your design preferences.</p>
 <div class="cell">
@@ -2892,7 +2884,6 @@ font-style: inherit;">)</span></span>
 background-color: null;
 font-style: inherit;">tbl</span></span></code></pre></div>
 <div class="cell-output-display">
-<div>
 <div id="uwvohcbubr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#uwvohcbubr table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -3333,7 +3324,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   text-indent: 25px;
 }
 </style>
-<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="header gt_heading">
 <th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #0000FF; font-weight: bold">Main Title</th>
@@ -3397,7 +3388,6 @@ font-style: inherit;">tbl</span></span></code></pre></div>
 </div>
 </div>
 </div>
-</div>
 </section><section id="add-spanners" class="level2"><h2 class="anchored" data-anchor-id="add-spanners">Add Spanners</h2>
 <p>If your table has grouped columns, add spanners to better organize and present these groups.</p>
 <div class="cell">
@@ -3424,7 +3414,6 @@ font-style: inherit;">)</span></span>
 background-color: null;
 font-style: inherit;">tbl</span></span></code></pre></div>
 <div class="cell-output-display">
-<div>
 <div id="hwmvvddfah" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#hwmvvddfah table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -3865,7 +3854,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   text-indent: 25px;
 }
 </style>
-<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="header gt_heading">
 <th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #0000FF; font-weight: bold">Main Title</th>
@@ -3930,7 +3919,6 @@ font-style: inherit;">tbl</span></span></code></pre></div>
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 </div>
 </div>
@@ -4018,7 +4006,6 @@ font-style: inherit;">)</span></span>
 background-color: null;
 font-style: inherit;">tbl</span></span></code></pre></div>
 <div class="cell-output-display">
-<div>
 <div id="guftchwwqg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#guftchwwqg table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -4459,7 +4446,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   text-indent: 25px;
 }
 </style>
-<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="header gt_heading">
 <th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #0000FF; font-weight: bold">Main Title</th>
@@ -4527,7 +4514,6 @@ font-style: inherit;">tbl</span></span></code></pre></div>
 </div>
 </div>
 </div>
-</div>
 </section><section id="reorder-columns" class="level2"><h2 class="anchored" data-anchor-id="reorder-columns">Reorder Columns</h2>
 <p>Finally, adjust the order of your columns as needed. In this example, we move the “Species” column to the start.</p>
 <div class="cell">
@@ -4554,7 +4540,6 @@ font-style: inherit;">)</span></span>
 background-color: null;
 font-style: inherit;">tbl</span></span></code></pre></div>
 <div class="cell-output-display">
-<div>
 <div id="isbqlamufp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
 <style>#isbqlamufp table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
@@ -4995,7 +4980,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   text-indent: 25px;
 }
 </style>
-<table class="gt_table table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="header gt_heading">
 <th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #0000FF; font-weight: bold">Main Title</th>
@@ -5060,7 +5045,6 @@ font-style: inherit;">tbl</span></span></code></pre></div>
 </tr>
 </tbody>
 </table>
-</div>
 </div>
 </div>
 </div>
