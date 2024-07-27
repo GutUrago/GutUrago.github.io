@@ -74,7 +74,9 @@ font-style: inherit;">raw_html</span></span></code></pre></div>
 [2] &lt;body&gt;\n&lt;!-- Google tag (gtag.js) --&gt;&lt;script async src="https://www.googl ...</code></pre>
 </div>
 </div>
-<p>The above HTML content contains two main parts: the head and the body. The body part of the document typically contains the content of interest. HTML documents are usually built using CSS, and the CSS selector helps us pick specific elements that we are interested in. To find the CSS of the element that we are interested in, right-click on the element of interest on the web and select inspect. Next, move your mouse over the codes in the Elements section until they highlight all parts of the table in blue. <img src="https://guturago.github.io/blog/web-craping-using-rvest/inspect.png" class="img-fluid"> Then, you can view the CSS selector of the element, which in this case is the table. You can also use xpath instead of CSS to select an element, but let’s keep it aside for a while.&nbsp;</p>
+<p>The above HTML content contains two main parts: the head and the body. The body part of the document typically contains the content of interest. HTML documents are usually styled using CSS, and the CSS selector helps us pick specific elements that we are interested in. To find the CSS of the element that we are interested in, <strong>right-click</strong> on the element of interest on the web and select <strong>inspect</strong>. Next, move your mouse over the codes in the Elements section until it highlights all parts of the table in blue.</p>
+<p><img src="https://guturago.github.io/blog/web-craping-using-rvest/inspect.png" class="img-fluid"></p>
+<p>There are two widely used CSS selectors, namely, class and id. One HTML element can have multiple classes. In this case, a table is one of the class selectors. Whenever you use the class selector, put a dot (.) before the class name. The precise CSS selector is the code that appears at the top of the table (shown by a red arrow), but it requires a significant amount of time to write. So, let’s start with the first class name, which is table. We could have also used xpath instead of CSS to select an element, but let’s keep it aside for now.</p>
 <div class="cell">
 <div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
@@ -90,16 +92,15 @@ font-style: inherit;">raw_html</span>, css <span class="op" style="color: #5E5E5
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"table"</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">".table"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span></span>
 <span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">element</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>{xml_nodeset (2)}
-[1] &lt;table width="100%" border="0" cellpadding="0"&gt;\n&lt;tr&gt;\n&lt;td&gt; &lt;div style="f ...
-[2] &lt;table class="table table-striped table-bordered table-hover table-conden ...</code></pre>
+<pre><code>{xml_nodeset (1)}
+[1] &lt;table class="table table-striped table-bordered table-hover table-conden ...</code></pre>
 </div>
 </div>
 <p>Once you select the element, it’s still in HTML format and hard to understand. So, let’s convert it into an R object. Now, we see that there are actually two table objects in the returned HTML.</p>
@@ -122,13 +123,6 @@ background-color: null;
 font-style: inherit;">tables</span></span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-# A tibble: 2 × 1
-  X1                                    
-  &lt;chr&gt;                                 
-1 Ethiopia GDP (Nominal, $USD) 2003-2022
-2 GDP change (%)                        
-
-[[2]]
 # A tibble: 30 × 7
     Year `GDP Nominal (Current USD)` `GDP Real  (Inflation adj.)` `GDP change`
    &lt;int&gt; &lt;chr&gt;                       &lt;chr&gt;                        &lt;chr&gt;       
@@ -147,7 +141,7 @@ font-style: inherit;">tables</span></span></code></pre></div>
 #   Population &lt;chr&gt;</code></pre>
 </div>
 </div>
-<p>So, let’s extract the one we are interested in, the second one.</p>
+<p>It is stored as a list, let extract it and the rest is cleaning.</p>
 <div class="cell">
 <div class="sourceCode" id="cb7" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
@@ -159,7 +153,7 @@ font-style: inherit;">tables</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">[[</span><span class="fl" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">]</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -187,7 +181,7 @@ font-style: inherit;">gdp_tbl</span></span></code></pre></div>
 </div>
 </div>
 <section id="cleaning-the-data" class="level2"><h2 class="anchored" data-anchor-id="cleaning-the-data">Cleaning the Data</h2>
-<p>After getting the data in R, the next step is to clean and perform the analysis we want.</p>
+<p>Below we can see that all columns, except year, are stored as character because of dollar sign ($) and commas (,), which R doesn’t allow to happen.</p>
 <div class="cell">
 <div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
@@ -239,6 +233,7 @@ $ pop_change              &lt;chr&gt; "2.57 %", "2.64 %", "2.69 %", "2.69 %", "2
 $ population              &lt;chr&gt; "123,379,924", "120,283,026", "117,190,911", "…</code></pre>
 </div>
 </div>
+<p>Let’s remove all unnecessary characters and convert to numeric with a short function.</p>
 <div class="cell">
 <div class="sourceCode" id="cb11" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
@@ -316,6 +311,8 @@ $ pop_change              &lt;dbl&gt; 2.57, 2.64, 2.69, 2.69, 2.71, 2.76, 2.75, 
 $ population              &lt;dbl&gt; 123379924, 120283026, 117190911, 114120594, 11…</code></pre>
 </div>
 </div>
+</section><section id="making-a-graph" class="level2"><h2 class="anchored" data-anchor-id="making-a-graph">Making a Graph</h2>
+<p>With a minimal code, we can produce the same graph and customize the way we want.</p>
 <div class="cell">
 <div class="sourceCode" id="cb13" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
@@ -389,7 +386,8 @@ font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;"><a href="https://scales.r-lib.org/reference/dollar_format.html">dollar_format</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">(</span>scale <span class="op" style="color: #5E5E5E;
+font-style: inherit;">(</span></span>
+<span>          scale <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
 background-color: null;
@@ -398,7 +396,7 @@ background-color: null;
 font-style: inherit;">/</span><span class="fl" style="color: #AD0000;
 background-color: null;
 font-style: inherit;">1000000000</span>,</span>
-<span>                                                          suffix <span class="op" style="color: #5E5E5E;
+<span>          suffix <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
@@ -477,47 +475,43 @@ font-style: inherit;">)</span></span></code></pre></div>
 </div>
 </div>
 </div>
+<p>Here is the second graph as well.</p>
 <div class="cell">
 <div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">gdp_tbl</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">|&gt;</span> </span>
-<span>        <span class="fu" style="color: #4758AB;
+font-style: inherit;">|&gt;</span></span>
+<span>  <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op" style="color: #5E5E5E;
+font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">(</span>growth <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">+</span> </span>
-<span>        <span class="fu" style="color: #4758AB;
+font-style: inherit;"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">(</span><span class="fu" style="color: #4758AB;
+font-style: inherit;">gdp_change</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">&gt;</span> <span class="fl" style="color: #AD0000;
 background-color: null;
-font-style: inherit;">(</span>x <span class="op" style="color: #5E5E5E;
+font-style: inherit;">0</span>, <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">=</span> <span class="va" style="color: #111111;
+font-style: inherit;">"positve"</span>, <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">year</span>, y <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">gdp_change</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">"negative"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">+</span></span>
-<span>        <span class="fu" style="color: #4758AB;
+font-style: inherit;">|&gt;</span> </span>
+<span>  <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op" style="color: #5E5E5E;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">(</span><span class="fu" style="color: #4758AB;
 background-color: null;
@@ -525,13 +519,23 @@ font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/aes.html"
 background-color: null;
 font-style: inherit;">(</span>x <span class="op" style="color: #5E5E5E;
 background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">year</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>, y <span class="op" style="color: #5E5E5E;
+background-color: null;
 font-style: inherit;">=</span> <span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">year</span>, y <span class="op" style="color: #5E5E5E;
+font-style: inherit;">gdp_change</span>, fill <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">pop_change</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">growth</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -540,9 +544,81 @@ background-color: null;
 font-style: inherit;">+</span> </span>
 <span>  <span class="fu" style="color: #4758AB;
 background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"GDP change (%)"</span>,</span>
+<span>       y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Ethiopia GDP Change %"</span>,</span>
+<span>       x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Year"</span>,</span>
+<span>       fill <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>,</span>
+<span>       caption <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Source: https://www.worldometers.info/gdp/ethiopia-gdp/"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
 font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>axis.text.x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>angle <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>, vjust <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>        legend.position <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"none"</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span></span></code></pre></div>
 <div class="cell-output-display">
@@ -560,13 +636,13 @@ font-style: inherit;">)</span></span></code></pre></div>
   <category>ggplot2</category>
   <guid>https://guturago.github.io/blog/web-craping-using-rvest/</guid>
   <pubDate>Sun, 19 May 2024 22:00:00 GMT</pubDate>
-  <media:content url="https://guturago.github.io/blog/web-craping-using-rvest/inspect.png" medium="image" type="image/png" height="69" width="144"/>
+  <media:content url="https://guturago.github.io/blog/web-craping-using-rvest/inspect.png" medium="image" type="image/png" height="65" width="144"/>
 </item>
 <item>
   <title>Table Template: Create your own {gt} table theme</title>
   <dc:creator>Gutama Girja Urago</dc:creator>
   <link>https://guturago.github.io/blog/gt-table-theme/</link>
-  <description><![CDATA[ <p>Creating visually appealing and informative tables is a key aspect of data presentation, and the <code>gt</code> package in R provides powerful tools for this purpose. In this post, we will walk through creating a customizable table template using gt. By following these steps, you can easily create tables that are both functional and aesthetically pleasing, tailored to your specific needs.</p>
+  <description><![CDATA[ <p>Creating visually appealing and informative tables is a key aspect of data presentation, and the <code>gt</code> package in R provides powerful tools for this purpose. In this post, we will walk through creating a customizable table template using gt. By following these steps, you can easily create tables that are both functional and aesthetically pleasing, tailored to your specific needs. This blog post is motivated by this <a href="https://youtu.be/YzmLB2z9whw?si=qHvE_42mn2xwtI72">video</a> on tutorial</p>
 <section id="load-required-libraries" class="level2"><h2 class="anchored" data-anchor-id="load-required-libraries">Load Required Libraries</h2>
 <p>First, ensure that you have the <code>gt</code> package loaded. All function used below are from <code>gt</code> package, except the data setup which I showed where it comes from.</p>
 <div class="cell">
@@ -581,14 +657,25 @@ font-style: inherit;">(</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;"><a href="https://gt.rstudio.com">gt</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">)</span></span></code></pre></div>
+font-style: inherit;">)</span></span>
+<span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>              <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># For data manipulation</span></span></code></pre></div>
 </div>
 </section><section id="prepare-your-data" class="level2"><h2 class="anchored" data-anchor-id="prepare-your-data">Prepare Your Data</h2>
-<p>For this example, we’ll use the iris dataset and select a subset of it. We’ll group the data by species and take the first two entries from each group.</p>
+<p>For this example, we’ll use the iris dataset and select a subset of it. We’ll group the data by species and take the first two entries from each group. It is already appealing, but we can do better!</p>
 <div class="cell">
 <div class="sourceCode" id="cb2" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">tbl</span> <span class="op" style="color: #5E5E5E;
+font-style: inherit;">data</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="va" style="color: #111111;
 background-color: null;
@@ -596,10 +683,6 @@ font-style: inherit;">iris</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span> </span>
 <span>        <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">dplyr</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -624,10 +707,6 @@ background-color: null;
 font-style: inherit;">|&gt;</span> </span>
 <span>        <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">dplyr</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
-background-color: null;
 font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">(</span><span class="va" style="color: #111111;
@@ -638,10 +717,6 @@ font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span> </span>
 <span>        <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">dplyr</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/slice.html">slice_head</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -656,10 +731,6 @@ background-color: null;
 font-style: inherit;">|&gt;</span></span>
 <span>        <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;">dplyr</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
-background-color: null;
 font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/group_by.html">ungroup</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
@@ -669,33 +740,54 @@ background-color: null;
 font-style: inherit;">|&gt;</span> </span>
 <span>        <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;"><a href="https://gt.rstudio.com/reference/gt.html">gt</a></span><span class="op" style="color: #5E5E5E;
+font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">Species</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span></span>
 <span></span>
 <span><span class="va" style="color: #111111;
 background-color: null;
+font-style: inherit;">tbl</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://gt.rstudio.com/reference/gt.html">gt</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">data</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
 font-style: inherit;">tbl</span></span></code></pre></div>
 <div class="cell-output-display">
-<div id="dgntilwzbo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#dgntilwzbo table {
+<div id="aulscaywam" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#aulscaywam table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#dgntilwzbo thead, #dgntilwzbo tbody, #dgntilwzbo tfoot, #dgntilwzbo tr, #dgntilwzbo td, #dgntilwzbo th {
+#aulscaywam thead, #aulscaywam tbody, #aulscaywam tfoot, #aulscaywam tr, #aulscaywam td, #aulscaywam th {
   border-style: none;
 }
 
-#dgntilwzbo p {
+#aulscaywam p {
   margin: 0;
   padding: 0;
 }
 
-#dgntilwzbo .gt_table {
+#aulscaywam .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -721,12 +813,12 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-left-color: #D3D3D3;
 }
 
-#dgntilwzbo .gt_caption {
+#aulscaywam .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#dgntilwzbo .gt_title {
+#aulscaywam .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -738,7 +830,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-width: 0;
 }
 
-#dgntilwzbo .gt_subtitle {
+#aulscaywam .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -750,7 +842,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-top-width: 0;
 }
 
-#dgntilwzbo .gt_heading {
+#aulscaywam .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -762,13 +854,13 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#dgntilwzbo .gt_bottom_border {
+#aulscaywam .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#dgntilwzbo .gt_col_headings {
+#aulscaywam .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -783,7 +875,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#dgntilwzbo .gt_col_heading {
+#aulscaywam .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -803,7 +895,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   overflow-x: hidden;
 }
 
-#dgntilwzbo .gt_column_spanner_outer {
+#aulscaywam .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -815,15 +907,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 4px;
 }
 
-#dgntilwzbo .gt_column_spanner_outer:first-child {
+#aulscaywam .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#dgntilwzbo .gt_column_spanner_outer:last-child {
+#aulscaywam .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#dgntilwzbo .gt_column_spanner {
+#aulscaywam .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -835,11 +927,11 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   width: 100%;
 }
 
-#dgntilwzbo .gt_spanner_row {
+#aulscaywam .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#dgntilwzbo .gt_group_heading {
+#aulscaywam .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -865,7 +957,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   text-align: left;
 }
 
-#dgntilwzbo .gt_empty_group_heading {
+#aulscaywam .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -880,15 +972,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   vertical-align: middle;
 }
 
-#dgntilwzbo .gt_from_md > :first-child {
+#aulscaywam .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#dgntilwzbo .gt_from_md > :last-child {
+#aulscaywam .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#dgntilwzbo .gt_row {
+#aulscaywam .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -907,7 +999,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   overflow-x: hidden;
 }
 
-#dgntilwzbo .gt_stub {
+#aulscaywam .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -920,7 +1012,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#dgntilwzbo .gt_stub_row_group {
+#aulscaywam .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -934,15 +1026,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   vertical-align: top;
 }
 
-#dgntilwzbo .gt_row_group_first td {
+#aulscaywam .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#dgntilwzbo .gt_row_group_first th {
+#aulscaywam .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#dgntilwzbo .gt_summary_row {
+#aulscaywam .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -952,16 +1044,16 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#dgntilwzbo .gt_first_summary_row {
+#aulscaywam .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#dgntilwzbo .gt_first_summary_row.thick {
+#aulscaywam .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#dgntilwzbo .gt_last_summary_row {
+#aulscaywam .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -971,7 +1063,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#dgntilwzbo .gt_grand_summary_row {
+#aulscaywam .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -981,7 +1073,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#dgntilwzbo .gt_first_grand_summary_row {
+#aulscaywam .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -991,7 +1083,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-top-color: #D3D3D3;
 }
 
-#dgntilwzbo .gt_last_grand_summary_row_top {
+#aulscaywam .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1001,11 +1093,11 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#dgntilwzbo .gt_striped {
+#aulscaywam .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#dgntilwzbo .gt_table_body {
+#aulscaywam .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1014,7 +1106,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#dgntilwzbo .gt_footnotes {
+#aulscaywam .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1028,7 +1120,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#dgntilwzbo .gt_footnote {
+#aulscaywam .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1037,7 +1129,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#dgntilwzbo .gt_sourcenotes {
+#aulscaywam .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1051,7 +1143,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#dgntilwzbo .gt_sourcenote {
+#aulscaywam .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1059,116 +1151,116 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#dgntilwzbo .gt_left {
+#aulscaywam .gt_left {
   text-align: left;
 }
 
-#dgntilwzbo .gt_center {
+#aulscaywam .gt_center {
   text-align: center;
 }
 
-#dgntilwzbo .gt_right {
+#aulscaywam .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#dgntilwzbo .gt_font_normal {
+#aulscaywam .gt_font_normal {
   font-weight: normal;
 }
 
-#dgntilwzbo .gt_font_bold {
+#aulscaywam .gt_font_bold {
   font-weight: bold;
 }
 
-#dgntilwzbo .gt_font_italic {
+#aulscaywam .gt_font_italic {
   font-style: italic;
 }
 
-#dgntilwzbo .gt_super {
+#aulscaywam .gt_super {
   font-size: 65%;
 }
 
-#dgntilwzbo .gt_footnote_marks {
+#aulscaywam .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#dgntilwzbo .gt_asterisk {
+#aulscaywam .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#dgntilwzbo .gt_indent_1 {
+#aulscaywam .gt_indent_1 {
   text-indent: 5px;
 }
 
-#dgntilwzbo .gt_indent_2 {
+#aulscaywam .gt_indent_2 {
   text-indent: 10px;
 }
 
-#dgntilwzbo .gt_indent_3 {
+#aulscaywam .gt_indent_3 {
   text-indent: 15px;
 }
 
-#dgntilwzbo .gt_indent_4 {
+#aulscaywam .gt_indent_4 {
   text-indent: 20px;
 }
 
-#dgntilwzbo .gt_indent_5 {
+#aulscaywam .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
 <table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead><tr class="header gt_col_headings">
+<th id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Species</th>
 <th id="Sepal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Length</th>
 <th id="Sepal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Width</th>
 <th id="Petal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Length</th>
 <th id="Petal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Width</th>
-<th id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Species</th>
 </tr></thead>
 <tbody class="gt_table_body">
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
 <td class="gt_row gt_right" headers="Sepal.Length">5.1</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.5</td>
 <td class="gt_row gt_right" headers="Petal.Length">1.4</td>
 <td class="gt_row gt_right" headers="Petal.Width">0.2</td>
-<td class="gt_row gt_left" headers="Species">Setosa</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
 <td class="gt_row gt_right" headers="Sepal.Length">4.9</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.0</td>
 <td class="gt_row gt_right" headers="Petal.Length">1.4</td>
 <td class="gt_row gt_right" headers="Petal.Width">0.2</td>
-<td class="gt_row gt_left" headers="Species">Setosa</td>
 </tr>
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
 <td class="gt_row gt_right" headers="Sepal.Length">7.0</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
 <td class="gt_row gt_right" headers="Petal.Length">4.7</td>
 <td class="gt_row gt_right" headers="Petal.Width">1.4</td>
-<td class="gt_row gt_left" headers="Species">Versicolor</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
 <td class="gt_row gt_right" headers="Sepal.Length">6.4</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
 <td class="gt_row gt_right" headers="Petal.Length">4.5</td>
 <td class="gt_row gt_right" headers="Petal.Width">1.5</td>
-<td class="gt_row gt_left" headers="Species">Versicolor</td>
 </tr>
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
 <td class="gt_row gt_right" headers="Sepal.Length">6.3</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.3</td>
 <td class="gt_row gt_right" headers="Petal.Length">6.0</td>
 <td class="gt_row gt_right" headers="Petal.Width">2.5</td>
-<td class="gt_row gt_left" headers="Species">Virginica</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
 <td class="gt_row gt_right" headers="Sepal.Length">5.8</td>
 <td class="gt_row gt_right" headers="Sepal.Width">2.7</td>
 <td class="gt_row gt_right" headers="Petal.Length">5.1</td>
 <td class="gt_row gt_right" headers="Petal.Width">1.9</td>
-<td class="gt_row gt_left" headers="Species">Virginica</td>
 </tr>
 </tbody>
 </table>
@@ -1210,23 +1302,23 @@ font-style: inherit;">)</span></span>
 background-color: null;
 font-style: inherit;">tbl</span></span></code></pre></div>
 <div class="cell-output-display">
-<div id="nxovcedvuv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#nxovcedvuv table {
+<div id="ctiekapxjo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ctiekapxjo table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#nxovcedvuv thead, #nxovcedvuv tbody, #nxovcedvuv tfoot, #nxovcedvuv tr, #nxovcedvuv td, #nxovcedvuv th {
+#ctiekapxjo thead, #ctiekapxjo tbody, #ctiekapxjo tfoot, #ctiekapxjo tr, #ctiekapxjo td, #ctiekapxjo th {
   border-style: none;
 }
 
-#nxovcedvuv p {
+#ctiekapxjo p {
   margin: 0;
   padding: 0;
 }
 
-#nxovcedvuv .gt_table {
+#ctiekapxjo .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1252,12 +1344,12 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-left-color: #D3D3D3;
 }
 
-#nxovcedvuv .gt_caption {
+#ctiekapxjo .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#nxovcedvuv .gt_title {
+#ctiekapxjo .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1269,7 +1361,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-width: 0;
 }
 
-#nxovcedvuv .gt_subtitle {
+#ctiekapxjo .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1281,7 +1373,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-top-width: 0;
 }
 
-#nxovcedvuv .gt_heading {
+#ctiekapxjo .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1293,13 +1385,13 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#nxovcedvuv .gt_bottom_border {
+#ctiekapxjo .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#nxovcedvuv .gt_col_headings {
+#ctiekapxjo .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1314,7 +1406,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#nxovcedvuv .gt_col_heading {
+#ctiekapxjo .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1334,7 +1426,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   overflow-x: hidden;
 }
 
-#nxovcedvuv .gt_column_spanner_outer {
+#ctiekapxjo .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1346,15 +1438,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 4px;
 }
 
-#nxovcedvuv .gt_column_spanner_outer:first-child {
+#ctiekapxjo .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#nxovcedvuv .gt_column_spanner_outer:last-child {
+#ctiekapxjo .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#nxovcedvuv .gt_column_spanner {
+#ctiekapxjo .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1366,11 +1458,11 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   width: 100%;
 }
 
-#nxovcedvuv .gt_spanner_row {
+#ctiekapxjo .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#nxovcedvuv .gt_group_heading {
+#ctiekapxjo .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1396,7 +1488,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   text-align: left;
 }
 
-#nxovcedvuv .gt_empty_group_heading {
+#ctiekapxjo .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1411,15 +1503,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   vertical-align: middle;
 }
 
-#nxovcedvuv .gt_from_md > :first-child {
+#ctiekapxjo .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#nxovcedvuv .gt_from_md > :last-child {
+#ctiekapxjo .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#nxovcedvuv .gt_row {
+#ctiekapxjo .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1438,7 +1530,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   overflow-x: hidden;
 }
 
-#nxovcedvuv .gt_stub {
+#ctiekapxjo .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1451,7 +1543,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#nxovcedvuv .gt_stub_row_group {
+#ctiekapxjo .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1465,15 +1557,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   vertical-align: top;
 }
 
-#nxovcedvuv .gt_row_group_first td {
+#ctiekapxjo .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#nxovcedvuv .gt_row_group_first th {
+#ctiekapxjo .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#nxovcedvuv .gt_summary_row {
+#ctiekapxjo .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1483,16 +1575,16 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#nxovcedvuv .gt_first_summary_row {
+#ctiekapxjo .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#nxovcedvuv .gt_first_summary_row.thick {
+#ctiekapxjo .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#nxovcedvuv .gt_last_summary_row {
+#ctiekapxjo .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1502,7 +1594,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#nxovcedvuv .gt_grand_summary_row {
+#ctiekapxjo .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -1512,7 +1604,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#nxovcedvuv .gt_first_grand_summary_row {
+#ctiekapxjo .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1522,7 +1614,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-top-color: #D3D3D3;
 }
 
-#nxovcedvuv .gt_last_grand_summary_row_top {
+#ctiekapxjo .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1532,11 +1624,11 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#nxovcedvuv .gt_striped {
+#ctiekapxjo .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#nxovcedvuv .gt_table_body {
+#ctiekapxjo .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1545,7 +1637,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#nxovcedvuv .gt_footnotes {
+#ctiekapxjo .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1559,7 +1651,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#nxovcedvuv .gt_footnote {
+#ctiekapxjo .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -1568,7 +1660,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#nxovcedvuv .gt_sourcenotes {
+#ctiekapxjo .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -1582,7 +1674,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#nxovcedvuv .gt_sourcenote {
+#ctiekapxjo .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -1590,63 +1682,63 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#nxovcedvuv .gt_left {
+#ctiekapxjo .gt_left {
   text-align: left;
 }
 
-#nxovcedvuv .gt_center {
+#ctiekapxjo .gt_center {
   text-align: center;
 }
 
-#nxovcedvuv .gt_right {
+#ctiekapxjo .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#nxovcedvuv .gt_font_normal {
+#ctiekapxjo .gt_font_normal {
   font-weight: normal;
 }
 
-#nxovcedvuv .gt_font_bold {
+#ctiekapxjo .gt_font_bold {
   font-weight: bold;
 }
 
-#nxovcedvuv .gt_font_italic {
+#ctiekapxjo .gt_font_italic {
   font-style: italic;
 }
 
-#nxovcedvuv .gt_super {
+#ctiekapxjo .gt_super {
   font-size: 65%;
 }
 
-#nxovcedvuv .gt_footnote_marks {
+#ctiekapxjo .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#nxovcedvuv .gt_asterisk {
+#ctiekapxjo .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#nxovcedvuv .gt_indent_1 {
+#ctiekapxjo .gt_indent_1 {
   text-indent: 5px;
 }
 
-#nxovcedvuv .gt_indent_2 {
+#ctiekapxjo .gt_indent_2 {
   text-indent: 10px;
 }
 
-#nxovcedvuv .gt_indent_3 {
+#ctiekapxjo .gt_indent_3 {
   text-indent: 15px;
 }
 
-#nxovcedvuv .gt_indent_4 {
+#ctiekapxjo .gt_indent_4 {
   text-indent: 20px;
 }
 
-#nxovcedvuv .gt_indent_5 {
+#ctiekapxjo .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
@@ -1659,55 +1751,55 @@ font-style: inherit;">tbl</span></span></code></pre></div>
 <th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">Subtitle</th>
 </tr>
 <tr class="header gt_col_headings">
+<th id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Species</th>
 <th id="Sepal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Length</th>
 <th id="Sepal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Width</th>
 <th id="Petal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Length</th>
 <th id="Petal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Width</th>
-<th id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Species</th>
 </tr>
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
 <td class="gt_row gt_right" headers="Sepal.Length">5.1</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.5</td>
 <td class="gt_row gt_right" headers="Petal.Length">1.4</td>
 <td class="gt_row gt_right" headers="Petal.Width">0.2</td>
-<td class="gt_row gt_left" headers="Species">Setosa</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
 <td class="gt_row gt_right" headers="Sepal.Length">4.9</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.0</td>
 <td class="gt_row gt_right" headers="Petal.Length">1.4</td>
 <td class="gt_row gt_right" headers="Petal.Width">0.2</td>
-<td class="gt_row gt_left" headers="Species">Setosa</td>
 </tr>
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
 <td class="gt_row gt_right" headers="Sepal.Length">7.0</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
 <td class="gt_row gt_right" headers="Petal.Length">4.7</td>
 <td class="gt_row gt_right" headers="Petal.Width">1.4</td>
-<td class="gt_row gt_left" headers="Species">Versicolor</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
 <td class="gt_row gt_right" headers="Sepal.Length">6.4</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
 <td class="gt_row gt_right" headers="Petal.Length">4.5</td>
 <td class="gt_row gt_right" headers="Petal.Width">1.5</td>
-<td class="gt_row gt_left" headers="Species">Versicolor</td>
 </tr>
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
 <td class="gt_row gt_right" headers="Sepal.Length">6.3</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.3</td>
 <td class="gt_row gt_right" headers="Petal.Length">6.0</td>
 <td class="gt_row gt_right" headers="Petal.Width">2.5</td>
-<td class="gt_row gt_left" headers="Species">Virginica</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
 <td class="gt_row gt_right" headers="Sepal.Length">5.8</td>
 <td class="gt_row gt_right" headers="Sepal.Width">2.7</td>
 <td class="gt_row gt_right" headers="Petal.Length">5.1</td>
 <td class="gt_row gt_right" headers="Petal.Width">1.9</td>
-<td class="gt_row gt_left" headers="Species">Virginica</td>
 </tr>
 </tbody>
 </table>
@@ -1741,7 +1833,7 @@ font-style: inherit;">(</span>color <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
 background-color: null;
-font-style: inherit;">"blue"</span>, </span>
+font-style: inherit;">"black"</span>, </span>
 <span>                                  weight <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="st" style="color: #20794D;
@@ -1770,23 +1862,23 @@ font-style: inherit;">)</span></span>
 background-color: null;
 font-style: inherit;">tbl</span></span></code></pre></div>
 <div class="cell-output-display">
-<div id="auppsztrrl" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#auppsztrrl table {
+<div id="mptxrmnqwx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mptxrmnqwx table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#auppsztrrl thead, #auppsztrrl tbody, #auppsztrrl tfoot, #auppsztrrl tr, #auppsztrrl td, #auppsztrrl th {
+#mptxrmnqwx thead, #mptxrmnqwx tbody, #mptxrmnqwx tfoot, #mptxrmnqwx tr, #mptxrmnqwx td, #mptxrmnqwx th {
   border-style: none;
 }
 
-#auppsztrrl p {
+#mptxrmnqwx p {
   margin: 0;
   padding: 0;
 }
 
-#auppsztrrl .gt_table {
+#mptxrmnqwx .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -1812,12 +1904,12 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-left-color: #D3D3D3;
 }
 
-#auppsztrrl .gt_caption {
+#mptxrmnqwx .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#auppsztrrl .gt_title {
+#mptxrmnqwx .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -1829,7 +1921,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-width: 0;
 }
 
-#auppsztrrl .gt_subtitle {
+#mptxrmnqwx .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -1841,7 +1933,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-top-width: 0;
 }
 
-#auppsztrrl .gt_heading {
+#mptxrmnqwx .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -1853,13 +1945,13 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#auppsztrrl .gt_bottom_border {
+#mptxrmnqwx .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#auppsztrrl .gt_col_headings {
+#mptxrmnqwx .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -1874,7 +1966,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#auppsztrrl .gt_col_heading {
+#mptxrmnqwx .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1894,7 +1986,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   overflow-x: hidden;
 }
 
-#auppsztrrl .gt_column_spanner_outer {
+#mptxrmnqwx .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -1906,15 +1998,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 4px;
 }
 
-#auppsztrrl .gt_column_spanner_outer:first-child {
+#mptxrmnqwx .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#auppsztrrl .gt_column_spanner_outer:last-child {
+#mptxrmnqwx .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#auppsztrrl .gt_column_spanner {
+#mptxrmnqwx .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -1926,11 +2018,11 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   width: 100%;
 }
 
-#auppsztrrl .gt_spanner_row {
+#mptxrmnqwx .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#auppsztrrl .gt_group_heading {
+#mptxrmnqwx .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1956,7 +2048,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   text-align: left;
 }
 
-#auppsztrrl .gt_empty_group_heading {
+#mptxrmnqwx .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -1971,15 +2063,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   vertical-align: middle;
 }
 
-#auppsztrrl .gt_from_md > :first-child {
+#mptxrmnqwx .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#auppsztrrl .gt_from_md > :last-child {
+#mptxrmnqwx .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#auppsztrrl .gt_row {
+#mptxrmnqwx .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -1998,7 +2090,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   overflow-x: hidden;
 }
 
-#auppsztrrl .gt_stub {
+#mptxrmnqwx .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2011,7 +2103,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#auppsztrrl .gt_stub_row_group {
+#mptxrmnqwx .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2025,15 +2117,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   vertical-align: top;
 }
 
-#auppsztrrl .gt_row_group_first td {
+#mptxrmnqwx .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#auppsztrrl .gt_row_group_first th {
+#mptxrmnqwx .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#auppsztrrl .gt_summary_row {
+#mptxrmnqwx .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2043,16 +2135,16 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#auppsztrrl .gt_first_summary_row {
+#mptxrmnqwx .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#auppsztrrl .gt_first_summary_row.thick {
+#mptxrmnqwx .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#auppsztrrl .gt_last_summary_row {
+#mptxrmnqwx .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2062,7 +2154,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#auppsztrrl .gt_grand_summary_row {
+#mptxrmnqwx .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2072,7 +2164,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#auppsztrrl .gt_first_grand_summary_row {
+#mptxrmnqwx .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2082,7 +2174,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-top-color: #D3D3D3;
 }
 
-#auppsztrrl .gt_last_grand_summary_row_top {
+#mptxrmnqwx .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2092,11 +2184,11 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#auppsztrrl .gt_striped {
+#mptxrmnqwx .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#auppsztrrl .gt_table_body {
+#mptxrmnqwx .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2105,7 +2197,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#auppsztrrl .gt_footnotes {
+#mptxrmnqwx .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2119,7 +2211,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#auppsztrrl .gt_footnote {
+#mptxrmnqwx .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2128,7 +2220,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#auppsztrrl .gt_sourcenotes {
+#mptxrmnqwx .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2142,7 +2234,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#auppsztrrl .gt_sourcenote {
+#mptxrmnqwx .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2150,124 +2242,124 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#auppsztrrl .gt_left {
+#mptxrmnqwx .gt_left {
   text-align: left;
 }
 
-#auppsztrrl .gt_center {
+#mptxrmnqwx .gt_center {
   text-align: center;
 }
 
-#auppsztrrl .gt_right {
+#mptxrmnqwx .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#auppsztrrl .gt_font_normal {
+#mptxrmnqwx .gt_font_normal {
   font-weight: normal;
 }
 
-#auppsztrrl .gt_font_bold {
+#mptxrmnqwx .gt_font_bold {
   font-weight: bold;
 }
 
-#auppsztrrl .gt_font_italic {
+#mptxrmnqwx .gt_font_italic {
   font-style: italic;
 }
 
-#auppsztrrl .gt_super {
+#mptxrmnqwx .gt_super {
   font-size: 65%;
 }
 
-#auppsztrrl .gt_footnote_marks {
+#mptxrmnqwx .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#auppsztrrl .gt_asterisk {
+#mptxrmnqwx .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#auppsztrrl .gt_indent_1 {
+#mptxrmnqwx .gt_indent_1 {
   text-indent: 5px;
 }
 
-#auppsztrrl .gt_indent_2 {
+#mptxrmnqwx .gt_indent_2 {
   text-indent: 10px;
 }
 
-#auppsztrrl .gt_indent_3 {
+#mptxrmnqwx .gt_indent_3 {
   text-indent: 15px;
 }
 
-#auppsztrrl .gt_indent_4 {
+#mptxrmnqwx .gt_indent_4 {
   text-indent: 20px;
 }
 
-#auppsztrrl .gt_indent_5 {
+#mptxrmnqwx .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
 <table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="header gt_heading">
-<th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #0000FF; font-weight: bold">Main Title</th>
+<th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #000000; font-weight: bold">Main Title</th>
 </tr>
 <tr class="odd gt_heading">
 <th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">Subtitle</th>
 </tr>
 <tr class="header gt_col_headings">
+<th id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Species</th>
 <th id="Sepal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Length</th>
 <th id="Sepal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Width</th>
 <th id="Petal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Length</th>
 <th id="Petal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Width</th>
-<th id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Species</th>
 </tr>
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
 <td class="gt_row gt_right" headers="Sepal.Length">5.1</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.5</td>
 <td class="gt_row gt_right" headers="Petal.Length">1.4</td>
 <td class="gt_row gt_right" headers="Petal.Width">0.2</td>
-<td class="gt_row gt_left" headers="Species">Setosa</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
 <td class="gt_row gt_right" headers="Sepal.Length">4.9</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.0</td>
 <td class="gt_row gt_right" headers="Petal.Length">1.4</td>
 <td class="gt_row gt_right" headers="Petal.Width">0.2</td>
-<td class="gt_row gt_left" headers="Species">Setosa</td>
 </tr>
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
 <td class="gt_row gt_right" headers="Sepal.Length">7.0</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
 <td class="gt_row gt_right" headers="Petal.Length">4.7</td>
 <td class="gt_row gt_right" headers="Petal.Width">1.4</td>
-<td class="gt_row gt_left" headers="Species">Versicolor</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
 <td class="gt_row gt_right" headers="Sepal.Length">6.4</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
 <td class="gt_row gt_right" headers="Petal.Length">4.5</td>
 <td class="gt_row gt_right" headers="Petal.Width">1.5</td>
-<td class="gt_row gt_left" headers="Species">Versicolor</td>
 </tr>
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
 <td class="gt_row gt_right" headers="Sepal.Length">6.3</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.3</td>
 <td class="gt_row gt_right" headers="Petal.Length">6.0</td>
 <td class="gt_row gt_right" headers="Petal.Width">2.5</td>
-<td class="gt_row gt_left" headers="Species">Virginica</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
 <td class="gt_row gt_right" headers="Sepal.Length">5.8</td>
 <td class="gt_row gt_right" headers="Sepal.Width">2.7</td>
 <td class="gt_row gt_right" headers="Petal.Length">5.1</td>
 <td class="gt_row gt_right" headers="Petal.Width">1.9</td>
-<td class="gt_row gt_left" headers="Species">Virginica</td>
 </tr>
 </tbody>
 </table>
@@ -2335,23 +2427,23 @@ font-style: inherit;">)</span></span>
 background-color: null;
 font-style: inherit;">tbl</span></span></code></pre></div>
 <div class="cell-output-display">
-<div id="jhhosttxvv" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#jhhosttxvv table {
+<div id="hzsovrkqla" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#hzsovrkqla table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#jhhosttxvv thead, #jhhosttxvv tbody, #jhhosttxvv tfoot, #jhhosttxvv tr, #jhhosttxvv td, #jhhosttxvv th {
+#hzsovrkqla thead, #hzsovrkqla tbody, #hzsovrkqla tfoot, #hzsovrkqla tr, #hzsovrkqla td, #hzsovrkqla th {
   border-style: none;
 }
 
-#jhhosttxvv p {
+#hzsovrkqla p {
   margin: 0;
   padding: 0;
 }
 
-#jhhosttxvv .gt_table {
+#hzsovrkqla .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2377,12 +2469,12 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-left-color: #D3D3D3;
 }
 
-#jhhosttxvv .gt_caption {
+#hzsovrkqla .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#jhhosttxvv .gt_title {
+#hzsovrkqla .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2394,7 +2486,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-width: 0;
 }
 
-#jhhosttxvv .gt_subtitle {
+#hzsovrkqla .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2406,7 +2498,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-top-width: 0;
 }
 
-#jhhosttxvv .gt_heading {
+#hzsovrkqla .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -2418,13 +2510,13 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#jhhosttxvv .gt_bottom_border {
+#hzsovrkqla .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#jhhosttxvv .gt_col_headings {
+#hzsovrkqla .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2439,7 +2531,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#jhhosttxvv .gt_col_heading {
+#hzsovrkqla .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2459,7 +2551,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   overflow-x: hidden;
 }
 
-#jhhosttxvv .gt_column_spanner_outer {
+#hzsovrkqla .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2471,15 +2563,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 4px;
 }
 
-#jhhosttxvv .gt_column_spanner_outer:first-child {
+#hzsovrkqla .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#jhhosttxvv .gt_column_spanner_outer:last-child {
+#hzsovrkqla .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#jhhosttxvv .gt_column_spanner {
+#hzsovrkqla .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -2491,11 +2583,11 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   width: 100%;
 }
 
-#jhhosttxvv .gt_spanner_row {
+#hzsovrkqla .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#jhhosttxvv .gt_group_heading {
+#hzsovrkqla .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2521,7 +2613,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   text-align: left;
 }
 
-#jhhosttxvv .gt_empty_group_heading {
+#hzsovrkqla .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -2536,15 +2628,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   vertical-align: middle;
 }
 
-#jhhosttxvv .gt_from_md > :first-child {
+#hzsovrkqla .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#jhhosttxvv .gt_from_md > :last-child {
+#hzsovrkqla .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#jhhosttxvv .gt_row {
+#hzsovrkqla .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2563,7 +2655,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   overflow-x: hidden;
 }
 
-#jhhosttxvv .gt_stub {
+#hzsovrkqla .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2576,7 +2668,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#jhhosttxvv .gt_stub_row_group {
+#hzsovrkqla .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -2590,15 +2682,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   vertical-align: top;
 }
 
-#jhhosttxvv .gt_row_group_first td {
+#hzsovrkqla .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#jhhosttxvv .gt_row_group_first th {
+#hzsovrkqla .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#jhhosttxvv .gt_summary_row {
+#hzsovrkqla .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2608,16 +2700,16 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#jhhosttxvv .gt_first_summary_row {
+#hzsovrkqla .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#jhhosttxvv .gt_first_summary_row.thick {
+#hzsovrkqla .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#jhhosttxvv .gt_last_summary_row {
+#hzsovrkqla .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2627,7 +2719,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#jhhosttxvv .gt_grand_summary_row {
+#hzsovrkqla .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -2637,7 +2729,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#jhhosttxvv .gt_first_grand_summary_row {
+#hzsovrkqla .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2647,7 +2739,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-top-color: #D3D3D3;
 }
 
-#jhhosttxvv .gt_last_grand_summary_row_top {
+#hzsovrkqla .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -2657,11 +2749,11 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#jhhosttxvv .gt_striped {
+#hzsovrkqla .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#jhhosttxvv .gt_table_body {
+#hzsovrkqla .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2670,7 +2762,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#jhhosttxvv .gt_footnotes {
+#hzsovrkqla .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2684,7 +2776,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#jhhosttxvv .gt_footnote {
+#hzsovrkqla .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -2693,7 +2785,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#jhhosttxvv .gt_sourcenotes {
+#hzsovrkqla .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -2707,7 +2799,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#jhhosttxvv .gt_sourcenote {
+#hzsovrkqla .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -2715,124 +2807,124 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#jhhosttxvv .gt_left {
+#hzsovrkqla .gt_left {
   text-align: left;
 }
 
-#jhhosttxvv .gt_center {
+#hzsovrkqla .gt_center {
   text-align: center;
 }
 
-#jhhosttxvv .gt_right {
+#hzsovrkqla .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#jhhosttxvv .gt_font_normal {
+#hzsovrkqla .gt_font_normal {
   font-weight: normal;
 }
 
-#jhhosttxvv .gt_font_bold {
+#hzsovrkqla .gt_font_bold {
   font-weight: bold;
 }
 
-#jhhosttxvv .gt_font_italic {
+#hzsovrkqla .gt_font_italic {
   font-style: italic;
 }
 
-#jhhosttxvv .gt_super {
+#hzsovrkqla .gt_super {
   font-size: 65%;
 }
 
-#jhhosttxvv .gt_footnote_marks {
+#hzsovrkqla .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#jhhosttxvv .gt_asterisk {
+#hzsovrkqla .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#jhhosttxvv .gt_indent_1 {
+#hzsovrkqla .gt_indent_1 {
   text-indent: 5px;
 }
 
-#jhhosttxvv .gt_indent_2 {
+#hzsovrkqla .gt_indent_2 {
   text-indent: 10px;
 }
 
-#jhhosttxvv .gt_indent_3 {
+#hzsovrkqla .gt_indent_3 {
   text-indent: 15px;
 }
 
-#jhhosttxvv .gt_indent_4 {
+#hzsovrkqla .gt_indent_4 {
   text-indent: 20px;
 }
 
-#jhhosttxvv .gt_indent_5 {
+#hzsovrkqla .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
 <table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="header gt_heading">
-<th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #0000FF; font-weight: bold">Main Title</th>
+<th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #000000; font-weight: bold">Main Title</th>
 </tr>
 <tr class="odd gt_heading">
 <th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">Subtitle</th>
 </tr>
 <tr class="header gt_col_headings">
+<th id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Species</th>
 <th id="Sepal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Length</th>
 <th id="Sepal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Width</th>
 <th id="Petal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Length</th>
 <th id="Petal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Width</th>
-<th id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Species</th>
 </tr>
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Setosa</td>
 <td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">5.1</td>
 <td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.5</td>
 <td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">1.4</td>
 <td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">0.2</td>
-<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Setosa</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
 <td class="gt_row gt_right" headers="Sepal.Length">4.9</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.0</td>
 <td class="gt_row gt_right" headers="Petal.Length">1.4</td>
 <td class="gt_row gt_right" headers="Petal.Width">0.2</td>
-<td class="gt_row gt_left" headers="Species">Setosa</td>
 </tr>
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Versicolor</td>
 <td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">7.0</td>
 <td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.2</td>
 <td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">4.7</td>
 <td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">1.4</td>
-<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Versicolor</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
 <td class="gt_row gt_right" headers="Sepal.Length">6.4</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
 <td class="gt_row gt_right" headers="Petal.Length">4.5</td>
 <td class="gt_row gt_right" headers="Petal.Width">1.5</td>
-<td class="gt_row gt_left" headers="Species">Versicolor</td>
 </tr>
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Virginica</td>
 <td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">6.3</td>
 <td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.3</td>
 <td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">6.0</td>
 <td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">2.5</td>
-<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Virginica</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
 <td class="gt_row gt_right" headers="Sepal.Length">5.8</td>
 <td class="gt_row gt_right" headers="Sepal.Width">2.7</td>
 <td class="gt_row gt_right" headers="Petal.Length">5.1</td>
 <td class="gt_row gt_right" headers="Petal.Width">1.9</td>
-<td class="gt_row gt_left" headers="Species">Virginica</td>
 </tr>
 </tbody>
 </table>
@@ -2884,23 +2976,23 @@ font-style: inherit;">)</span></span>
 background-color: null;
 font-style: inherit;">tbl</span></span></code></pre></div>
 <div class="cell-output-display">
-<div id="uwvohcbubr" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#uwvohcbubr table {
+<div id="icmownlpck" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#icmownlpck table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#uwvohcbubr thead, #uwvohcbubr tbody, #uwvohcbubr tfoot, #uwvohcbubr tr, #uwvohcbubr td, #uwvohcbubr th {
+#icmownlpck thead, #icmownlpck tbody, #icmownlpck tfoot, #icmownlpck tr, #icmownlpck td, #icmownlpck th {
   border-style: none;
 }
 
-#uwvohcbubr p {
+#icmownlpck p {
   margin: 0;
   padding: 0;
 }
 
-#uwvohcbubr .gt_table {
+#icmownlpck .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -2926,12 +3018,12 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-left-color: #D3D3D3;
 }
 
-#uwvohcbubr .gt_caption {
+#icmownlpck .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#uwvohcbubr .gt_title {
+#icmownlpck .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -2943,7 +3035,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-width: 0;
 }
 
-#uwvohcbubr .gt_subtitle {
+#icmownlpck .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -2955,7 +3047,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-top-width: 0;
 }
 
-#uwvohcbubr .gt_heading {
+#icmownlpck .gt_heading {
   background-color: #FFFFFF;
   text-align: left;
   border-bottom-color: #FFFFFF;
@@ -2967,13 +3059,13 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#uwvohcbubr .gt_bottom_border {
+#icmownlpck .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#uwvohcbubr .gt_col_headings {
+#icmownlpck .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -2988,7 +3080,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#uwvohcbubr .gt_col_heading {
+#icmownlpck .gt_col_heading {
   color: #FFFFFF;
   background-color: #4682B4;
   font-size: 100%;
@@ -3008,7 +3100,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   overflow-x: hidden;
 }
 
-#uwvohcbubr .gt_column_spanner_outer {
+#icmownlpck .gt_column_spanner_outer {
   color: #FFFFFF;
   background-color: #4682B4;
   font-size: 100%;
@@ -3020,15 +3112,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 4px;
 }
 
-#uwvohcbubr .gt_column_spanner_outer:first-child {
+#icmownlpck .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#uwvohcbubr .gt_column_spanner_outer:last-child {
+#icmownlpck .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#uwvohcbubr .gt_column_spanner {
+#icmownlpck .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3040,11 +3132,11 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   width: 100%;
 }
 
-#uwvohcbubr .gt_spanner_row {
+#icmownlpck .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#uwvohcbubr .gt_group_heading {
+#icmownlpck .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3070,7 +3162,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   text-align: left;
 }
 
-#uwvohcbubr .gt_empty_group_heading {
+#icmownlpck .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3085,15 +3177,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   vertical-align: middle;
 }
 
-#uwvohcbubr .gt_from_md > :first-child {
+#icmownlpck .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#uwvohcbubr .gt_from_md > :last-child {
+#icmownlpck .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#uwvohcbubr .gt_row {
+#icmownlpck .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3112,7 +3204,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   overflow-x: hidden;
 }
 
-#uwvohcbubr .gt_stub {
+#icmownlpck .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3125,7 +3217,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#uwvohcbubr .gt_stub_row_group {
+#icmownlpck .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3139,15 +3231,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   vertical-align: top;
 }
 
-#uwvohcbubr .gt_row_group_first td {
+#icmownlpck .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#uwvohcbubr .gt_row_group_first th {
+#icmownlpck .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#uwvohcbubr .gt_summary_row {
+#icmownlpck .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3157,16 +3249,16 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#uwvohcbubr .gt_first_summary_row {
+#icmownlpck .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#uwvohcbubr .gt_first_summary_row.thick {
+#icmownlpck .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#uwvohcbubr .gt_last_summary_row {
+#icmownlpck .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3176,7 +3268,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#uwvohcbubr .gt_grand_summary_row {
+#icmownlpck .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3186,7 +3278,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#uwvohcbubr .gt_first_grand_summary_row {
+#icmownlpck .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3196,7 +3288,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-top-color: #D3D3D3;
 }
 
-#uwvohcbubr .gt_last_grand_summary_row_top {
+#icmownlpck .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3206,11 +3298,11 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#uwvohcbubr .gt_striped {
+#icmownlpck .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#uwvohcbubr .gt_table_body {
+#icmownlpck .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3219,7 +3311,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#uwvohcbubr .gt_footnotes {
+#icmownlpck .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3233,7 +3325,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#uwvohcbubr .gt_footnote {
+#icmownlpck .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -3242,7 +3334,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#uwvohcbubr .gt_sourcenotes {
+#icmownlpck .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3256,7 +3348,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#uwvohcbubr .gt_sourcenote {
+#icmownlpck .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -3264,124 +3356,124 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#uwvohcbubr .gt_left {
+#icmownlpck .gt_left {
   text-align: left;
 }
 
-#uwvohcbubr .gt_center {
+#icmownlpck .gt_center {
   text-align: center;
 }
 
-#uwvohcbubr .gt_right {
+#icmownlpck .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#uwvohcbubr .gt_font_normal {
+#icmownlpck .gt_font_normal {
   font-weight: normal;
 }
 
-#uwvohcbubr .gt_font_bold {
+#icmownlpck .gt_font_bold {
   font-weight: bold;
 }
 
-#uwvohcbubr .gt_font_italic {
+#icmownlpck .gt_font_italic {
   font-style: italic;
 }
 
-#uwvohcbubr .gt_super {
+#icmownlpck .gt_super {
   font-size: 65%;
 }
 
-#uwvohcbubr .gt_footnote_marks {
+#icmownlpck .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#uwvohcbubr .gt_asterisk {
+#icmownlpck .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#uwvohcbubr .gt_indent_1 {
+#icmownlpck .gt_indent_1 {
   text-indent: 5px;
 }
 
-#uwvohcbubr .gt_indent_2 {
+#icmownlpck .gt_indent_2 {
   text-indent: 10px;
 }
 
-#uwvohcbubr .gt_indent_3 {
+#icmownlpck .gt_indent_3 {
   text-indent: 15px;
 }
 
-#uwvohcbubr .gt_indent_4 {
+#icmownlpck .gt_indent_4 {
   text-indent: 20px;
 }
 
-#uwvohcbubr .gt_indent_5 {
+#icmownlpck .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
 <table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="header gt_heading">
-<th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #0000FF; font-weight: bold">Main Title</th>
+<th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #000000; font-weight: bold">Main Title</th>
 </tr>
 <tr class="odd gt_heading">
 <th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">Subtitle</th>
 </tr>
 <tr class="header gt_col_headings">
+<th id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Species</th>
 <th id="Sepal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Length</th>
 <th id="Sepal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Width</th>
 <th id="Petal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Length</th>
 <th id="Petal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Width</th>
-<th id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Species</th>
 </tr>
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Setosa</td>
 <td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">5.1</td>
 <td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.5</td>
 <td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">1.4</td>
 <td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">0.2</td>
-<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Setosa</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
 <td class="gt_row gt_right" headers="Sepal.Length">4.9</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.0</td>
 <td class="gt_row gt_right" headers="Petal.Length">1.4</td>
 <td class="gt_row gt_right" headers="Petal.Width">0.2</td>
-<td class="gt_row gt_left" headers="Species">Setosa</td>
 </tr>
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Versicolor</td>
 <td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">7.0</td>
 <td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.2</td>
 <td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">4.7</td>
 <td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">1.4</td>
-<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Versicolor</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
 <td class="gt_row gt_right" headers="Sepal.Length">6.4</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
 <td class="gt_row gt_right" headers="Petal.Length">4.5</td>
 <td class="gt_row gt_right" headers="Petal.Width">1.5</td>
-<td class="gt_row gt_left" headers="Species">Versicolor</td>
 </tr>
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Virginica</td>
 <td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">6.3</td>
 <td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.3</td>
 <td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">6.0</td>
 <td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">2.5</td>
-<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Virginica</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
 <td class="gt_row gt_right" headers="Sepal.Length">5.8</td>
 <td class="gt_row gt_right" headers="Sepal.Width">2.7</td>
 <td class="gt_row gt_right" headers="Petal.Length">5.1</td>
 <td class="gt_row gt_right" headers="Petal.Width">1.9</td>
-<td class="gt_row gt_left" headers="Species">Virginica</td>
 </tr>
 </tbody>
 </table>
@@ -3414,23 +3506,23 @@ font-style: inherit;">)</span></span>
 background-color: null;
 font-style: inherit;">tbl</span></span></code></pre></div>
 <div class="cell-output-display">
-<div id="hwmvvddfah" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#hwmvvddfah table {
+<div id="rwogzdliib" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rwogzdliib table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#hwmvvddfah thead, #hwmvvddfah tbody, #hwmvvddfah tfoot, #hwmvvddfah tr, #hwmvvddfah td, #hwmvvddfah th {
+#rwogzdliib thead, #rwogzdliib tbody, #rwogzdliib tfoot, #rwogzdliib tr, #rwogzdliib td, #rwogzdliib th {
   border-style: none;
 }
 
-#hwmvvddfah p {
+#rwogzdliib p {
   margin: 0;
   padding: 0;
 }
 
-#hwmvvddfah .gt_table {
+#rwogzdliib .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -3456,12 +3548,12 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-left-color: #D3D3D3;
 }
 
-#hwmvvddfah .gt_caption {
+#rwogzdliib .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#hwmvvddfah .gt_title {
+#rwogzdliib .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -3473,7 +3565,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-width: 0;
 }
 
-#hwmvvddfah .gt_subtitle {
+#rwogzdliib .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -3485,7 +3577,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-top-width: 0;
 }
 
-#hwmvvddfah .gt_heading {
+#rwogzdliib .gt_heading {
   background-color: #FFFFFF;
   text-align: left;
   border-bottom-color: #FFFFFF;
@@ -3497,13 +3589,13 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#hwmvvddfah .gt_bottom_border {
+#rwogzdliib .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#hwmvvddfah .gt_col_headings {
+#rwogzdliib .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3518,7 +3610,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#hwmvvddfah .gt_col_heading {
+#rwogzdliib .gt_col_heading {
   color: #FFFFFF;
   background-color: #4682B4;
   font-size: 100%;
@@ -3538,7 +3630,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   overflow-x: hidden;
 }
 
-#hwmvvddfah .gt_column_spanner_outer {
+#rwogzdliib .gt_column_spanner_outer {
   color: #FFFFFF;
   background-color: #4682B4;
   font-size: 100%;
@@ -3550,15 +3642,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 4px;
 }
 
-#hwmvvddfah .gt_column_spanner_outer:first-child {
+#rwogzdliib .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#hwmvvddfah .gt_column_spanner_outer:last-child {
+#rwogzdliib .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#hwmvvddfah .gt_column_spanner {
+#rwogzdliib .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -3570,11 +3662,11 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   width: 100%;
 }
 
-#hwmvvddfah .gt_spanner_row {
+#rwogzdliib .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#hwmvvddfah .gt_group_heading {
+#rwogzdliib .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3600,7 +3692,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   text-align: left;
 }
 
-#hwmvvddfah .gt_empty_group_heading {
+#rwogzdliib .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -3615,15 +3707,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   vertical-align: middle;
 }
 
-#hwmvvddfah .gt_from_md > :first-child {
+#rwogzdliib .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#hwmvvddfah .gt_from_md > :last-child {
+#rwogzdliib .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#hwmvvddfah .gt_row {
+#rwogzdliib .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3642,7 +3734,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   overflow-x: hidden;
 }
 
-#hwmvvddfah .gt_stub {
+#rwogzdliib .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3655,7 +3747,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#hwmvvddfah .gt_stub_row_group {
+#rwogzdliib .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -3669,15 +3761,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   vertical-align: top;
 }
 
-#hwmvvddfah .gt_row_group_first td {
+#rwogzdliib .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#hwmvvddfah .gt_row_group_first th {
+#rwogzdliib .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#hwmvvddfah .gt_summary_row {
+#rwogzdliib .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3687,16 +3779,16 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#hwmvvddfah .gt_first_summary_row {
+#rwogzdliib .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#hwmvvddfah .gt_first_summary_row.thick {
+#rwogzdliib .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#hwmvvddfah .gt_last_summary_row {
+#rwogzdliib .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3706,7 +3798,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#hwmvvddfah .gt_grand_summary_row {
+#rwogzdliib .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -3716,7 +3808,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#hwmvvddfah .gt_first_grand_summary_row {
+#rwogzdliib .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3726,7 +3818,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-top-color: #D3D3D3;
 }
 
-#hwmvvddfah .gt_last_grand_summary_row_top {
+#rwogzdliib .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -3736,11 +3828,11 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#hwmvvddfah .gt_striped {
+#rwogzdliib .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#hwmvvddfah .gt_table_body {
+#rwogzdliib .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -3749,7 +3841,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#hwmvvddfah .gt_footnotes {
+#rwogzdliib .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3763,7 +3855,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#hwmvvddfah .gt_footnote {
+#rwogzdliib .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -3772,7 +3864,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#hwmvvddfah .gt_sourcenotes {
+#rwogzdliib .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -3786,7 +3878,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#hwmvvddfah .gt_sourcenote {
+#rwogzdliib .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -3794,78 +3886,78 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#hwmvvddfah .gt_left {
+#rwogzdliib .gt_left {
   text-align: left;
 }
 
-#hwmvvddfah .gt_center {
+#rwogzdliib .gt_center {
   text-align: center;
 }
 
-#hwmvvddfah .gt_right {
+#rwogzdliib .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#hwmvvddfah .gt_font_normal {
+#rwogzdliib .gt_font_normal {
   font-weight: normal;
 }
 
-#hwmvvddfah .gt_font_bold {
+#rwogzdliib .gt_font_bold {
   font-weight: bold;
 }
 
-#hwmvvddfah .gt_font_italic {
+#rwogzdliib .gt_font_italic {
   font-style: italic;
 }
 
-#hwmvvddfah .gt_super {
+#rwogzdliib .gt_super {
   font-size: 65%;
 }
 
-#hwmvvddfah .gt_footnote_marks {
+#rwogzdliib .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#hwmvvddfah .gt_asterisk {
+#rwogzdliib .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#hwmvvddfah .gt_indent_1 {
+#rwogzdliib .gt_indent_1 {
   text-indent: 5px;
 }
 
-#hwmvvddfah .gt_indent_2 {
+#rwogzdliib .gt_indent_2 {
   text-indent: 10px;
 }
 
-#hwmvvddfah .gt_indent_3 {
+#rwogzdliib .gt_indent_3 {
   text-indent: 15px;
 }
 
-#hwmvvddfah .gt_indent_4 {
+#rwogzdliib .gt_indent_4 {
   text-indent: 20px;
 }
 
-#hwmvvddfah .gt_indent_5 {
+#rwogzdliib .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
 <table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="header gt_heading">
-<th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #0000FF; font-weight: bold">Main Title</th>
+<th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #000000; font-weight: bold">Main Title</th>
 </tr>
 <tr class="odd gt_heading">
 <th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">Subtitle</th>
 </tr>
 <tr class="header gt_col_headings gt_spanner_row">
+<th rowspan="2" id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Species</th>
 <th colspan="2" id="Sepal" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><span class="gt_column_spanner">Sepal</span></th>
 <th colspan="2" id="Petal" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><span class="gt_column_spanner">Petal</span></th>
-<th rowspan="2" id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Species</th>
 </tr>
 <tr class="odd gt_col_headings">
 <th id="Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Length</th>
@@ -3876,46 +3968,46 @@ font-style: inherit;">tbl</span></span></code></pre></div>
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Setosa</td>
 <td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">5.1</td>
 <td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.5</td>
 <td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">1.4</td>
 <td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">0.2</td>
-<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Setosa</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
 <td class="gt_row gt_right" headers="Sepal.Length">4.9</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.0</td>
 <td class="gt_row gt_right" headers="Petal.Length">1.4</td>
 <td class="gt_row gt_right" headers="Petal.Width">0.2</td>
-<td class="gt_row gt_left" headers="Species">Setosa</td>
 </tr>
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Versicolor</td>
 <td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">7.0</td>
 <td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.2</td>
 <td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">4.7</td>
 <td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">1.4</td>
-<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Versicolor</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
 <td class="gt_row gt_right" headers="Sepal.Length">6.4</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
 <td class="gt_row gt_right" headers="Petal.Length">4.5</td>
 <td class="gt_row gt_right" headers="Petal.Width">1.5</td>
-<td class="gt_row gt_left" headers="Species">Versicolor</td>
 </tr>
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Virginica</td>
 <td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">6.3</td>
 <td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.3</td>
 <td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">6.0</td>
 <td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">2.5</td>
-<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Virginica</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
 <td class="gt_row gt_right" headers="Sepal.Length">5.8</td>
 <td class="gt_row gt_right" headers="Sepal.Width">2.7</td>
 <td class="gt_row gt_right" headers="Petal.Length">5.1</td>
 <td class="gt_row gt_right" headers="Petal.Width">1.9</td>
-<td class="gt_row gt_left" headers="Species">Virginica</td>
 </tr>
 </tbody>
 </table>
@@ -4006,23 +4098,23 @@ font-style: inherit;">)</span></span>
 background-color: null;
 font-style: inherit;">tbl</span></span></code></pre></div>
 <div class="cell-output-display">
-<div id="guftchwwqg" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#guftchwwqg table {
+<div id="ocxgehlgrj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ocxgehlgrj table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#guftchwwqg thead, #guftchwwqg tbody, #guftchwwqg tfoot, #guftchwwqg tr, #guftchwwqg td, #guftchwwqg th {
+#ocxgehlgrj thead, #ocxgehlgrj tbody, #ocxgehlgrj tfoot, #ocxgehlgrj tr, #ocxgehlgrj td, #ocxgehlgrj th {
   border-style: none;
 }
 
-#guftchwwqg p {
+#ocxgehlgrj p {
   margin: 0;
   padding: 0;
 }
 
-#guftchwwqg .gt_table {
+#ocxgehlgrj .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -4048,12 +4140,12 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-left-color: #D3D3D3;
 }
 
-#guftchwwqg .gt_caption {
+#ocxgehlgrj .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#guftchwwqg .gt_title {
+#ocxgehlgrj .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -4065,7 +4157,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-width: 0;
 }
 
-#guftchwwqg .gt_subtitle {
+#ocxgehlgrj .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -4077,7 +4169,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-top-width: 0;
 }
 
-#guftchwwqg .gt_heading {
+#ocxgehlgrj .gt_heading {
   background-color: #FFFFFF;
   text-align: left;
   border-bottom-color: #FFFFFF;
@@ -4089,13 +4181,13 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#guftchwwqg .gt_bottom_border {
+#ocxgehlgrj .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#guftchwwqg .gt_col_headings {
+#ocxgehlgrj .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -4110,7 +4202,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#guftchwwqg .gt_col_heading {
+#ocxgehlgrj .gt_col_heading {
   color: #FFFFFF;
   background-color: #4682B4;
   font-size: 100%;
@@ -4130,7 +4222,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   overflow-x: hidden;
 }
 
-#guftchwwqg .gt_column_spanner_outer {
+#ocxgehlgrj .gt_column_spanner_outer {
   color: #FFFFFF;
   background-color: #4682B4;
   font-size: 100%;
@@ -4142,15 +4234,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 4px;
 }
 
-#guftchwwqg .gt_column_spanner_outer:first-child {
+#ocxgehlgrj .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#guftchwwqg .gt_column_spanner_outer:last-child {
+#ocxgehlgrj .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#guftchwwqg .gt_column_spanner {
+#ocxgehlgrj .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -4162,11 +4254,11 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   width: 100%;
 }
 
-#guftchwwqg .gt_spanner_row {
+#ocxgehlgrj .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#guftchwwqg .gt_group_heading {
+#ocxgehlgrj .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4192,7 +4284,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   text-align: left;
 }
 
-#guftchwwqg .gt_empty_group_heading {
+#ocxgehlgrj .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -4207,15 +4299,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   vertical-align: middle;
 }
 
-#guftchwwqg .gt_from_md > :first-child {
+#ocxgehlgrj .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#guftchwwqg .gt_from_md > :last-child {
+#ocxgehlgrj .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#guftchwwqg .gt_row {
+#ocxgehlgrj .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4234,7 +4326,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   overflow-x: hidden;
 }
 
-#guftchwwqg .gt_stub {
+#ocxgehlgrj .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4247,7 +4339,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#guftchwwqg .gt_stub_row_group {
+#ocxgehlgrj .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4261,15 +4353,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   vertical-align: top;
 }
 
-#guftchwwqg .gt_row_group_first td {
+#ocxgehlgrj .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#guftchwwqg .gt_row_group_first th {
+#ocxgehlgrj .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#guftchwwqg .gt_summary_row {
+#ocxgehlgrj .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4279,16 +4371,16 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#guftchwwqg .gt_first_summary_row {
+#ocxgehlgrj .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#guftchwwqg .gt_first_summary_row.thick {
+#ocxgehlgrj .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#guftchwwqg .gt_last_summary_row {
+#ocxgehlgrj .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4298,7 +4390,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#guftchwwqg .gt_grand_summary_row {
+#ocxgehlgrj .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4308,7 +4400,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#guftchwwqg .gt_first_grand_summary_row {
+#ocxgehlgrj .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4318,7 +4410,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-top-color: #D3D3D3;
 }
 
-#guftchwwqg .gt_last_grand_summary_row_top {
+#ocxgehlgrj .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4328,11 +4420,11 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#guftchwwqg .gt_striped {
+#ocxgehlgrj .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#guftchwwqg .gt_table_body {
+#ocxgehlgrj .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -4341,7 +4433,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#guftchwwqg .gt_footnotes {
+#ocxgehlgrj .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4355,7 +4447,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#guftchwwqg .gt_footnote {
+#ocxgehlgrj .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -4364,7 +4456,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#guftchwwqg .gt_sourcenotes {
+#ocxgehlgrj .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4378,7 +4470,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#guftchwwqg .gt_sourcenote {
+#ocxgehlgrj .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -4386,78 +4478,78 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#guftchwwqg .gt_left {
+#ocxgehlgrj .gt_left {
   text-align: left;
 }
 
-#guftchwwqg .gt_center {
+#ocxgehlgrj .gt_center {
   text-align: center;
 }
 
-#guftchwwqg .gt_right {
+#ocxgehlgrj .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#guftchwwqg .gt_font_normal {
+#ocxgehlgrj .gt_font_normal {
   font-weight: normal;
 }
 
-#guftchwwqg .gt_font_bold {
+#ocxgehlgrj .gt_font_bold {
   font-weight: bold;
 }
 
-#guftchwwqg .gt_font_italic {
+#ocxgehlgrj .gt_font_italic {
   font-style: italic;
 }
 
-#guftchwwqg .gt_super {
+#ocxgehlgrj .gt_super {
   font-size: 65%;
 }
 
-#guftchwwqg .gt_footnote_marks {
+#ocxgehlgrj .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#guftchwwqg .gt_asterisk {
+#ocxgehlgrj .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#guftchwwqg .gt_indent_1 {
+#ocxgehlgrj .gt_indent_1 {
   text-indent: 5px;
 }
 
-#guftchwwqg .gt_indent_2 {
+#ocxgehlgrj .gt_indent_2 {
   text-indent: 10px;
 }
 
-#guftchwwqg .gt_indent_3 {
+#ocxgehlgrj .gt_indent_3 {
   text-indent: 15px;
 }
 
-#guftchwwqg .gt_indent_4 {
+#ocxgehlgrj .gt_indent_4 {
   text-indent: 20px;
 }
 
-#guftchwwqg .gt_indent_5 {
+#ocxgehlgrj .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
 <table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="header gt_heading">
-<th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #0000FF; font-weight: bold">Main Title</th>
+<th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #000000; font-weight: bold">Main Title</th>
 </tr>
 <tr class="odd gt_heading">
 <th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">Subtitle</th>
 </tr>
 <tr class="header gt_col_headings gt_spanner_row">
+<th rowspan="2" id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Species</th>
 <th colspan="2" id="Sepal" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" style="font-size: medium; font-weight: bold" scope="colgroup"><span class="gt_column_spanner">Sepal</span></th>
 <th colspan="2" id="Petal" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" style="font-size: medium; font-weight: bold" scope="colgroup"><span class="gt_column_spanner">Petal</span></th>
-<th rowspan="2" id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Species</th>
 </tr>
 <tr class="odd gt_col_headings">
 <th id="Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Length</th>
@@ -4468,95 +4560,397 @@ font-style: inherit;">tbl</span></span></code></pre></div>
 </thead>
 <tbody class="gt_table_body">
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Setosa</td>
 <td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">5.1</td>
 <td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.5</td>
 <td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">1.4</td>
 <td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">0.2</td>
-<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Setosa</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
 <td class="gt_row gt_right" headers="Sepal.Length">4.9</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.0</td>
 <td class="gt_row gt_right" headers="Petal.Length">1.4</td>
 <td class="gt_row gt_right" headers="Petal.Width">0.2</td>
-<td class="gt_row gt_left" headers="Species">Setosa</td>
 </tr>
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Versicolor</td>
 <td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">7.0</td>
 <td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.2</td>
 <td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">4.7</td>
 <td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">1.4</td>
-<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Versicolor</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
 <td class="gt_row gt_right" headers="Sepal.Length">6.4</td>
 <td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
 <td class="gt_row gt_right" headers="Petal.Length">4.5</td>
 <td class="gt_row gt_right" headers="Petal.Width">1.5</td>
-<td class="gt_row gt_left" headers="Species">Versicolor</td>
 </tr>
 <tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Virginica</td>
 <td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">6.3</td>
 <td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.3</td>
 <td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">6.0</td>
 <td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">2.5</td>
-<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Virginica</td>
 </tr>
 <tr class="even">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
 <td class="gt_row gt_right" headers="Sepal.Length">5.8</td>
 <td class="gt_row gt_right" headers="Sepal.Width">2.7</td>
 <td class="gt_row gt_right" headers="Petal.Length">5.1</td>
 <td class="gt_row gt_right" headers="Petal.Width">1.9</td>
-<td class="gt_row gt_left" headers="Species">Virginica</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
 </div>
-</section><section id="reorder-columns" class="level2"><h2 class="anchored" data-anchor-id="reorder-columns">Reorder Columns</h2>
-<p>Finally, adjust the order of your columns as needed. In this example, we move the “Species” column to the start.</p>
+</section><section id="make-it-reusable" class="level2"><h2 class="anchored" data-anchor-id="make-it-reusable">Make it Reusable</h2>
+<p>We can write a reusable function that produces exactly the same theme.</p>
 <div class="cell">
 <div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">tbl</span> <span class="op" style="color: #5E5E5E;
+font-style: inherit;">my_gt_theme</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>                <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">gt_table</span>,</span>
+<span>                <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">title</span>,</span>
+<span>                <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">subtitle</span>,</span>
+<span>                <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">...</span></span>
+<span>                <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span>        </span>
+<span>        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">rows</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/nrow.html">nrow</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">gt_table</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[[</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"_data"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>        </span>
+<span>        <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">my_table</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">&lt;-</span> <span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">tbl</span> <span class="op" style="color: #5E5E5E;
+font-style: inherit;">gt_table</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span>                <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://gt.rstudio.com/reference/tab_header.html">tab_header</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>                title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">title</span>,</span>
+<span>                subtitle <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">subtitle</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span>                <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://gt.rstudio.com/reference/tab_style.html">tab_style</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>                style <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://gt.rstudio.com/reference/cell_text.html">cell_text</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>color <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>, </span>
+<span>                                  weight <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>                locations <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://gt.rstudio.com/reference/cells_title.html">cells_title</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>groups <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"title"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span>                <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://gt.rstudio.com/reference/tab_style.html">tab_style</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>                style <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://gt.rstudio.com/reference/cell_fill.html">cell_fill</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>color <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"grey90"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>                locations <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://gt.rstudio.com/reference/cells_body.html">cells_body</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>rows <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/seq.html">seq</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">rows</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span>                <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://gt.rstudio.com/reference/tab_options.html">tab_options</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>                table.width <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://gt.rstudio.com/reference/pct.html">pct</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>                column_labels.background.color <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"steelblue"</span>,</span>
+<span>                heading.align <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"left"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span>                <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://gt.rstudio.com/reference/tab_style.html">tab_style</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>                style <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://gt.rstudio.com/reference/cell_text.html">cell_text</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>weight <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>                locations <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://gt.rstudio.com/reference/cells_column_labels.html">cells_column_labels</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">|&gt;</span> </span>
 <span>        <span class="fu" style="color: #4758AB;
 background-color: null;
-font-style: inherit;"><a href="https://gt.rstudio.com/reference/cols_move_to_start.html">cols_move_to_start</a></span><span class="op" style="color: #5E5E5E;
+font-style: inherit;"><a href="https://gt.rstudio.com/reference/tab_style.html">tab_style</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">(</span><span class="st" style="color: #20794D;
+font-style: inherit;">(</span></span>
+<span>                style <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">"Species"</span><span class="op" style="color: #5E5E5E;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://gt.rstudio.com/reference/cell_text.html">cell_text</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>weight <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>,</span>
+<span>                                  size <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"medium"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>                locations <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://gt.rstudio.com/reference/cells_column_spanners.html">cells_column_spanners</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span></span>
-<span></span>
-<span><span class="va" style="color: #111111;
+<span>        <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">tbl</span></span></code></pre></div>
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span>                <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://gt.rstudio.com/reference/tab_spanner_delim.html">tab_spanner_delim</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">...</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>        </span>
+<span>        <span class="kw" style="color: #003B4F;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">my_table</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>        </span>
+<span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span></code></pre></div>
+</div>
+<p>Then, we can store our function and apply it whenever we need it, without rewriting everything. It’s impressive to do all that with a few lines of code (See code chunk below).</p>
+<div class="cell">
+<div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://gt.rstudio.com/reference/gt.html">gt</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">data</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span>        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">my_gt_theme</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>                title <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Easy and Beautiful Theme"</span>,</span>
+<span>                subtitle <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"With very minimal code"</span>,</span>
+<span>                delim <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"."</span></span>
+<span>        <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div>
 <div class="cell-output-display">
-<div id="isbqlamufp" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#isbqlamufp table {
+<div id="unwrufuriy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#unwrufuriy table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#isbqlamufp thead, #isbqlamufp tbody, #isbqlamufp tfoot, #isbqlamufp tr, #isbqlamufp td, #isbqlamufp th {
+#unwrufuriy thead, #unwrufuriy tbody, #unwrufuriy tfoot, #unwrufuriy tr, #unwrufuriy td, #unwrufuriy th {
   border-style: none;
 }
 
-#isbqlamufp p {
+#unwrufuriy p {
   margin: 0;
   padding: 0;
 }
 
-#isbqlamufp .gt_table {
+#unwrufuriy .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -4582,12 +4976,12 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-left-color: #D3D3D3;
 }
 
-#isbqlamufp .gt_caption {
+#unwrufuriy .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#isbqlamufp .gt_title {
+#unwrufuriy .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -4599,7 +4993,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-width: 0;
 }
 
-#isbqlamufp .gt_subtitle {
+#unwrufuriy .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -4611,7 +5005,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-top-width: 0;
 }
 
-#isbqlamufp .gt_heading {
+#unwrufuriy .gt_heading {
   background-color: #FFFFFF;
   text-align: left;
   border-bottom-color: #FFFFFF;
@@ -4623,13 +5017,13 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#isbqlamufp .gt_bottom_border {
+#unwrufuriy .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#isbqlamufp .gt_col_headings {
+#unwrufuriy .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -4644,7 +5038,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#isbqlamufp .gt_col_heading {
+#unwrufuriy .gt_col_heading {
   color: #FFFFFF;
   background-color: #4682B4;
   font-size: 100%;
@@ -4664,7 +5058,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   overflow-x: hidden;
 }
 
-#isbqlamufp .gt_column_spanner_outer {
+#unwrufuriy .gt_column_spanner_outer {
   color: #FFFFFF;
   background-color: #4682B4;
   font-size: 100%;
@@ -4676,15 +5070,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 4px;
 }
 
-#isbqlamufp .gt_column_spanner_outer:first-child {
+#unwrufuriy .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#isbqlamufp .gt_column_spanner_outer:last-child {
+#unwrufuriy .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#isbqlamufp .gt_column_spanner {
+#unwrufuriy .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -4696,11 +5090,11 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   width: 100%;
 }
 
-#isbqlamufp .gt_spanner_row {
+#unwrufuriy .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#isbqlamufp .gt_group_heading {
+#unwrufuriy .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4726,7 +5120,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   text-align: left;
 }
 
-#isbqlamufp .gt_empty_group_heading {
+#unwrufuriy .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -4741,15 +5135,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   vertical-align: middle;
 }
 
-#isbqlamufp .gt_from_md > :first-child {
+#unwrufuriy .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#isbqlamufp .gt_from_md > :last-child {
+#unwrufuriy .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#isbqlamufp .gt_row {
+#unwrufuriy .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4768,7 +5162,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   overflow-x: hidden;
 }
 
-#isbqlamufp .gt_stub {
+#unwrufuriy .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4781,7 +5175,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#isbqlamufp .gt_stub_row_group {
+#unwrufuriy .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -4795,15 +5189,15 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   vertical-align: top;
 }
 
-#isbqlamufp .gt_row_group_first td {
+#unwrufuriy .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#isbqlamufp .gt_row_group_first th {
+#unwrufuriy .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#isbqlamufp .gt_summary_row {
+#unwrufuriy .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4813,16 +5207,16 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#isbqlamufp .gt_first_summary_row {
+#unwrufuriy .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#isbqlamufp .gt_first_summary_row.thick {
+#unwrufuriy .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#isbqlamufp .gt_last_summary_row {
+#unwrufuriy .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4832,7 +5226,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#isbqlamufp .gt_grand_summary_row {
+#unwrufuriy .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -4842,7 +5236,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#isbqlamufp .gt_first_grand_summary_row {
+#unwrufuriy .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4852,7 +5246,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-top-color: #D3D3D3;
 }
 
-#isbqlamufp .gt_last_grand_summary_row_top {
+#unwrufuriy .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -4862,11 +5256,11 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#isbqlamufp .gt_striped {
+#unwrufuriy .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#isbqlamufp .gt_table_body {
+#unwrufuriy .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -4875,7 +5269,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-bottom-color: #D3D3D3;
 }
 
-#isbqlamufp .gt_footnotes {
+#unwrufuriy .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4889,7 +5283,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#isbqlamufp .gt_footnote {
+#unwrufuriy .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -4898,7 +5292,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#isbqlamufp .gt_sourcenotes {
+#unwrufuriy .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -4912,7 +5306,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   border-right-color: #D3D3D3;
 }
 
-#isbqlamufp .gt_sourcenote {
+#unwrufuriy .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -4920,78 +5314,78 @@ font-style: inherit;">tbl</span></span></code></pre></div>
   padding-right: 5px;
 }
 
-#isbqlamufp .gt_left {
+#unwrufuriy .gt_left {
   text-align: left;
 }
 
-#isbqlamufp .gt_center {
+#unwrufuriy .gt_center {
   text-align: center;
 }
 
-#isbqlamufp .gt_right {
+#unwrufuriy .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#isbqlamufp .gt_font_normal {
+#unwrufuriy .gt_font_normal {
   font-weight: normal;
 }
 
-#isbqlamufp .gt_font_bold {
+#unwrufuriy .gt_font_bold {
   font-weight: bold;
 }
 
-#isbqlamufp .gt_font_italic {
+#unwrufuriy .gt_font_italic {
   font-style: italic;
 }
 
-#isbqlamufp .gt_super {
+#unwrufuriy .gt_super {
   font-size: 65%;
 }
 
-#isbqlamufp .gt_footnote_marks {
+#unwrufuriy .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#isbqlamufp .gt_asterisk {
+#unwrufuriy .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#isbqlamufp .gt_indent_1 {
+#unwrufuriy .gt_indent_1 {
   text-indent: 5px;
 }
 
-#isbqlamufp .gt_indent_2 {
+#unwrufuriy .gt_indent_2 {
   text-indent: 10px;
 }
 
-#isbqlamufp .gt_indent_3 {
+#unwrufuriy .gt_indent_3 {
   text-indent: 15px;
 }
 
-#isbqlamufp .gt_indent_4 {
+#unwrufuriy .gt_indent_4 {
   text-indent: 20px;
 }
 
-#isbqlamufp .gt_indent_5 {
+#unwrufuriy .gt_indent_5 {
   text-indent: 25px;
 }
 </style>
 <table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
 <thead>
 <tr class="header gt_heading">
-<th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #0000FF; font-weight: bold">Main Title</th>
+<th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #000000; font-weight: bold">Easy and Beautiful Theme</th>
 </tr>
 <tr class="odd gt_heading">
-<th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">Subtitle</th>
+<th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">With very minimal code</th>
 </tr>
 <tr class="header gt_col_headings gt_spanner_row">
 <th rowspan="2" id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Species</th>
-<th colspan="2" id="Sepal" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" style="font-size: medium; font-weight: bold" scope="colgroup"><span class="gt_column_spanner">Sepal</span></th>
-<th colspan="2" id="Petal" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" style="font-size: medium; font-weight: bold" scope="colgroup"><span class="gt_column_spanner">Petal</span></th>
+<th colspan="2" id="Sepal" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><span class="gt_column_spanner">Sepal</span></th>
+<th colspan="2" id="Petal" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><span class="gt_column_spanner">Petal</span></th>
 </tr>
 <tr class="odd gt_col_headings">
 <th id="Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Length</th>
@@ -5048,6 +5442,7 @@ font-style: inherit;">tbl</span></span></code></pre></div>
 </div>
 </div>
 </div>
+<p>The end!</p>
 
 
 </section> ]]></description>

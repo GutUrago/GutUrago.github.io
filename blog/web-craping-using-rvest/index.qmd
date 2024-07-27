@@ -31,14 +31,16 @@ raw_html
 ```
 
 
-The above HTML content contains two main parts: the head and the body. The body part of the document typically contains the content of interest. HTML documents are usually built using CSS, and the CSS selector helps us pick specific elements that we are interested in. To find the CSS of the element that we are interested in, right-click on the element of interest on the web and select inspect. Next, move your mouse over the codes in the Elements section until they highlight all parts of the table in blue. 
+The above HTML content contains two main parts: the head and the body. The body part of the document typically contains the content of interest. HTML documents are usually styled using CSS, and the CSS selector helps us pick specific elements that we are interested in. To find the CSS of the element that we are interested in, **right-click** on the element of interest on the web and select **inspect**. Next, move your mouse over the codes in the Elements section until it highlights all parts of the table in blue. 
+
 ![](inspect.png)
-Then, you can view the CSS selector of the element, which in this case is the table. You can also use xpath instead of CSS to select an element, but let's keep it aside for a while. 
+
+There are two widely used CSS selectors, namely, class and id. One HTML element can have multiple classes. In this case, a table is one of the class selectors. Whenever you use the class selector, put a dot (.) before the class name. The precise CSS selector is the code that appears at the top of the table (shown by a red arrow), but it requires a significant amount of time to write. So, let's start with the first class name, which is table. We could have also used xpath instead of CSS to select an element, but let's keep it aside for now.
 
 
 ```{r}
  
-element <- html_elements(raw_html, css = "table")
+element <- html_elements(raw_html, css = ".table")
 element
 ```
 
@@ -50,18 +52,17 @@ tables <- html_table(element)
 tables
 ```
 
-So, let's extract the one we are interested in, the second one. 
+It is stored as a list, let extract it and the rest is cleaning.
 
 
 ```{r}
-gdp_tbl <- tables[[2]] 
+gdp_tbl <- tables[[1]] 
 gdp_tbl
 ```
 
 ## Cleaning the Data
 
-After getting the data in R, the next step is to clean and perform the analysis we want.
-
+Below we can see that all columns, except year, are stored as character because of dollar sign ($) and commas (,), which R doesn't allow to happen.
 
 ```{r}
 #| warning: false
@@ -78,6 +79,7 @@ glimpse(gdp_tbl)
 ```
 
 
+Let's remove all unnecessary characters and convert to numeric with a short function.
 
 ```{r}
 convert_to_numeric <- function(x) {
@@ -91,7 +93,10 @@ glimpse(gdp_tbl)
 ```
 
 
+## Making a Graph
 
+
+With a minimal code, we can produce the same graph and customize the way we want.
 
 ```{r}
 gdp_tbl |> 
@@ -100,8 +105,9 @@ gdp_tbl |>
                       y = gdp_nominal_current_usd,
                       group = 1),
                   color = "blue", linewidth = 1) + 
-        scale_y_continuous(labels = scales::dollar_format(scale = 1/1000000000,
-                                                          suffix = " billion")) +
+        scale_y_continuous(labels = scales::dollar_format(
+          scale = 1/1000000000,
+          suffix = " billion")) +
  
         labs(x = "Year",
              y = "Nominal GDP",
@@ -113,14 +119,21 @@ gdp_tbl |>
 
 
 
-
+Here is the second graph as well.
 
 ```{r}
-gdp_tbl |> 
-        ggplot() + 
-        geom_line(aes(x = year, y = gdp_change)) +
-        geom_line(aes(x = year, y = pop_change)) + 
-  theme_bw()
+gdp_tbl |>
+  mutate(growth = ifelse(gdp_change > 0, "positve", "negative")) |> 
+  ggplot(aes(x = factor(year), y = gdp_change, fill = growth)) + 
+  geom_col() + 
+  labs(title = "GDP change (%)",
+       y = "Ethiopia GDP Change %",
+       x = "Year",
+       fill = "",
+       caption = "Source: https://www.worldometers.info/gdp/ethiopia-gdp/") +
+  theme_bw() + 
+  theme(axis.text.x = element_text(angle = 45, vjust = 0.5),
+        legend.position = "none")
 ```
 
 

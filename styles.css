@@ -1,14 +1,7 @@
-/* css styles */
-.quarto-navbar-tools {
-        margin-left: 2rem;
+
+
+.quarto-title-banner {
+        background: white;
 }
 
-.navbar-nav {
-        margin-right: 3rem;
-        display: flex;
-        justify-content: space-between;
-}
 
-.menu-text {
-        margin-left: 2rem;
-}

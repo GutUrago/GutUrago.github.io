@@ -124,7 +124,7 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
             <ul class="navbar-nav navbar-nav-scroll me-auto">
 <li class="nav-item">
     <a class="nav-link" href="../../blog.html"> 
-<span class="menu-text">All Blogs</span></a>
+<span class="menu-text">All Blog Posts</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link" href="../../microData.html"> 
@@ -134,10 +134,13 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
     <a class="nav-link" href="../../resume.html"> 
 <span class="menu-text">Resume</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
 </ul>
 </div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools tools-wide">
-    <a href="../../about.html" title="About" class="quarto-navigation-tool px-1" aria-label="About"><i class="bi bi-"></i></a>
     <a href="https://github.com/GutUrago" title="GutUrago Github" class="quarto-navigation-tool px-1" aria-label="GutUrago Github"><i class="bi bi-github"></i></a>
     <a href="https://www.linkedin.com/in/gutama-girja/" title="Linkedin" class="quarto-navigation-tool px-1" aria-label="Linkedin"><i class="bi bi-linkedin"></i></a>
     <a href="../../blog.xml" title="GutUrago Blog RSS" class="quarto-navigation-tool px-1" aria-label="GutUrago Blog RSS"><i class="bi bi-rss"></i></a>
@@ -187,6 +190,7 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 <a href="#web-scrapping" id="toc-web-scrapping" class="nav-link" data-scroll-target="#web-scrapping">Web Scrapping</a>
   <ul class="collapse">
 <li><a href="#cleaning-the-data" id="toc-cleaning-the-data" class="nav-link" data-scroll-target="#cleaning-the-data">Cleaning the Data</a></li>
+  <li><a href="#making-a-graph" id="toc-making-a-graph" class="nav-link" data-scroll-target="#making-a-graph">Making a Graph</a></li>
   </ul>
 </li>
   </ul></nav>
@@ -214,14 +218,15 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 [2] &lt;body&gt;\n&lt;!-- Google tag (gtag.js) --&gt;&lt;script async src="https://www.googl ...</code></pre>
 </div>
 </div>
-<p>The above HTML content contains two main parts: the head and the body. The body part of the document typically contains the content of interest. HTML documents are usually built using CSS, and the CSS selector helps us pick specific elements that we are interested in. To find the CSS of the element that we are interested in, right-click on the element of interest on the web and select inspect. Next, move your mouse over the codes in the Elements section until they highlight all parts of the table in blue. <img src="inspect.png" class="img-fluid"> Then, you can view the CSS selector of the element, which in this case is the table. You can also use xpath instead of CSS to select an element, but let’s keep it aside for a while.&nbsp;</p>
+<p>The above HTML content contains two main parts: the head and the body. The body part of the document typically contains the content of interest. HTML documents are usually styled using CSS, and the CSS selector helps us pick specific elements that we are interested in. To find the CSS of the element that we are interested in, <strong>right-click</strong> on the element of interest on the web and select <strong>inspect</strong>. Next, move your mouse over the codes in the Elements section until it highlights all parts of the table in blue.</p>
+<p><img src="inspect.png" class="img-fluid"></p>
+<p>There are two widely used CSS selectors, namely, class and id. One HTML element can have multiple classes. In this case, a table is one of the class selectors. Whenever you use the class selector, put a dot (.) before the class name. The precise CSS selector is the code that appears at the top of the table (shown by a red arrow), but it requires a significant amount of time to write. So, let’s start with the first class name, which is table. We could have also used xpath instead of CSS to select an element, but let’s keep it aside for now.</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">element</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rvest.tidyverse.org/reference/html_element.html">html_elements</a></span><span class="op">(</span><span class="va">raw_html</span>, css <span class="op">=</span> <span class="st">"table"</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">element</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rvest.tidyverse.org/reference/html_element.html">html_elements</a></span><span class="op">(</span><span class="va">raw_html</span>, css <span class="op">=</span> <span class="st">".table"</span><span class="op">)</span></span>
 <span><span class="va">element</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>{xml_nodeset (2)}
-[1] &lt;table width="100%" border="0" cellpadding="0"&gt;\n&lt;tr&gt;\n&lt;td&gt; &lt;div style="f ...
-[2] &lt;table class="table table-striped table-bordered table-hover table-conden ...</code></pre>
+<pre><code>{xml_nodeset (1)}
+[1] &lt;table class="table table-striped table-bordered table-hover table-conden ...</code></pre>
 </div>
 </div>
 <p>Once you select the element, it’s still in HTML format and hard to understand. So, let’s convert it into an R object. Now, we see that there are actually two table objects in the returned HTML.</p>
@@ -230,13 +235,6 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 <span><span class="va">tables</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-# A tibble: 2 × 1
-  X1                                    
-  &lt;chr&gt;                                 
-1 Ethiopia GDP (Nominal, $USD) 2003-2022
-2 GDP change (%)                        
-
-[[2]]
 # A tibble: 30 × 7
     Year `GDP Nominal (Current USD)` `GDP Real  (Inflation adj.)` `GDP change`
    &lt;int&gt; &lt;chr&gt;                       &lt;chr&gt;                        &lt;chr&gt;       
@@ -255,9 +253,9 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 #   Population &lt;chr&gt;</code></pre>
 </div>
 </div>
-<p>So, let’s extract the one we are interested in, the second one.</p>
+<p>It is stored as a list, let extract it and the rest is cleaning.</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gdp_tbl</span> <span class="op">&lt;-</span> <span class="va">tables</span><span class="op">[[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span> </span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gdp_tbl</span> <span class="op">&lt;-</span> <span class="va">tables</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> </span>
 <span><span class="va">gdp_tbl</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 30 × 7
@@ -279,7 +277,7 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 </div>
 </div>
 <section id="cleaning-the-data" class="level2"><h2 class="anchored" data-anchor-id="cleaning-the-data">Cleaning the Data</h2>
-<p>After getting the data in R, the next step is to clean and perform the analysis we want.</p>
+<p>Below we can see that all columns, except year, are stored as character because of dollar sign ($) and commas (,), which R doesn’t allow to happen.</p>
 <div class="cell">
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gdp_tbl</span> <span class="op">&lt;-</span> <span class="fu">janitor</span><span class="fu">::</span><span class="fu"><a href="https://sfirke.github.io/janitor/reference/clean_names.html">clean_names</a></span><span class="op">(</span><span class="va">gdp_tbl</span><span class="op">)</span></span>
 <span></span>
@@ -299,6 +297,7 @@ $ pop_change              &lt;chr&gt; "2.57 %", "2.64 %", "2.69 %", "2.69 %", "2
 $ population              &lt;chr&gt; "123,379,924", "120,283,026", "117,190,911", "…</code></pre>
 </div>
 </div>
+<p>Let’s remove all unnecessary characters and convert to numeric with a short function.</p>
 <div class="cell">
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">convert_to_numeric</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"[$,%\\s]"</span><span class="op">)</span><span class="op">)</span></span>
@@ -320,6 +319,8 @@ $ pop_change              &lt;dbl&gt; 2.57, 2.64, 2.69, 2.69, 2.71, 2.76, 2.75, 
 $ population              &lt;dbl&gt; 123379924, 120283026, 117190911, 114120594, 11…</code></pre>
 </div>
 </div>
+</section><section id="making-a-graph" class="level2"><h2 class="anchored" data-anchor-id="making-a-graph">Making a Graph</h2>
+<p>With a minimal code, we can produce the same graph and customize the way we want.</p>
 <div class="cell">
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gdp_tbl</span> <span class="op">|&gt;</span> </span>
 <span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
@@ -327,8 +328,9 @@ $ population              &lt;dbl&gt; 123379924, 120283026, 117190911, 114120594
 <span>                      y <span class="op">=</span> <span class="va">gdp_nominal_current_usd</span>,</span>
 <span>                      group <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
 <span>                  color <span class="op">=</span> <span class="st">"blue"</span>, linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/dollar_format.html">dollar_format</a></span><span class="op">(</span>scale <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">1000000000</span>,</span>
-<span>                                                          suffix <span class="op">=</span> <span class="st">" billion"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/dollar_format.html">dollar_format</a></span><span class="op">(</span></span>
+<span>          scale <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">1000000000</span>,</span>
+<span>          suffix <span class="op">=</span> <span class="st">" billion"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span> </span>
 <span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Year"</span>,</span>
 <span>             y <span class="op">=</span> <span class="st">"Nominal GDP"</span>,</span>
@@ -343,12 +345,20 @@ $ population              &lt;dbl&gt; 123379924, 120283026, 117190911, 114120594
 </div>
 </div>
 </div>
+<p>Here is the second graph as well.</p>
 <div class="cell">
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gdp_tbl</span> <span class="op">|&gt;</span> </span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">gdp_change</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">pop_change</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gdp_tbl</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>growth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">gdp_change</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="st">"positve"</span>, <span class="st">"negative"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">gdp_change</span>, fill <span class="op">=</span> <span class="va">growth</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"GDP change (%)"</span>,</span>
+<span>       y <span class="op">=</span> <span class="st">"Ethiopia GDP Change %"</span>,</span>
+<span>       x <span class="op">=</span> <span class="st">"Year"</span>,</span>
+<span>       fill <span class="op">=</span> <span class="st">""</span>,</span>
+<span>       caption <span class="op">=</span> <span class="st">"Source: https://www.worldometers.info/gdp/ethiopia-gdp/"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, vjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
+<span>        legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>

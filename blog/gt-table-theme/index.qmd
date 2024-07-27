@@ -4,9 +4,11 @@ author: "Gutama Girja Urago"
 date: "2024-04-02"
 categories: [gt, table]
 image: "image.jpg"
+editor_options: 
+  chunk_output_type: console
 ---
 
-Creating visually appealing and informative tables is a key aspect of data presentation, and the `gt` package in R provides powerful tools for this purpose. In this post, we will walk through creating a customizable table template using gt. By following these steps, you can easily create tables that are both functional and aesthetically pleasing, tailored to your specific needs.
+Creating visually appealing and informative tables is a key aspect of data presentation, and the `gt` package in R provides powerful tools for this purpose. In this post, we will walk through creating a customizable table template using gt. By following these steps, you can easily create tables that are both functional and aesthetically pleasing, tailored to your specific needs. This blog post is motivated by this [ video](https://youtu.be/YzmLB2z9whw?si=qHvE_42mn2xwtI72) on tutorial
 
 ## Load Required Libraries
 
@@ -18,26 +20,29 @@ First, ensure that you have the `gt` package loaded. All function used below are
 
 # install.packages("gt")        Run only once if don't have the package installed
 library(gt)
+library(tidyverse)              # For data manipulation
 ```
 
 
 ## Prepare Your Data
 
-For this example, we'll use the iris dataset and select a subset of it. We'll group the data by species and take the first two entries from each group.
+For this example, we'll use the iris dataset and select a subset of it. We'll group the data by species and take the first two entries from each group. It is already appealing, but we can do better! 
 
 
 ```{r}
-tbl <- iris |> 
-        dplyr::mutate(Species = stringr::str_to_title(Species)) |> 
-        dplyr::group_by(Species) |> 
-        dplyr::slice_head(n = 2) |>
-        dplyr::ungroup() |> 
-        gt()
+data <- iris |> 
+        mutate(Species = stringr::str_to_title(Species)) |> 
+        group_by(Species) |> 
+        slice_head(n = 2) |>
+        ungroup() |> 
+        select(Species, everything())
 
+tbl <- gt(data)
 tbl
 ```
 
 ## Add a Header
+
 Next, add a title and subtitle to your table for better context and readability.
 
 ```{r}
@@ -58,7 +63,7 @@ Apply styling to the header to make it stand out. Here, we set the text color to
 ```{r}
 tbl <- tbl |> 
         tab_style(
-                style = cell_text(color = "blue", 
+                style = cell_text(color = "black", 
                                   weight = "bold"),
                 locations = cells_title(groups = "title")
         )
@@ -67,6 +72,7 @@ tbl
 ```
 
 ## Style the Body
+
 To enhance readability, apply a background color to alternating rows in the table body.
 
 
@@ -81,6 +87,7 @@ tbl
 ```
 
 ## Adjust Table Options
+
 Customize the table width, column label background color, and heading alignment to suit your design preferences.
 
 
@@ -95,6 +102,7 @@ tbl
 ```
 
 ## Add Spanners
+
 If your table has grouped columns, add spanners to better organize and present these groups.
 
 
@@ -107,6 +115,7 @@ tbl
 ```
 
 ## Style Column Labels and Spanners
+
 Ensure that your column labels and spanners are easily distinguishable by applying bold text and adjusting the size for spanners.
 
 ```{r}
@@ -125,30 +134,72 @@ tbl
 ```
 
 
-## Reorder Columns
-Finally, adjust the order of your columns as needed. In this example, we move the "Species" column to the start.
+
+## Make it Reusable
+
+We can write a reusable function that produces exactly the same theme.
 
 
 ```{r}
-tbl <- tbl |> 
-        cols_move_to_start("Species")
 
-tbl
+my_gt_theme <- function(
+                gt_table,
+                title,
+                subtitle,
+                ...
+                ) {
+        
+        rows <- nrow(gt_table[["_data"]])
+        
+        my_table <- gt_table |> 
+                tab_header(
+                title = title,
+                subtitle = subtitle
+        ) |> 
+                tab_style(
+                style = cell_text(color = "black", 
+                                  weight = "bold"),
+                locations = cells_title(groups = "title")
+        ) |> 
+                tab_style(
+                style = cell_fill(color = "grey90"),
+                locations = cells_body(rows = seq(1, rows, 2))
+        ) |> 
+                tab_options(
+                table.width = pct(100),
+                column_labels.background.color = "steelblue",
+                heading.align = "left") |> 
+                tab_style(
+                style = cell_text(weight = "bold"),
+                locations = cells_column_labels()
+        ) |> 
+        tab_style(
+                style = cell_text(weight = "bold",
+                                  size = "medium"),
+                locations = cells_column_spanners()
+        ) |> 
+                tab_spanner_delim(...)
+        
+        return(my_table)
+        
+}
 ```
 
 
+Then, we can store our function and apply it whenever we need it, without rewriting everything. It's impressive to do all that with a few lines of code (See code chunk below).
 
 
+```{r}
+gt(data) |> 
+        my_gt_theme(
+                title = "Easy and Beautiful Theme",
+                subtitle = "With very minimal code",
+                delim = "."
+        )
+```
 
 
-
-
-
-
-
-
-
-
+The end!
 
 
 

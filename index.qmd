@@ -1,18 +1,30 @@
 ---
+toc: false
+format: 
+  html: 
+    css: ./css/index.css
 ---
 
 
-This is my personal blogging website. Particularly in the field of agricultural economics, I have a keen interest in data analysis in R. Thus, I plan to blog important notes on some questions to make it easier for young researchers like me.
-
-***
-
-I have an MSc in Agricultural Economics from Ondokuz Mayis University, Turkey. I am currently pursuing an International MSc in Rural Development through the Erasmus Mundus Joint Masters Degree program hosted by Ghent University, Belgium. You can check [here](https://guturago.github.io/about) to know more about my academic journey.
-
-***
-
-* You can find all of my blog posts [here.](https://guturago.github.io/blog)
-* I have developed a R package to search, browse, and export metadata for microdata published by five international organizations, and you can find it [here.](https://guturago.github.io/microData)
+:::{.text-center .text-uppercase}
+## Welcome to my blogs! 
+:::
 
 
+::::{.text-center}
+"When you’ve written the same code 3 times, write a function; when you’ve given the same in-person advice 3 times, write a blog post" David Robinson
+::::
+
+
+
+### Check them out!{.text-center .text-uppercase}
+
+```{=html}
+<div class="btn">
+<button><a href="https://guturago.github.io/blog.html">Blogs</a></button>
+<button><a href="https://guturago.github.io/microData.html">Functions</a></button>
+</div>
+
+```
 
 

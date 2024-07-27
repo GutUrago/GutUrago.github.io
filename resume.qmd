@@ -1,154 +1,151 @@
 ---
 format: 
   html: 
+    page-layout: custom
     css: ./css/resume.css
+
 ---
+
 ```{=html}
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 ```
 
+::: {.grid}
 
-:::{.left-section}
+:::: {.g-col-sm-4 .left-section}
 
-![Profile Picture](./images/resume_img.jpg){.image #profile-img}
+::::{.profile .text-center}
 
+![](./images/resume_img.jpg)
 
+::::
 
 ## Gutama Girja Urago {.name}
 
 ## Agricultural Economist {.career}
 
 
-<!--Contact html -->
-```{=html}
-<div class="contact-info">
-                    <h3 class="main-title">Contact Info</h3>
-                    <ul>
-                        <!--
-                        <li>
-                            <i class="fa fa-phone"></i>
-                            +32475335821
-                        </li>
-                        <li>
-                            <i class="fa fa-fax"></i>
-                            gutishmagna@gmail.com
-                        </li>
-                        -->
-                        <li><a href="https://guturago.github.io/">
-                            <i class="fa fa-globe"></i>
-                            guturago.github.io
-                            </a>
-                        </li>
-                        <li><a href="www.facebook.com/Guturago">
-                            <i class="fa fa-facebook"></i>
-                            Gutama Girja
-                            </a>
-                        </li>
-                        <li><a href="www.instagram.com/gutama_girja/">
-                            <i class="fa fa-instagram"></i>
-                            @gutama_girja
-                            </a>
-                        </li>
-                        <li>
-                            <i class="fa fa-map-marker"></i>
-                            Belgium
-                        </li>
-                    </ul>
-                </div>
 
-```
 
-<!--Sills and language html -->
-```{=html}
-<div class="skills-section">
-                    <h3 class="main-title">Skills</h3>
-                    <ul>
-                        <li>
-                            <p class="skill-title">R</p>
-                            <div class="progress-bar">
-                                <div class="progress r-progress"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <p class="skill-title">SPSS</p>
-                            <div class="progress-bar">
-                                <div class="progress spss-progress"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <p class="skill-title">STATA</p>
-                            <div class="progress-bar">
-                                <div class="progress stata-progress"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <p class="skill-title">QGIS</p>
-                            <div class="progress-bar">
-                                <div class="progress qgis-progress"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <p class="skill-title">LaTeX</p>
-                            <div class="progress-bar">
-                                <div class="progress latex-progress"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <p class="skill-title">Excel</p>
-                            <div class="progress-bar">
-                                <div class="progress excel-progress"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <p class="skill-title">HTML/CSS</p>
-                            <div class="progress-bar">
-                                <div class="progress html-progress"></div>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="skills-section">
-                    <h3 class="main-title">Languages</h3>
-                    <ul>
-                        <li>
-                            <p class="skill-title">English</p>
-                            <div class="progress-bar">
-                                <div class="progress en-progress"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <p class="skill-title">Amharic</p>
-                            <div class="progress-bar">
-                                <div class="progress amh-progress"></div>
-                            </div>
-                        <li>
-                            <p class="skill-title">Turkish</p>
-                            <div class="progress-bar">
-                                <div class="progress tr-progress"></div>
-                            </div>
-                        </li>
-                        <li>
-                            <p class="skill-title">Oromo</p>
-                            <div class="progress-bar">
-                                <div class="progress oro-progress"></div>
-                            </div>
-                        </li>
-                    </li>
-                    <li>
-                        <p class="skill-title">Dutch</p>
-                        <div class="progress-bar">
-                            <div class="progress nl-progress"></div>
-                        </div>
-                    </li>
-                    </ul>
-                </div>
+### Contact info {.main-title .contact-info}
 
-```
+
+[GutamaGirja.Urago@UGent.be]{.fa .fa-envelope}
+
+[[Gutama Girja]("https://www.facebook.com/GutUrago")]{.fa .fa-facebook}
+
+[[Gutama Girja]("https://www.instagram.com/gutama_girja/")]{.fa .fa-instagram}
+
+[[guturago.github.io]("https://guturago.github.io/")]{.fa .fa-globe}
+
+[Belgium]{.fa .fa-map-marker}
+
+### Skills {.main-title .skills}
+
+:::{.skill-lists}
+
+R
+
+:::{.progress-bar}
+::::{.progress .r-progress}
+::::
+:::
+
+SPSS
+
+:::{.progress-bar}
+::::{.progress .spss-progress}
+::::
+:::
+
+STATA
+
+:::{.progress-bar}
+::::{.progress .stata-progress}
+::::
+:::
+
+QGIS
+
+:::{.progress-bar}
+::::{.progress .qgis-progress}
+::::
+:::
+
+LaTeX
+
+:::{.progress-bar}
+::::{.progress .latex-progress}
+::::
+:::
+
+Excel
+
+:::{.progress-bar}
+::::{.progress .excel-progress}
+::::
+:::
+
+HTML/CSS
+
+:::{.progress-bar}
+::::{.progress .html-progress}
+::::
+:::
+
+:::
+
+
+### Languages {.main-title .languages}
+
+:::{.skill-lists}
+
+English
+
+:::{.progress-bar}
+::::{.progress .en-progress}
+::::
+:::
+
+Amharic
+
+:::{.progress-bar}
+::::{.progress .amh-progress}
+::::
+:::
+
+Turkish
+
+:::{.progress-bar}
+::::{.progress .tr-progress}
+::::
+:::
+
+Oromo
+
+:::{.progress-bar}
+::::{.progress .oro-progress}
+::::
+:::
+
+Dutch
+
+:::{.progress-bar}
+::::{.progress .nl-progress}
+::::
+:::
+
 
 
 :::
 
-:::{.right-section}
+
+
+
+
+::::
+
+:::: {.g-col-sm-8 .right-section}
 
 ```{=html}
 <section class="right-section">
@@ -331,4 +328,12 @@ format:
         </section>
 ```
 
+
+::::
+
+
+
+
 :::
+
+

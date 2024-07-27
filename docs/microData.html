@@ -124,7 +124,7 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
             <ul class="navbar-nav navbar-nav-scroll me-auto">
 <li class="nav-item">
     <a class="nav-link" href="./blog.html"> 
-<span class="menu-text">All Blogs</span></a>
+<span class="menu-text">All Blog Posts</span></a>
   </li>  
   <li class="nav-item">
     <a class="nav-link active" href="./microData.html" aria-current="page"> 
@@ -134,10 +134,13 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
     <a class="nav-link" href="./resume.html"> 
 <span class="menu-text">Resume</span></a>
   </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./about.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
 </ul>
 </div> <!-- /navcollapse -->
           <div class="quarto-navbar-tools tools-wide">
-    <a href="./about.html" title="About" class="quarto-navigation-tool px-1" aria-label="About"><i class="bi bi-"></i></a>
     <a href="https://github.com/GutUrago" title="GutUrago Github" class="quarto-navigation-tool px-1" aria-label="GutUrago Github"><i class="bi bi-github"></i></a>
     <a href="https://www.linkedin.com/in/gutama-girja/" title="Linkedin" class="quarto-navigation-tool px-1" aria-label="Linkedin"><i class="bi bi-linkedin"></i></a>
     <a href="./blog.xml" title="GutUrago Blog RSS" class="quarto-navigation-tool px-1" aria-label="GutUrago Blog RSS"><i class="bi bi-rss"></i></a>
@@ -155,9 +158,7 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
   <li><a href="#installation" id="toc-installation" class="nav-link" data-scroll-target="#installation">Installation</a></li>
   <li><a href="#collection" id="toc-collection" class="nav-link" data-scroll-target="#collection">Collection</a></li>
   <li><a href="#searching" id="toc-searching" class="nav-link" data-scroll-target="#searching">Searching</a></li>
-  <li><a href="#study-information" id="toc-study-information" class="nav-link" data-scroll-target="#study-information">Study Information</a></li>
-  <li><a href="#cleaning" id="toc-cleaning" class="nav-link" data-scroll-target="#cleaning">Cleaning</a></li>
-  <li><a href="#the-end" id="toc-the-end" class="nav-link" data-scroll-target="#the-end"><span style="color:blue; text-align: center;">The End!</span></a></li>
+  <li><a href="#setting-attributes" id="toc-setting-attributes" class="nav-link" data-scroll-target="#setting-attributes">Setting Attributes</a></li>
   </ul></nav>
     </div>
 <!-- main -->
@@ -192,20 +193,20 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 <!-- badges: start -->
 <p><a href="https://github.com/GutUrago/microData/actions/workflows/R-CMD-check.yaml"><img src="https://github.com/GutUrago/microData/actions/workflows/R-CMD-check.yaml/badge.svg" class="img-fluid" alt="R-CMD-check"></a> <a href="https://app.codecov.io/gh/GutUrago/microData?branch=master"><img src="https://codecov.io/gh/GutUrago/microData/branch/master/graph/badge.svg" class="img-fluid" alt="Codecov test coverage"></a> <a href="https://lifecycle.r-lib.org/articles/stages.html#experimental"><img src="https://img.shields.io/badge/lifecycle-experimental-orange.svg" class="img-fluid" alt="Lifecycle: experimental"></a> <!-- badges: end --></p>
 <section id="what" class="level2"><h2 class="anchored" data-anchor-id="what">What?</h2>
-<p>I am developing the <code>microData</code> R package to search, browse, and extract metadata from microdata provided by the World Bank (WB), Food and Agriculture Organization (FAO), International Household Survey (IHSN), United Nations High Commissioner for Refugees (UNHCR), and International Labor Organization (ILO) via the NADA API. If you’ve used microdata from these organizations for your research, you know the pain and time it takes to understand what all these data and variables mean. If you are also willing or planning to use micradata, then this is the life-saving package for you.</p>
+<p>I am developing the <code>microData</code> package to search, browse, and extract metadata from microdata provided by the World Bank (WB), Food and Agriculture Organization (FAO), International Household Survey (IHSN), United Nations High Commissioner for Refugees (UNHCR), and International Labor Organization (ILO) via the NADA API. Any researcher who has used microdata from these organizations knows how difficult and time-consuming it is to understand and import these data and variables into R. If you are a user or plan to use micradata, then this is the life-saving R package for you.</p>
 </section><section id="abstract" class="level2"><h2 class="anchored" data-anchor-id="abstract">Abstract</h2>
-<p>The purpose of <code>microData</code> is to simplify the process of extracting complex metadata from data provided by various organizations, thereby improving data preparation efficiency. At the moment, it supports five international organizations, namely the World Bank, FAO, UNHCR, IHSN, and ILO. It has the ability to search, filter, extract, and perform other tasks that you can do on the web, but it cannot download the data file itself. This is because, to my knowledge, there is currently no available documentation for use with the API. Furthermore, this package has the ability to assist in obtaining the names of variables from a specific survey, as well as their labels. It also allows you to select only variables that you are interested in and rename them, while assigning variable descriptions as label attributes. You can set custom names and labels for the dataset. Labels play a crucial role when exporting tables and graphs, as they save you from setting long names in manuscripts manually. Therefore, this package is available to alleviate all these difficulties.</p>
+<p>The purpose of <code>microData</code> is to simplify the process of extracting complex metadata from data provided by various organizations, thereby improving data preparation efficiency. At the moment, it supports five international organizations, namely the World Bank, FAO, UNHCR, IHSN, and ILO. It has the ability to search, filter, extract, and perform other tasks that you can do on the web, but it cannot download the data file itself. This is because, to my knowledge, there is currently no available documentation for use with the API. I think it is due to data license issue because there are few accessible datasets through the API. Furthermore, this package has the ability to assist in obtaining the names of variables from a specific survey, as well as their labels. It also allows you to select only variables that you are interested in and rename them, while assigning variable descriptions as label attributes. You can set custom names and labels for the dataset. Labels play a crucial role when exporting tables and graphs, as they save you from setting long names in manuscripts manually. Therefore, this package is available to alleviate all these difficulties.</p>
 <p><span style="color:orange"><strong>Warning:</strong> Since this package is still under development, I don’t recommend you use it in reproducible code, as any changes can happen in the future.</span></p>
 </section><section id="installation" class="level2"><h2 class="anchored" data-anchor-id="installation">Installation</h2>
 <p>You can install the development version of microData from <a href="https://github.com/GutUrago/microData">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"GutUrago/microData"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section><section id="collection" class="level2"><h2 class="anchored" data-anchor-id="collection">Collection</h2>
-<p>All organizations supported by this package use the NADA API to publish micro-data, which makes use of similar terminologies. Collection simply means gathering multiple related studies or data sets. To see all available collections, you can use <code>mdt_collections</code> function.</p>
+<p>All organizations supported by this package use the NADA API to publish micro-data, which makes use of similar terminologies. Collection simply means gathering multiple related studies or data sets. To see all available collections, you can use <code><a href="https://rdrr.io/pkg/microData/man/collections.html">collections()</a></code> function.</p>
 <div class="cell">
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/GutUrago/microData">microData</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">mdt_collections</span><span class="op">(</span>org <span class="op">=</span> <span class="st">"wb"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/microData/man/collections.html">collections</a></span><span class="op">(</span>org <span class="op">=</span> <span class="st">"wb"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -255,74 +256,47 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 </table>
 </div>
 </div>
-<p>Once you have reviewed all available collections, you may find one that piques your interest and would like further details. Then, <code>mdt_collection</code> function is there for you. In your HTML viewer, it prints the repository description. Below, a sample HTML response is embedded.</p>
-<div style="text-align: center; background-color: rgba(30, 120, 130, 0.1); border-radius: 25px">
-<div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">mdt_collection</span><span class="op">(</span>repo_id <span class="op">=</span> <span class="st">"lsms"</span>, org <span class="op">=</span> <span class="st">"wb"</span>, raw_html <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<h2 class="anchored"> ID: 3 </h2>
-<h2 class="anchored"> Repository ID: lsms </h2>
-<h2 class="anchored"> Title: Living Standards Measurement Study (LSMS) </h2>
-<img src="https://microdata.worldbank.org/files/icon-lsms.png"><h2 class="anchored">Short Description</h2>
-<p>The LSMS is a research project that was initiated in 1980. It is a response to a perceived need for policy relevant data that would allow policy makers to move beyond simply measuring rates of unemployment, poverty and health care use, for example, to understanding the determinants of these observed social sector outcomes.</p>
-<h2 class="anchored">Brief Description</h2>
-<div>
-<img src="https://microdata.worldbank.org/files/lsms-fp-01.gif"><h2 class="anchored">Generating relevant data for policy makers and the research community</h2>
-
-
-<p>The <a href="https://www.worldbank.org/en/programs/lsms">Living Standards Measurement Study (LSMS)</a> is a research project  that was initiated in 1980. It is a response to a perceived need for  policy relevant data that would allow policy makers to move beyond simply  measuring rates of unemployment, poverty and health care use, for example, to  understanding the determinants&nbsp;of these observed social sector  outcomes.&nbsp;</p>
-<p> The  program is designed to assist policy makers in their efforts to identify how  policies could be designed and improved to positively affect outcomes in health,  education, economic activities, housing and utilities, etc.</p>
-<p>The LSMS objectives  are to: </p>
-
-  improve the quality of  household survey data
-  increase the capacity  of statistical institutes to perform household surveys
-  improve the ability of  statistical institutes to analyze household survey data for policy needs
-  provide policy makers  with data that can be used to understand the determinants of observed social  and economic outcomes
-
-<p>A more recent initiative funded by the <a href="http://www.gatesfoundation.org/Pages/home.aspx">Bill &amp; Melinda  Gates Foundation (BMGF)</a>, the Living Standards Measurement Study-Integrated Surveys on Agriculture  (LSMS-ISA) project, was launched in 2009. The project supports governments  in Sub-Saharan African countries to generate nationally representative,  household panel data with a strong focus on agriculture and rural development.  The objective of this program is to improve the understanding of development in  Africa, particularly agriculture and linkages between farm and non-farm  activities.</p>
-
-</div>
-</div>
-</div>
-</div>
 </section><section id="searching" class="level2"><h2 class="anchored" data-anchor-id="searching">Searching</h2>
-<p>This package gives all flexibility of searching on the web. For more see the documentation for <code>mdt_search</code>.</p>
+<p>This package gives all flexibility of searching on the web. For more see the documentation for <code><a href="https://rdrr.io/pkg/microData/man/search_catalog.html">search_catalog()</a></code>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">mdt_search</span><span class="op">(</span>keyword <span class="op">=</span> <span class="st">"migration"</span>,</span>
-<span>           from <span class="op">=</span> <span class="fl">2015</span>,</span>
-<span>           to <span class="op">=</span> <span class="fl">2024</span>,</span>
-<span>           sort_by <span class="op">=</span> <span class="st">"year"</span>,</span>
-<span>           sort_order <span class="op">=</span> <span class="st">"desc"</span>, </span>
-<span>           results <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/microData/man/search_catalog.html">search_catalog</a></span><span class="op">(</span></span>
+<span>  keyword <span class="op">=</span> <span class="st">"food"</span>,</span>
+<span>  org <span class="op">=</span> <span class="st">"unhcr"</span>,</span>
+<span>  from <span class="op">=</span> <span class="fl">2015</span>,</span>
+<span>  to <span class="op">=</span> <span class="fl">2024</span>,</span>
+<span>  country <span class="op">=</span><span class="st">"Ethiopia"</span>,</span>
+<span>  sort_by <span class="op">=</span> <span class="st">"year"</span>,</span>
+<span>  sort_order <span class="op">=</span> <span class="st">"desc"</span>, </span>
+<span>  results <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
+<col style="width: 5%">
 <col style="width: 1%">
-<col style="width: 7%">
+<col style="width: 26%">
 <col style="width: 1%">
-<col style="width: 17%">
-<col style="width: 2%">
-<col style="width: 11%">
+<col style="width: 13%">
 <col style="width: 2%">
 <col style="width: 2%">
+<col style="width: 1%">
+<col style="width: 2%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 1%">
 <col style="width: 2%">
 <col style="width: 3%">
 <col style="width: 2%">
-<col style="width: 6%">
-<col style="width: 6%">
-<col style="width: 3%">
-<col style="width: 4%">
-<col style="width: 2%">
+<col style="width: 1%">
 <col style="width: 1%">
 <col style="width: 2%">
-<col style="width: 14%">
+<col style="width: 10%">
 <col style="width: 1%">
 </colgroup>
 <thead><tr class="header">
-<th style="text-align: right;">id</th>
 <th style="text-align: left;">idno</th>
-<th style="text-align: left;">type</th>
+<th style="text-align: right;">formid</th>
 <th style="text-align: left;">title</th>
 <th style="text-align: left;">country</th>
 <th style="text-align: left;">authoring_entity</th>
@@ -333,80 +307,85 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 <th style="text-align: left;">repo_title</th>
 <th style="text-align: left;">created</th>
 <th style="text-align: left;">changed</th>
+<th style="text-align: right;">varcount</th>
 <th style="text-align: right;">total_views</th>
 <th style="text-align: right;">total_downloads</th>
-<th style="text-align: right;">varcount</th>
 <th style="text-align: right;">rank</th>
+<th style="text-align: left;">type</th>
+<th style="text-align: right;">id</th>
 <th style="text-align: right;">var_found</th>
 <th style="text-align: left;">url</th>
 <th style="text-align: left;">iso3</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: right;">5906</td>
-<td style="text-align: left;">WLD_2023_SYNTH-SVY-EN_v01_M</td>
+<td style="text-align: left;">UNHCR_ETH_2023_IKEA_v2.1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">Baseline-Endline Panel Survey of Refugee Cooperative Members in UNHCR Sub-office Operational Area of Melkadida, Ethiopia, 2023</td>
+<td style="text-align: left;">Ethiopia</td>
+<td style="text-align: left;">UNHCR</td>
+<td style="text-align: left;">licensed</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: right;">2023</td>
+<td style="text-align: left;">EHA</td>
+<td style="text-align: left;">East and Horn of Africa</td>
+<td style="text-align: left;">2023-10-17T15:25:32+00:00</td>
+<td style="text-align: left;">2024-05-30T11:36:57+00:00</td>
+<td style="text-align: right;">287</td>
+<td style="text-align: right;">2576</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.7357283</td>
 <td style="text-align: left;">survey</td>
-<td style="text-align: left;">Synthetic Data for an Imaginary Country, Sample, 2023</td>
-<td style="text-align: left;">World</td>
-<td style="text-align: left;">Development Data Group, Data Analytics Unit</td>
-<td style="text-align: left;">open</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">2023-07-07T12:40:30-04:00</td>
-<td style="text-align: left;">2023-07-07T12:40:31-04:00</td>
-<td style="text-align: right;">4035</td>
-<td style="text-align: right;">275</td>
-<td style="text-align: right;">76</td>
-<td style="text-align: right;">619</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">https://microdata.worldbank.org/index.php/catalog/5906</td>
-<td style="text-align: left;">WLD</td>
+<td style="text-align: right;">1021</td>
+<td style="text-align: right;">12</td>
+<td style="text-align: left;">https://microdata.unhcr.org/index.php/catalog/1021</td>
+<td style="text-align: left;">ETH</td>
 </tr>
 <tr class="even">
-<td style="text-align: right;">5907</td>
-<td style="text-align: left;">WLD_2023_SYNTH-SVY-FR_v01_M</td>
+<td style="text-align: left;">WBG_ETH_2020_HFPSR_v01_M</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: left;">Monitoring COVID-19 Impact on Refugees in Ethiopia: High-Frequency Phone Survey of Refugees 2020</td>
+<td style="text-align: left;">Ethiopia</td>
+<td style="text-align: left;">World Bank-UNHCR Joint Data Center on Forced Displacement (JDC)</td>
+<td style="text-align: left;">remote</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: right;">2020</td>
+<td style="text-align: left;">EHA</td>
+<td style="text-align: left;">East and Horn of Africa</td>
+<td style="text-align: left;">2022-07-05T11:29:36+00:00</td>
+<td style="text-align: left;">2022-07-05T11:29:53+00:00</td>
+<td style="text-align: right;">392</td>
+<td style="text-align: right;">3413</td>
+<td style="text-align: right;">0</td>
+<td style="text-align: right;">0.3826203</td>
 <td style="text-align: left;">survey</td>
-<td style="text-align: left;">Données Synthétiques pour un Pays Imaginaire, Echantillon, 2023</td>
-<td style="text-align: left;">Monde</td>
-<td style="text-align: left;">Development Data Group, Data Analytics Unit</td>
-<td style="text-align: left;">open</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">2023-07-07T12:43:17-04:00</td>
-<td style="text-align: left;">2023-07-07T12:43:18-04:00</td>
-<td style="text-align: right;">2216</td>
-<td style="text-align: right;">176</td>
-<td style="text-align: right;">76</td>
-<td style="text-align: right;">557</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">https://microdata.worldbank.org/index.php/catalog/5907</td>
-<td style="text-align: left;">NA</td>
+<td style="text-align: right;">704</td>
+<td style="text-align: right;">19</td>
+<td style="text-align: left;">https://microdata.unhcr.org/index.php/catalog/704</td>
+<td style="text-align: left;">ETH</td>
 </tr>
 <tr class="odd">
-<td style="text-align: right;">5908</td>
-<td style="text-align: left;">WLD_2023_SYNTH-CEN-EN_v01_M</td>
+<td style="text-align: left;">UNHCR_ETH_SENS_2018_v2.1</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">Standardized Expanded Nutrition Survey (SENS) in Melkadida Refugee Camps - 2018</td>
+<td style="text-align: left;">Ethiopia</td>
+<td style="text-align: left;">UNHCR</td>
+<td style="text-align: left;">licensed</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: right;">2018</td>
+<td style="text-align: left;">EHA</td>
+<td style="text-align: left;">East and Horn of Africa</td>
+<td style="text-align: left;">2019-07-15T13:21:23+00:00</td>
+<td style="text-align: left;">2019-12-05T13:38:14+00:00</td>
+<td style="text-align: right;">105</td>
+<td style="text-align: right;">4480</td>
+<td style="text-align: right;">212</td>
+<td style="text-align: right;">0.6687105</td>
 <td style="text-align: left;">survey</td>
-<td style="text-align: left;">Synthetic Data for an Imaginary Country, Full Population, 2023</td>
-<td style="text-align: left;">World</td>
-<td style="text-align: left;">Development Data Group, Data Analytics Unit</td>
-<td style="text-align: left;">open</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: right;">2023</td>
-<td style="text-align: left;"></td>
-<td style="text-align: left;">NA</td>
-<td style="text-align: left;">2023-07-03T23:52:33-04:00</td>
-<td style="text-align: left;">2023-07-03T23:52:34-04:00</td>
-<td style="text-align: right;">3328</td>
-<td style="text-align: right;">223</td>
-<td style="text-align: right;">73</td>
-<td style="text-align: right;">619</td>
-<td style="text-align: right;">1</td>
-<td style="text-align: left;">https://microdata.worldbank.org/index.php/catalog/5908</td>
-<td style="text-align: left;">WLD</td>
+<td style="text-align: right;">114</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: left;">https://microdata.unhcr.org/index.php/catalog/114</td>
+<td style="text-align: left;">ETH</td>
 </tr>
 </tbody>
 </table>
@@ -414,21 +393,21 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 </div>
 <p>There is also handy function to check latest publications of these datasets.</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">mdt_latest</span><span class="op">(</span>org <span class="op">=</span> <span class="st">"ihsn"</span>, limit <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/microData/man/latest_entries.html">latest_entries</a></span><span class="op">(</span>org <span class="op">=</span> <span class="st">"wb"</span>, limit <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 3%">
-<col style="width: 13%">
-<col style="width: 30%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 7%">
-<col style="width: 28%">
+<col style="width: 2%">
+<col style="width: 14%">
+<col style="width: 40%">
+<col style="width: 6%">
+<col style="width: 5%">
+<col style="width: 5%">
+<col style="width: 25%">
 </colgroup>
 <thead><tr class="header">
-<th style="text-align: left;">id</th>
+<th style="text-align: right;">id</th>
 <th style="text-align: left;">idno</th>
 <th style="text-align: left;">title</th>
 <th style="text-align: left;">country</th>
@@ -438,87 +417,51 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">12189</td>
-<td style="text-align: left;">SLV_2015_GYTS_v01_M</td>
-<td style="text-align: left;">Global Youth Tobacco Survey 2015</td>
-<td style="text-align: left;">El Salvador</td>
-<td style="text-align: left;">May-08-2024</td>
-<td style="text-align: left;">May-08-2024</td>
-<td style="text-align: left;">https://datacatalog.ihsn.org//catalog/12189</td>
+<td style="text-align: right;">6269</td>
+<td style="text-align: left;">CIV_2021_PEJEDEC-AFL_v01_M</td>
+<td style="text-align: left;">Youth Employment and Skills Development Project - Apprenticeship Firm Listing 2021</td>
+<td style="text-align: left;">Côte d’Ivoire</td>
+<td style="text-align: left;">Jul-24-2024</td>
+<td style="text-align: left;">Jul-24-2024</td>
+<td style="text-align: left;">https://microdata.worldbank.org/index.php/catalog/6269</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">12188</td>
-<td style="text-align: left;">SLV_2013_GSHS_v01_M</td>
-<td style="text-align: left;">Global School-Based Student Health Survey 2013</td>
-<td style="text-align: left;">El Salvador</td>
-<td style="text-align: left;">May-08-2024</td>
-<td style="text-align: left;">May-08-2024</td>
-<td style="text-align: left;">https://datacatalog.ihsn.org//catalog/12188</td>
+<td style="text-align: right;">6268</td>
+<td style="text-align: left;">CIV_2014-2016_PEJEDEC-AFS_v01_M</td>
+<td style="text-align: left;">Youth Employment and Skills Development Project - Apprenticeship Firms Surveys 2014-2016</td>
+<td style="text-align: left;">Côte d’Ivoire</td>
+<td style="text-align: left;">Jul-24-2024</td>
+<td style="text-align: left;">Jul-24-2024</td>
+<td style="text-align: left;">https://microdata.worldbank.org/index.php/catalog/6268</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">12187</td>
-<td style="text-align: left;">SLV_2009_GYTS_v01_M</td>
-<td style="text-align: left;">Global Youth Tobacco Survey 2009</td>
-<td style="text-align: left;">El Salvador</td>
-<td style="text-align: left;">May-08-2024</td>
-<td style="text-align: left;">May-08-2024</td>
-<td style="text-align: left;">https://datacatalog.ihsn.org//catalog/12187</td>
+<td style="text-align: right;">6267</td>
+<td style="text-align: left;">CIV_2014-2018_PEJEDEC-AYS_v01_M</td>
+<td style="text-align: left;">Youth Employment and Skills Development Project - Apprenticeship Youth Surveys 2014-2018</td>
+<td style="text-align: left;">Côte d’Ivoire</td>
+<td style="text-align: left;">Jul-24-2024</td>
+<td style="text-align: left;">Jul-24-2024</td>
+<td style="text-align: left;">https://microdata.worldbank.org/index.php/catalog/6267</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-</section><section id="study-information" class="level2"><h2 class="anchored" data-anchor-id="study-information">Study Information</h2>
-<p>After going through available datasets, you may be interested to know more about that specific study. Just use <code>mdt_abstract</code> to read abstract directly in your Rstudio.</p>
-<div style="text-align: center; background-color: rgba(30, 120, 130, 0.1); border-radius: 25px">
+<p>You can use <code>data_files</code> to see the data files included in the study. Let’s see one of the popular survey on the WB. We can also use id number of the study, which is 3110 instead of the name (See next code chunk).</p>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">mdt_abstract</span><span class="op">(</span>id <span class="op">=</span> <span class="fl">2939</span>, raw_html <span class="op">=</span> <span class="cn">T</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<ul>
-Study id: 
-2939
-</ul>
-<ul>
-Study idno: 
-MWI_2010-2016_IHPS_v03_M
-</ul>
-<ul>
-Study title: 
-Integrated Household Panel Survey 2010-2013-2016 (Long-Term Panel, 102 EAs)
-</ul>
-<ul>
-Study year: 
-2016
-</ul>
-<ul>
-Study country: 
-Malawi
-</ul>
-<ul>
-Authoring entity: 
-National Statistical Office
-</ul>
-<h2 class="anchored">Abstract</h2>
-<p>The 2016 Integrated Household Panel Survey (IHPS) was launched in April 2016 as part of the Malawi Fourth Integrated Household Survey fieldwork operation. The IHPS 2016 targeted 1,989 households that were interviewed in the IHPS 2013 and that could be traced back to half of the 204 enumeration areas that were originally sampled as part of the Third Integrated Household Survey (IHS3) 2010/11. The panel sample expanded each wave through the tracking of split-off individuals and the new households that they formed. Available as part of this project is the IHPS 2016 data as well as the rereleased IHPS 2010 &amp; 2013 data including only the subsample of 102 EAs with updated panel weights. Additionally, the IHPS 2016 was the first survey that received complementary financial and technical support from the Living Standards Measurement Study – Plus (LSMS+) initiative, which has been established with grants from the Umbrella Facility for Gender Equality Trust Fund, the World Bank Trust Fund for Statistical Capacity Building, and the International Fund for Agricultural Development, and is implemented by the World Bank Living Standards Measurement Study (LSMS) team, in collaboration with the World Bank Gender Group and partner national statistical offices. The LSMS+ aims to improve the availability and quality of individual-disaggregated household survey data, and is, at start, a direct response to the World Bank IDA18 commitment to support 6 IDA countries in collecting intra-household, sex-disaggregated household survey data on 1) ownership of and rights to selected physical and financial assets, 2) work and employment, and 3) entrepreneurship – following international best practices in questionnaire design and minimizing the use of proxy respondents while collecting personal information. This dataset is included here.</p>
-</div>
-</div>
-</div>
-<p>You can use <code>mdt_files</code> to see the data files included in the study.</p>
-<div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">mdt_files</span><span class="op">(</span>id <span class="op">=</span> <span class="fl">2939</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/microData/man/data_files.html">data_files</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"IND_2015_DHS_v01_M_v02_A_IPUMS"</span>, org <span class="op">=</span> <span class="st">"wb"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 1%">
 <col style="width: 3%">
-<col style="width: 2%">
-<col style="width: 4%">
-<col style="width: 20%">
-<col style="width: 56%">
-<col style="width: 5%">
-<col style="width: 5%">
+<col style="width: 8%">
+<col style="width: 6%">
+<col style="width: 9%">
+<col style="width: 16%">
+<col style="width: 30%">
+<col style="width: 13%">
+<col style="width: 12%">
 </colgroup>
 <thead><tr class="header">
 <th style="text-align: left;"></th>
@@ -532,34 +475,54 @@ National Statistical Office
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">F1</td>
-<td style="text-align: left;">107172</td>
-<td style="text-align: left;">2939</td>
-<td style="text-align: left;">F1</td>
-<td style="text-align: left;">HouseholdGeovariables_IHS3_Rerelease_10</td>
-<td style="text-align: left;">Household geographic location (2010 survey)</td>
-<td style="text-align: left;">1619</td>
-<td style="text-align: left;">115</td>
+<td style="text-align: left;">B</td>
+<td style="text-align: left;">114450</td>
+<td style="text-align: left;">3110</td>
+<td style="text-align: left;">B</td>
+<td style="text-align: left;">IND2015-B.dat</td>
+<td style="text-align: left;">Birth records</td>
+<td style="text-align: left;">1315617</td>
+<td style="text-align: left;">NULL</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">F2</td>
-<td style="text-align: left;">107173</td>
-<td style="text-align: left;">2939</td>
-<td style="text-align: left;">F2</td>
-<td style="text-align: left;">PlotGeovariables_IHS3_Rerelease_10</td>
-<td style="text-align: left;">Plot geographic location (2010 survey)</td>
-<td style="text-align: left;">2392</td>
-<td style="text-align: left;">61</td>
+<td style="text-align: left;">C</td>
+<td style="text-align: left;">114451</td>
+<td style="text-align: left;">3110</td>
+<td style="text-align: left;">C</td>
+<td style="text-align: left;">IND2015-C.dat</td>
+<td style="text-align: left;">Child records</td>
+<td style="text-align: left;">259627</td>
+<td style="text-align: left;">NULL</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">F3</td>
-<td style="text-align: left;">107143</td>
-<td style="text-align: left;">2939</td>
-<td style="text-align: left;">F3</td>
-<td style="text-align: left;">hh_mod_a_filt_10</td>
-<td style="text-align: left;">Data collected through 2010 Household Questionnaire, Module A: Household Identification (household level data)</td>
-<td style="text-align: left;">1619</td>
-<td style="text-align: left;">59</td>
+<td style="text-align: left;">H</td>
+<td style="text-align: left;">114453</td>
+<td style="text-align: left;">3110</td>
+<td style="text-align: left;">H</td>
+<td style="text-align: left;">IND2015-H.dat</td>
+<td style="text-align: left;">Household member records</td>
+<td style="text-align: left;">2869043</td>
+<td style="text-align: left;">NULL</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">114452</td>
+<td style="text-align: left;">3110</td>
+<td style="text-align: left;">M</td>
+<td style="text-align: left;">IND2015-M.dat</td>
+<td style="text-align: left;">Man records</td>
+<td style="text-align: left;">112122</td>
+<td style="text-align: left;">NULL</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">114449</td>
+<td style="text-align: left;">3110</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">IND2015-W.dat</td>
+<td style="text-align: left;">Woman records</td>
+<td style="text-align: left;">699686</td>
+<td style="text-align: left;">NULL</td>
 </tr>
 </tbody>
 </table>
@@ -567,22 +530,20 @@ National Statistical Office
 </div>
 <p>How about variables included in the data file? Of course you can check them as well.</p>
 <div class="cell">
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">mdt_variables</span><span class="op">(</span>id <span class="op">=</span> <span class="fl">2939</span>, file_id <span class="op">=</span> <span class="st">"F4"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="va">_</span><span class="op">[</span><span class="fl">9</span><span class="op">:</span><span class="fl">15</span>,<span class="op">]</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/microData/man/variables.html">variables</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fl">3110</span>, file_id <span class="op">=</span> <span class="st">"W"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <colgroup>
-<col style="width: 4%">
 <col style="width: 9%">
-<col style="width: 7%">
-<col style="width: 5%">
-<col style="width: 7%">
+<col style="width: 6%">
+<col style="width: 4%">
 <col style="width: 14%">
-<col style="width: 52%">
+<col style="width: 14%">
+<col style="width: 50%">
 </colgroup>
 <thead><tr class="header">
-<th style="text-align: left;"></th>
 <th style="text-align: right;">uid</th>
 <th style="text-align: right;">sid</th>
 <th style="text-align: left;">fid</th>
@@ -592,73 +553,58 @@ National Statistical Office
 </tr></thead>
 <tbody>
 <tr class="odd">
-<td style="text-align: left;">9</td>
-<td style="text-align: right;">770914</td>
-<td style="text-align: right;">2939</td>
-<td style="text-align: left;">F4</td>
-<td style="text-align: left;">V244</td>
-<td style="text-align: left;">hh_b03</td>
-<td style="text-align: left;">Sex</td>
+<td style="text-align: right;">2609913</td>
+<td style="text-align: right;">3110</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">W_SAMPLE</td>
+<td style="text-align: left;">W_SAMPLE</td>
+<td style="text-align: left;">IPUMS-DHS sample identifier</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">10</td>
-<td style="text-align: right;">770915</td>
-<td style="text-align: right;">2939</td>
-<td style="text-align: left;">F4</td>
-<td style="text-align: left;">V245</td>
-<td style="text-align: left;">hh_b04</td>
-<td style="text-align: left;">Relationship to Head</td>
+<td style="text-align: right;">2609914</td>
+<td style="text-align: right;">3110</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">W_SAMPLESTR</td>
+<td style="text-align: left;">W_SAMPLESTR</td>
+<td style="text-align: left;">IPUMS-DHS sample identifier (string)</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">11</td>
-<td style="text-align: right;">770916</td>
-<td style="text-align: right;">2939</td>
-<td style="text-align: left;">F4</td>
-<td style="text-align: left;">V246</td>
-<td style="text-align: left;">hh_b04_os</td>
-<td style="text-align: left;">Relationship to Head (Other Specify)</td>
+<td style="text-align: right;">2609915</td>
+<td style="text-align: right;">3110</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">W_COUNTRY</td>
+<td style="text-align: left;">W_COUNTRY</td>
+<td style="text-align: left;">Country</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">12</td>
-<td style="text-align: right;">770917</td>
-<td style="text-align: right;">2939</td>
-<td style="text-align: left;">F4</td>
-<td style="text-align: left;">V247</td>
-<td style="text-align: left;">hh_b05a</td>
-<td style="text-align: left;">How old is [NAME] (years)?</td>
+<td style="text-align: right;">2609916</td>
+<td style="text-align: right;">3110</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">W_YEAR</td>
+<td style="text-align: left;">W_YEAR</td>
+<td style="text-align: left;">Year of sample</td>
 </tr>
 <tr class="odd">
-<td style="text-align: left;">13</td>
-<td style="text-align: right;">770918</td>
-<td style="text-align: right;">2939</td>
-<td style="text-align: left;">F4</td>
-<td style="text-align: left;">V248</td>
-<td style="text-align: left;">hh_b05b</td>
-<td style="text-align: left;">How old is [NAME} (months)?</td>
+<td style="text-align: right;">2609917</td>
+<td style="text-align: right;">3110</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">W_IDHSPID</td>
+<td style="text-align: left;">W_IDHSPID</td>
+<td style="text-align: left;">Unique cross-sample respondent identifier</td>
 </tr>
 <tr class="even">
-<td style="text-align: left;">14</td>
-<td style="text-align: right;">770919</td>
-<td style="text-align: right;">2939</td>
-<td style="text-align: left;">F4</td>
-<td style="text-align: left;">V249</td>
-<td style="text-align: left;">hh_b06a</td>
-<td style="text-align: left;">When was [NAME] born (month)?</td>
-</tr>
-<tr class="odd">
-<td style="text-align: left;">15</td>
-<td style="text-align: right;">770920</td>
-<td style="text-align: right;">2939</td>
-<td style="text-align: left;">F4</td>
-<td style="text-align: left;">V250</td>
-<td style="text-align: left;">hh_b06b</td>
-<td style="text-align: left;">When was [NAME] born (year)?</td>
+<td style="text-align: right;">2609918</td>
+<td style="text-align: right;">3110</td>
+<td style="text-align: left;">W</td>
+<td style="text-align: left;">W_IDHSHID</td>
+<td style="text-align: left;">W_IDHSHID</td>
+<td style="text-align: left;">Unique cross-sample household identifier</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
-</section><section id="cleaning" class="level2"><h2 class="anchored" data-anchor-id="cleaning">Cleaning</h2>
+</section><section id="setting-attributes" class="level2"><h2 class="anchored" data-anchor-id="setting-attributes">Setting Attributes</h2>
 <p>Variables in microdata are often named something that has nothing to do with the variable except question order like this.</p>
 <div class="cell">
 <div class="cell-output-display">
@@ -722,14 +668,15 @@ National Statistical Office
 </table>
 </div>
 </div>
-<p>You can use <code>mdt_clean</code> function to rename and set labels to these variables.</p>
+<p>You can use <code>set_attributes</code> function to rename and set labels to these variables.</p>
 <div class="cell">
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">cleaned</span> <span class="op">&lt;-</span> <span class="fu">mdt_clean</span><span class="op">(</span><span class="va">mdt</span>, </span>
-<span>                     <span class="va">metadata</span>,</span>
-<span>                     old_name <span class="op">=</span> <span class="st">"vars"</span>,</span>
-<span>                     new_name <span class="op">=</span> <span class="st">"name"</span>,</span>
-<span>                     label <span class="op">=</span> <span class="st">"labs"</span><span class="op">)</span></span>
-<span><span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">cleaned</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/microData/man/set_attributes.html">set_attributes</a></span><span class="op">(</span></span>
+<span>  <span class="va">mdt</span>, </span>
+<span>  <span class="va">metadata</span>,</span>
+<span>  old_name <span class="op">=</span> <span class="st">"vars"</span>,</span>
+<span>  new_name <span class="op">=</span> <span class="st">"name"</span>,</span>
+<span>  label <span class="op">=</span> <span class="st">"labs"</span><span class="op">)</span></span>
+<span><span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
 <thead><tr class="header">
@@ -764,13 +711,18 @@ National Statistical Office
 </div>
 <p>labels are also assigned.</p>
 <div class="cell">
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/attr.html">attr</a></span><span class="op">(</span><span class="va">cleaned</span><span class="op">$</span><span class="va">gender</span>, <span class="st">"label"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/str.html">str</a></span><span class="op">(</span><span class="va">my_data</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>[1] "Gender"</code></pre>
+<pre><code>'data.frame':   4 obs. of  3 variables:
+ $ age    : int  22 23 24 25
+  ..- attr(*, "label")= chr "Age"
+ $ gender : chr  "male" "female" "male" "female"
+  ..- attr(*, "label")= chr "Gender"
+ $ country: chr  "BE" "DE" "BE" "DE"
+  ..- attr(*, "label")= chr "Country"</code></pre>
 </div>
 </div>
 <p>More coming soon!</p>
-</section><section id="the-end" class="level2"><h2 class="anchored" data-anchor-id="the-end"><span style="color:blue; text-align: center;">The End!</span></h2>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
