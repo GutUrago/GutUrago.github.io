@@ -27,16 +27,16 @@ knitr::opts_chunk$set(echo = FALSE)
 
 ```
 
-Gutama Girja Urago is a young agricultural economist who enjoys playing with R and has a keen interest in quantitative analysis without leaving qualitative aside. Currently, he is pursuing the Erasmus Mundus Joint Masters Degree organized by six European Universities hosting at Ghent University.
+Gutama Girja Urago is a young agricultural economist who enjoys playing with R and has a keen interest in quantitative analysis without leaving qualitative aside. Currently, he is working as a Research Analyst in the Laterite Consulting PLC.
 
 ## Education
 
 ```{r}
 data.frame(
   Period = c("Sept 2022 - Sep 2024", "Sept 2020 - July 2022", "Sept 2015 - July 2018"),
-  Program = c("International Master of Science in Rural Development", "aster of Science in Agricultural Economics", "Bachelor of Science in Agricultural Economics"),
-  University = c("Ghent University", "Ondokuz Mayis University", "Haramaya University"),
-  Country = c("Belgium", "Turkey", "Ethiopia")
+  Program = c("International Master of Science in Rural Development", "Master of Science in Agricultural Economics", "Bachelor of Science in Agricultural Economics"),
+  University = c("Ghent University + 5 others", "Ondokuz Mayis University", "Haramaya University"),
+  Country = c("Belgium + 2 others", "Turkey", "Ethiopia")
 ) |> 
   kableExtra::kable()
 ```
@@ -47,10 +47,10 @@ data.frame(
 
 ```{r}
 data.frame(
-  Period = c("August 2018 - September 2019"),
-  Position = c("Graduate Teaching Assistant"),
-  Company = c("Haramaya University"),
-  Country = c("Ethiopia")
+  Period = c("August 2024 - Present", "August 2018 - September 2019"),
+  Position = c("Research Analyst", "Graduate Teaching Assistant"),
+  Company = c("Laterite", "Haramaya University"),
+  Country = c("Ethiopia", "Ethiopia")
 ) |> 
   kableExtra::kable()
 ```

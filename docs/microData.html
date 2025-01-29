@@ -2,11 +2,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.555">
+<meta name="generator" content="quarto-1.5.57">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Gutama Girja Urago">
 <meta name="dcterms.date" content="2024-05-14">
-<title>Gutama Girja Urago - microData</title>
+<title>microData – Gutama Girja Urago</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -32,7 +32,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -117,7 +117,7 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
@@ -140,7 +140,7 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
   </li>  
 </ul>
 </div> <!-- /navcollapse -->
-          <div class="quarto-navbar-tools tools-wide">
+            <div class="quarto-navbar-tools tools-wide">
     <a href="https://github.com/GutUrago" title="GutUrago Github" class="quarto-navigation-tool px-1" aria-label="GutUrago Github"><i class="bi bi-github"></i></a>
     <a href="https://www.linkedin.com/in/gutama-girja/" title="Linkedin" class="quarto-navigation-tool px-1" aria-label="Linkedin"><i class="bi bi-linkedin"></i></a>
     <a href="./blog.xml" title="GutUrago Blog RSS" class="quarto-navigation-tool px-1" aria-label="GutUrago Blog RSS"><i class="bi bi-rss"></i></a>
@@ -202,11 +202,11 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://remotes.r-lib.org/reference/install_github.html">install_github</a></span><span class="op">(</span><span class="st">"GutUrago/microData"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </section><section id="collection" class="level2"><h2 class="anchored" data-anchor-id="collection">Collection</h2>
-<p>All organizations supported by this package use the NADA API to publish micro-data, which makes use of similar terminologies. Collection simply means gathering multiple related studies or data sets. To see all available collections, you can use <code><a href="https://rdrr.io/pkg/microData/man/collections.html">collections()</a></code> function.</p>
+<p>All organizations supported by this package use the NADA API to publish micro-data, which makes use of similar terminologies. Collection simply means gathering multiple related studies or data sets. To see all available collections, you can use <code>collections()</code> function.</p>
 <div class="cell">
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/GutUrago/microData">microData</a></span><span class="op">)</span></span>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">microData</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/pkg/microData/man/collections.html">collections</a></span><span class="op">(</span>org <span class="op">=</span> <span class="st">"wb"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span><span class="fu">collections</span><span class="op">(</span>org <span class="op">=</span> <span class="st">"wb"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -257,9 +257,9 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 </div>
 </div>
 </section><section id="searching" class="level2"><h2 class="anchored" data-anchor-id="searching">Searching</h2>
-<p>This package gives all flexibility of searching on the web. For more see the documentation for <code><a href="https://rdrr.io/pkg/microData/man/search_catalog.html">search_catalog()</a></code>.</p>
+<p>This package gives all flexibility of searching on the web. For more see the documentation for <code>search_catalog()</code>.</p>
 <div class="cell">
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/microData/man/search_catalog.html">search_catalog</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">search_catalog</span><span class="op">(</span></span>
 <span>  keyword <span class="op">=</span> <span class="st">"food"</span>,</span>
 <span>  org <span class="op">=</span> <span class="st">"unhcr"</span>,</span>
 <span>  from <span class="op">=</span> <span class="fl">2015</span>,</span>
@@ -393,7 +393,7 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 </div>
 <p>There is also handy function to check latest publications of these datasets.</p>
 <div class="cell">
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/microData/man/latest_entries.html">latest_entries</a></span><span class="op">(</span>org <span class="op">=</span> <span class="st">"wb"</span>, limit <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">latest_entries</span><span class="op">(</span>org <span class="op">=</span> <span class="st">"wb"</span>, limit <span class="op">=</span> <span class="fl">3</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -449,7 +449,7 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 </div>
 <p>You can use <code>data_files</code> to see the data files included in the study. Let’s see one of the popular survey on the WB. We can also use id number of the study, which is 3110 instead of the name (See next code chunk).</p>
 <div class="cell">
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/microData/man/data_files.html">data_files</a></span><span class="op">(</span>id <span class="op">=</span> <span class="st">"IND_2015_DHS_v01_M_v02_A_IPUMS"</span>, org <span class="op">=</span> <span class="st">"wb"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">data_files</span><span class="op">(</span>id <span class="op">=</span> <span class="st">"IND_2015_DHS_v01_M_v02_A_IPUMS"</span>, org <span class="op">=</span> <span class="st">"wb"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <table class="caption-top table table-sm table-striped small">
@@ -530,7 +530,7 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 </div>
 <p>How about variables included in the data file? Of course you can check them as well.</p>
 <div class="cell">
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/microData/man/variables.html">variables</a></span><span class="op">(</span>id <span class="op">=</span> <span class="fl">3110</span>, file_id <span class="op">=</span> <span class="st">"W"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">variables</span><span class="op">(</span>id <span class="op">=</span> <span class="fl">3110</span>, file_id <span class="op">=</span> <span class="st">"W"</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu">kableExtra</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/knitr/man/kable.html">kable</a></span><span class="op">(</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -670,7 +670,7 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 </div>
 <p>You can use <code>set_attributes</code> function to rename and set labels to these variables.</p>
 <div class="cell">
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/microData/man/set_attributes.html">set_attributes</a></span><span class="op">(</span></span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_data</span> <span class="op">&lt;-</span> <span class="fu">set_attributes</span><span class="op">(</span></span>
 <span>  <span class="va">mdt</span>, </span>
 <span>  <span class="va">metadata</span>,</span>
 <span>  old_name <span class="op">=</span> <span class="st">"vars"</span>,</span>
@@ -760,18 +760,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -803,7 +792,29 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
     var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
     var mailtoRegex = new RegExp(/^mailto:/);
       var filterRegex = new RegExp("https:\/\/guturago\.github\.io");
@@ -811,7 +822,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
     }
     // Inspect non-navigation links and adorn them if external
- 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
     for (var i=0; i<links.length; i++) {
       const link = links[i];
       if (!isInternal(link.href)) {

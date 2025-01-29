@@ -30,15 +30,13 @@ format:
 ### Contact info {.main-title .contact-info}
 
 
-[GutamaGirja.Urago@UGent.be]{.fa .fa-envelope}
-
 [[Gutama Girja]("https://www.facebook.com/GutUrago")]{.fa .fa-facebook}
 
 [[Gutama Girja]("https://www.instagram.com/gutama_girja/")]{.fa .fa-instagram}
 
 [[guturago.github.io]("https://guturago.github.io/")]{.fa .fa-globe}
 
-[Belgium]{.fa .fa-map-marker}
+[Addis Ababa, Ethiopia]{.fa .fa-map-marker}
 
 ### Skills {.main-title .skills}
 
@@ -90,6 +88,13 @@ HTML/CSS
 
 :::{.progress-bar}
 ::::{.progress .html-progress}
+::::
+:::
+
+JavaScript
+
+:::{.progress-bar}
+::::{.progress .java-progress}
 ::::
 :::
 
@@ -154,6 +159,22 @@ Dutch
                     <h2 class="right-title">Experience</h2>
                     <div class="timeline">
                         <div class="left-tl-content">
+                            <h5 class="tl-title">Laterite Consulting PLC,
+                                <br>Ethiopia
+                            </h5>
+                            <p class="para">Aug 2024 - Present</p>
+                        </div>
+                        <div class="right-tl-content">
+                            <div class="tl-content">
+                                <h5 class="tl-title-2">Research Analyst</h5>
+                                <p class="para">
+                                    Developing research instruments and analyzing data
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                <div class="timeline">
+                        <div class="left-tl-content">
                             <h5 class="tl-title">Haramaya University,
                                 <br>Ethiopia
                             </h5>
@@ -167,7 +188,6 @@ Dutch
                                 </p>
                             </div>
                         </div>
-                    </div>
                 </section>
                 <section class="education sect">
                     <h2 class="right-title">Education</h2>
@@ -176,7 +196,7 @@ Dutch
                             <h5 class="tl-title">Ghent University,
                                 <br>Belgium
                             </h5>
-                            <p class="para">Sep 2022 - Present</p>
+                            <p class="para">Sep 2022 - Sep 2024</p>
                         </div>
                         <div class="right-tl-content">
                             <div class="tl-content">
