@@ -14,32 +14,88 @@
     "text": "Agricultural Economist\n\nContact info\nGutama Girja\nGutama Girja\nguturago.github.io\nAddis Ababa, Ethiopia\n\n\nSkills\n\nR\n\n\n\n\n\nSPSS\n\n\n\n\n\nSTATA\n\n\n\n\n\nQGIS\n\n\n\n\n\nLaTeX\n\n\n\n\n\nExcel\n\n\n\n\n\nHTML/CSS\n\n\n\n\n\nJavaScript\n\n\n\n\n\n\n\n\nLanguages\n\nEnglish\n\n\n\n\n\nAmharic\n\n\n\n\n\nTurkish\n\n\n\n\n\nOromo\n\n\n\n\n\nDutch"
   },
   {
-    "objectID": "blog/web-craping-using-rvest/index.html",
-    "href": "blog/web-craping-using-rvest/index.html",
-    "title": "Web Scraping in R: Import table directly from website",
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Gutama Girja Urago",
     "section": "",
-    "text": "In this blog, we are going to import table from website into R. This is very important because it saves a time to copy the table manually and going through a lot of pain in excel to import the table into R. Doing it in that way is time consuming, tedious and prone to mistake. That’s why rvest (harvest) package is there for you on CRAN. Install the package from CRAN using install.packages() function and let’s dive in."
+    "text": "Order By\n      Default\n      \n        Title\n      \n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Author\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nError Handling in R: A Guide for Data Analysts\n\n\n\ndplyr\n\nR programming\n\nerror-handling\n\nbest-practices\n\n\n\n\n\n\n\n\n\nMay 15, 2025\n\n\nGutama Girja Urago\n\n\n\n\n\n\n\n\n\n\n\n\nImportance of R Functions: A Guide for Data Analysts\n\n\n\ndplyr\n\n\n\n\n\n\n\n\n\nMay 15, 2025\n\n\nGutama Girja Urago\n\n\n\n\n\n\n\n\n\n\n\n\nWeb Scraping in R: Import table directly from website\n\n\n\nweb scraping\n\nrvest\n\nggplot2\n\n\n\n\n\n\n\n\n\nMay 20, 2024\n\n\nGutama Girja Urago\n\n\n\n\n\n\n\n\n\n\n\n\nTable Template: Create your own {gt} table theme\n\n\n\ngt\n\ntable\n\n\n\n\n\n\n\n\n\nApr 2, 2024\n\n\nGutama Girja Urago\n\n\n\n\n\nNo matching items"
   },
   {
-    "objectID": "blog/web-craping-using-rvest/index.html#cleaning-the-data",
-    "href": "blog/web-craping-using-rvest/index.html#cleaning-the-data",
-    "title": "Web Scraping in R: Import table directly from website",
-    "section": "Cleaning the Data",
-    "text": "Cleaning the Data\nBelow we can see that all columns, except year, are stored as character because of dollar sign ($) and commas (,), which R doesn’t allow to happen.\n\ngdp_tbl &lt;- janitor::clean_names(gdp_tbl)\n\n\nlibrary(tidyverse)\n\nglimpse(gdp_tbl)\n\nRows: 30\nColumns: 7\n$ year                    &lt;int&gt; 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015…\n$ gdp_nominal_current_usd &lt;chr&gt; \"$126,783,000,000\", \"$111,262,000,000\", \"$107,…\n$ gdp_real_inflation_adj  &lt;chr&gt; \"$105,776,000,000\", \"$100,435,000,000\", \"$95,0…\n$ gdp_change              &lt;chr&gt; \"5.32%\", \"5.64%\", \"6.06%\", \"8.36%\", \"6.82%\", \"…\n$ gdp_per_capita          &lt;chr&gt; \"$857\", \"$835\", \"$811\", \"$785\", \"$744\", \"$716\"…\n$ pop_change              &lt;chr&gt; \"2.57 %\", \"2.64 %\", \"2.69 %\", \"2.69 %\", \"2.71 …\n$ population              &lt;chr&gt; \"123,379,924\", \"120,283,026\", \"117,190,911\", \"…\n\n\nLet’s remove all unnecessary characters and convert to numeric with a short function.\n\nconvert_to_numeric &lt;- function(x) {\n  as.numeric(str_remove_all(x, \"[$,%\\\\s]\"))\n}\n\ngdp_tbl &lt;- gdp_tbl |&gt; \n        mutate_all(convert_to_numeric)\n\nglimpse(gdp_tbl)\n\nRows: 30\nColumns: 7\n$ year                    &lt;dbl&gt; 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015…\n$ gdp_nominal_current_usd &lt;dbl&gt; 126783000000, 111262000000, 107658000000, 9591…\n$ gdp_real_inflation_adj  &lt;dbl&gt; 105776000000, 100435000000, 95071776945, 89640…\n$ gdp_change              &lt;dbl&gt; 5.32, 5.64, 6.06, 8.36, 6.82, 9.56, 9.43, 10.3…\n$ gdp_per_capita          &lt;dbl&gt; 857, 835, 811, 785, 744, 716, 671, 630, 587, 5…\n$ pop_change              &lt;dbl&gt; 2.57, 2.64, 2.69, 2.69, 2.71, 2.76, 2.75, 2.73…\n$ population              &lt;dbl&gt; 123379924, 120283026, 117190911, 114120594, 11…"
+    "objectID": "blog/importance-of-functions-in-r/index.html",
+    "href": "blog/importance-of-functions-in-r/index.html",
+    "title": "Importance of R Functions: A Guide for Data Analysts",
+    "section": "",
+    "text": "Importance of R Functions: A Guide for Data Analysts\nR is a powerful tool for data analysis, statistical computing, and data visualization. However, to fully harness its potential, one must master the use of functions. Functions are the building blocks of R programming. They allow for modular, reusable, and maintainable code that simplifies complex analyses, reduces redundancy, and enhances overall efficiency.\nWhy Use Functions in R?\n\nCode Reusability: Instead of repeating the same set of instructions, you can encapsulate them in a function and call it whenever needed.\nModularity: Functions break down complex problems into smaller, manageable pieces, making the code easier to read and debug.\nScalability: Once a function is defined, it can be applied to different datasets or parameters, reducing the need for repetitive coding.\nDebugging and Testing: Isolating functionality into separate functions makes it easier to identify and resolve errors.\nBasic Function Structure in R\nR functions have a simple yet powerful structure. Here’s a basic example:\n\nadd_numbers &lt;- function(x, y) {\n  result &lt;- x + y\n  return(result)\n}\n\nadd_numbers(5, 2)\n\n[1] 7\n\n\nThis function takes two arguments, x and y, and returns their sum. The use of return() is optional but recommended for clarity.\nPractical Example: Calculating the Mean and Standard Deviation\nSuppose you are analyzing a dataset and frequently need to calculate the mean and standard deviation of numeric columns. Instead of repeating the calculations, you can write a reusable function:\n\ncalc_stats &lt;- function(data, column) {\n  mean_val &lt;- mean(data[[column]], na.rm = TRUE)\n  sd_val &lt;- sd(data[[column]], na.rm = TRUE)\n  list(mean = mean_val, sd = sd_val)\n}\n\n# Example usage\ncalc_stats(mtcars, \"mpg\")\n\n$mean\n[1] 20.09062\n\n$sd\n[1] 6.026948\n\n\nAdvanced Example: Data Transformation Function\nImagine you are frequently transforming data by filtering, summarizing, and plotting. You can create a function that performs these steps efficiently:\n\nlibrary(dplyr)\n\n\nAttaching package: 'dplyr'\n\n\nThe following objects are masked from 'package:stats':\n\n    filter, lag\n\n\nThe following objects are masked from 'package:base':\n\n    intersect, setdiff, setequal, union\n\nanalyze_data &lt;- function(data, group_col, num_col) {\n  summary &lt;- data %&gt;%\n    group_by(.data[[group_col]]) %&gt;%\n    summarize(mean_value = mean(.data[[num_col]], na.rm = TRUE),\n              sd_value = sd(.data[[num_col]], na.rm = TRUE))\n  return(summary)\n}\n\n# Example usage\ndata &lt;- data.frame(group = rep(c(\"A\", \"B\"), each = 5), value = rnorm(10))\nanalyze_data(data, \"group\", \"value\")\n\n# A tibble: 2 × 3\n  group mean_value sd_value\n  &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;\n1 A        0.00706    0.589\n2 B       -0.519      0.369\n\n\nConclusion\nFunctions are essential for writing clean, reusable, and efficient R code. They not only improve code readability but also enhance overall analysis workflow. By incorporating functions in your R scripts, you elevate your coding practice, making your code more robust, modular, and easier to maintain. In upcoming posts, we’ll delve deeper into advanced function techniques, such as error handling, vectorization, and functional programming in R."
   },
   {
-    "objectID": "blog/web-craping-using-rvest/index.html#making-a-graph",
-    "href": "blog/web-craping-using-rvest/index.html#making-a-graph",
-    "title": "Web Scraping in R: Import table directly from website",
-    "section": "Making a Graph",
-    "text": "Making a Graph\nWith a minimal code, we can produce the same graph and customize the way we want.\n\ngdp_tbl |&gt; \n        ggplot() + \n        geom_line(aes(x = factor(year), \n                      y = gdp_nominal_current_usd,\n                      group = 1),\n                  color = \"blue\", linewidth = 1) + \n        scale_y_continuous(labels = scales::dollar_format(\n          scale = 1/1000000000,\n          suffix = \" billion\")) +\n \n        labs(x = \"Year\",\n             y = \"Nominal GDP\",\n             title = \"Ethiopia GDP (Nominal, $USD) 2003-2022\",\n             caption = \"Source: https://www.worldometers.info/gdp/ethiopia-gdp/\") + \n        theme_bw() + \n        theme(axis.text.x = element_text(angle = 45, vjust = 0.5))\n\n\n\n\n\n\n\nHere is the second graph as well.\n\ngdp_tbl |&gt;\n  mutate(growth = ifelse(gdp_change &gt; 0, \"positve\", \"negative\")) |&gt; \n  ggplot(aes(x = factor(year), y = gdp_change, fill = growth)) + \n  geom_col() + \n  labs(title = \"GDP change (%)\",\n       y = \"Ethiopia GDP Change %\",\n       x = \"Year\",\n       fill = \"\",\n       caption = \"Source: https://www.worldometers.info/gdp/ethiopia-gdp/\") +\n  theme_bw() + \n  theme(axis.text.x = element_text(angle = 45, vjust = 0.5),\n        legend.position = \"none\")"
+    "objectID": "blog/error-handling-in-r-functions/index.html",
+    "href": "blog/error-handling-in-r-functions/index.html",
+    "title": "Error Handling in R: A Guide for Data Analysts",
+    "section": "",
+    "text": "As data analysts, we often rely on custom functions to automate repetitive tasks, clean datasets, and perform complex analyses. However, even the most well-written function can break unexpectedly—especially when it encounters invalid input. That’s where error handling comes in.\nThis guide walks through best practices for incorporating error and warning handling into your R functions to make them more robust, user-friendly, and maintainable."
+  },
+  {
+    "objectID": "blog/error-handling-in-r-functions/index.html#error-handling-in-r-functions-a-comprehensive-guide",
+    "href": "blog/error-handling-in-r-functions/index.html#error-handling-in-r-functions-a-comprehensive-guide",
+    "title": "Error Handling in R: A Guide for Data Analysts",
+    "section": "",
+    "text": "As data analysts, we often rely on custom functions to automate repetitive tasks, clean datasets, and perform complex analyses. However, even the most well-written function can break unexpectedly—especially when it encounters invalid input. That’s where error handling comes in.\nThis guide walks through best practices for incorporating error and warning handling into your R functions to make them more robust, user-friendly, and maintainable."
+  },
+  {
+    "objectID": "blog/error-handling-in-r-functions/index.html#why-implement-error-handling",
+    "href": "blog/error-handling-in-r-functions/index.html#why-implement-error-handling",
+    "title": "Error Handling in R: A Guide for Data Analysts",
+    "section": "Why Implement Error Handling?",
+    "text": "Why Implement Error Handling?\nWithout proper checks and feedback, functions can fail silently or return misleading results. Implementing error handling is not just a defensive programming habit—it is a critical part of writing reliable analytical code.\nKey Benefits:\n\n🔍 Data Validation: Prevents incorrect types, structures, or values from corrupting your logic.\n🐞 Easier Debugging: Pinpoints the root cause of a failure more effectively.\n💡 Better UX: Communicates clearly with users, especially those who didn’t write the function.\n🔁 Reusability: Makes your functions portable and safe to use in larger pipelines."
+  },
+  {
+    "objectID": "blog/error-handling-in-r-functions/index.html#basic-error-handling-with-stop",
+    "href": "blog/error-handling-in-r-functions/index.html#basic-error-handling-with-stop",
+    "title": "Error Handling in R: A Guide for Data Analysts",
+    "section": "1. Basic Error Handling with stop()\n",
+    "text": "1. Basic Error Handling with stop()\n\nUse stop() to halt execution and print a clear error message when the input doesn’t meet expectations.\n\ndivide_numbers &lt;- function(x, y) {\n  if (!is.numeric(x) || !is.numeric(y)) {\n    stop(\"Both x and y must be numeric.\")\n  }\n  if (y == 0) {\n    stop(\"Division by zero is not allowed.\")\n  }\n  return(x / y)\n}\n\n# Test cases\ndivide_numbers(10, 2)      # Works fine\n\n[1] 5\n\ndivide_numbers(10, \"a\")    # Triggers a type error\n\nError in divide_numbers(10, \"a\"): Both x and y must be numeric.\n\ndivide_numbers(10, 0)      # Triggers division error\n\nError in divide_numbers(10, 0): Division by zero is not allowed.\n\n\nBy proactively validating arguments, we avoid mysterious bugs later in the analysis."
+  },
+  {
+    "objectID": "blog/error-handling-in-r-functions/index.html#gentle-alerts-with-warning",
+    "href": "blog/error-handling-in-r-functions/index.html#gentle-alerts-with-warning",
+    "title": "Error Handling in R: A Guide for Data Analysts",
+    "section": "2. Gentle Alerts with warning()\n",
+    "text": "2. Gentle Alerts with warning()\n\nUse warning() when you want to inform users of an issue without stopping execution.\n\nlog_value &lt;- function(x) {\n  if (any(x &lt;= 0)) {\n    warning(\"Input contains non-positive values; returning NA for those cases.\")\n  }\n  return(ifelse(x &gt; 0, log(x), NA))\n}\n\nlog_value(c(1, 10, -3))\n\nWarning in log_value(c(1, 10, -3)): Input contains non-positive values;\nreturning NA for those cases.\n\n\nWarning in log(x): NaNs produced\n\n\n[1] 0.000000 2.302585       NA\n\n\nWarnings are especially useful for partial failures—when the function can continue but with caveats."
+  },
+  {
+    "objectID": "blog/error-handling-in-r-functions/index.html#handling-runtime-errors-with-try-and-trycatch",
+    "href": "blog/error-handling-in-r-functions/index.html#handling-runtime-errors-with-try-and-trycatch",
+    "title": "Error Handling in R: A Guide for Data Analysts",
+    "section": "3. Handling Runtime Errors with try() and tryCatch()\n",
+    "text": "3. Handling Runtime Errors with try() and tryCatch()\n\nWhen calling code that might fail unpredictably (e.g., reading a file or hitting an API), wrap it in try() or tryCatch() to recover gracefully.\n\nread_data_safe &lt;- function(path) {\n  result &lt;- try(read.csv(path), silent = TRUE)\n  if (inherits(result, \"try-error\")) {\n    warning(\"Could not read the file. Please check the path or format.\")\n    return(NULL)\n  }\n  return(result)\n}\n\nOr, using tryCatch() for finer control:\n\nread_data_robust &lt;- function(path) {\n  tryCatch(\n    {\n      df &lt;- read.csv(path)\n      message(\"File read successfully.\")\n      return(df)\n    },\n    error = function(e) {\n      message(\"Error: \", e$message)\n      return(NULL)\n    },\n    warning = function(w) {\n      message(\"Warning: \", w$message)\n    }\n  )\n}"
+  },
+  {
+    "objectID": "blog/error-handling-in-r-functions/index.html#writing-informative-error-messages",
+    "href": "blog/error-handling-in-r-functions/index.html#writing-informative-error-messages",
+    "title": "Error Handling in R: A Guide for Data Analysts",
+    "section": "4. Writing Informative Error Messages",
+    "text": "4. Writing Informative Error Messages\nA good error message tells users what went wrong, why, and ideally how to fix it.\n✅ Good: \"Input 'y' must be a numeric vector of length greater than 0.\"\n❌ Bad: \"Error in y\"\nYou can even use stopifnot() for compact assertions:\n\nmy_mean &lt;- function(x) {\n  stopifnot(is.numeric(x), length(x) &gt; 0)\n  mean(x)\n}"
+  },
+  {
+    "objectID": "blog/error-handling-in-r-functions/index.html#when-to-use-stop-warning-or-message",
+    "href": "blog/error-handling-in-r-functions/index.html#when-to-use-stop-warning-or-message",
+    "title": "Error Handling in R: A Guide for Data Analysts",
+    "section": "5. When to Use stop(), warning(), or message()\n",
+    "text": "5. When to Use stop(), warning(), or message()\n\n\n\n\n\n\n\n\n\nFunction\nStops execution\nUser notification\nIdeal for\n\n\n\nstop()\n✅\n🚨\nFatal input errors\n\n\nwarning()\n❌\n⚠️\nSoft alerts\n\n\nmessage()\n❌\n💬 (quiet alerts)\nInformational logs\n\n\n\nUse each intentionally to design an experience that matches the severity of the situation."
+  },
+  {
+    "objectID": "blog/error-handling-in-r-functions/index.html#final-thoughts",
+    "href": "blog/error-handling-in-r-functions/index.html#final-thoughts",
+    "title": "Error Handling in R: A Guide for Data Analysts",
+    "section": "Final Thoughts",
+    "text": "Final Thoughts\nEffective error handling makes your R code safer, more transparent, and more professional—especially when shared in collaborative settings or deployed in production dashboards and packages.\nStart small: add one or two checks to your most-used functions, and grow from there. As your codebase scales, you’ll thank yourself for the early investment in resilience.\n\nHave thoughts or questions? Feel free to reach out or leave a comment below.\n\nHappy coding!\n— Gutama Girja Urago"
   },
   {
     "objectID": "about.html",
     "href": "about.html",
     "title": "Gutama Girja Urago",
     "section": "",
-    "text": "Gutama Girja Urago is a young agricultural economist who enjoys playing with R and has a keen interest in quantitative analysis without leaving qualitative aside. Currently, he is working as a Research Analyst in Laterite Consulting PLC."
+    "text": "Gutama Girja Urago is a young agricultural economist who enjoys playing with R and has a keen interest in quantitative analysis without leaving qualitative aside. Currently, he is working as a Research Analyst in the Laterite Consulting PLC."
   },
   {
     "objectID": "about.html#education",
@@ -133,52 +189,31 @@
     "text": "Make it Reusable\nWe can write a reusable function that produces exactly the same theme.\n\nmy_gt_theme &lt;- function(\n                gt_table,\n                title,\n                subtitle,\n                ...\n                ) {\n        \n        rows &lt;- nrow(gt_table[[\"_data\"]])\n        \n        my_table &lt;- gt_table |&gt; \n                tab_header(\n                title = title,\n                subtitle = subtitle\n        ) |&gt; \n                tab_style(\n                style = cell_text(color = \"black\", \n                                  weight = \"bold\"),\n                locations = cells_title(groups = \"title\")\n        ) |&gt; \n                tab_style(\n                style = cell_fill(color = \"grey90\"),\n                locations = cells_body(rows = seq(1, rows, 2))\n        ) |&gt; \n                tab_options(\n                table.width = pct(100),\n                column_labels.background.color = \"steelblue\",\n                heading.align = \"left\") |&gt; \n                tab_style(\n                style = cell_text(weight = \"bold\"),\n                locations = cells_column_labels()\n        ) |&gt; \n        tab_style(\n                style = cell_text(weight = \"bold\",\n                                  size = \"medium\"),\n                locations = cells_column_spanners()\n        ) |&gt; \n                tab_spanner_delim(...)\n        \n        return(my_table)\n        \n}\n\nThen, we can store our function and apply it whenever we need it, without rewriting everything. It’s impressive to do all that with a few lines of code (See code chunk below).\n\ngt(data) |&gt; \n        my_gt_theme(\n                title = \"Easy and Beautiful Theme\",\n                subtitle = \"With very minimal code\",\n                delim = \".\"\n        )\n\n\n\n\n\n\nEasy and Beautiful Theme\n\n\nWith very minimal code\n\n\nSpecies\nSepal\nPetal\n\n\nLength\nWidth\nLength\nWidth\n\n\n\n\nSetosa\n5.1\n3.5\n1.4\n0.2\n\n\nSetosa\n4.9\n3.0\n1.4\n0.2\n\n\nVersicolor\n7.0\n3.2\n4.7\n1.4\n\n\nVersicolor\n6.4\n3.2\n4.5\n1.5\n\n\nVirginica\n6.3\n3.3\n6.0\n2.5\n\n\nVirginica\n5.8\n2.7\n5.1\n1.9\n\n\n\n\n\n\nThe end!"
   },
   {
-    "objectID": "blog.html",
-    "href": "blog.html",
+    "objectID": "blog/web-craping-using-rvest/index.html",
+    "href": "blog/web-craping-using-rvest/index.html",
+    "title": "Web Scraping in R: Import table directly from website",
+    "section": "",
+    "text": "In this blog, we are going to import table from website into R. This is very important because it saves a time to copy the table manually and going through a lot of pain in excel to import the table into R. Doing it in that way is time consuming, tedious and prone to mistake. That’s why rvest (harvest) package is there for you on CRAN. Install the package from CRAN using install.packages() function and let’s dive in."
+  },
+  {
+    "objectID": "blog/web-craping-using-rvest/index.html#cleaning-the-data",
+    "href": "blog/web-craping-using-rvest/index.html#cleaning-the-data",
+    "title": "Web Scraping in R: Import table directly from website",
+    "section": "Cleaning the Data",
+    "text": "Cleaning the Data\nBelow we can see that all columns, except year, are stored as character because of dollar sign ($) and commas (,), which R doesn’t allow to happen.\n\ngdp_tbl &lt;- janitor::clean_names(gdp_tbl)\n\n\nlibrary(tidyverse)\n\nglimpse(gdp_tbl)\n\nRows: 30\nColumns: 7\n$ year                    &lt;int&gt; 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015…\n$ gdp_nominal_current_usd &lt;chr&gt; \"$126,783,000,000\", \"$111,262,000,000\", \"$107,…\n$ gdp_real_inflation_adj  &lt;chr&gt; \"$105,776,000,000\", \"$100,435,000,000\", \"$95,0…\n$ gdp_change              &lt;chr&gt; \"5.32%\", \"5.64%\", \"6.06%\", \"8.36%\", \"6.82%\", \"…\n$ gdp_per_capita          &lt;chr&gt; \"$857\", \"$835\", \"$811\", \"$785\", \"$744\", \"$716\"…\n$ pop_change              &lt;chr&gt; \"2.57 %\", \"2.64 %\", \"2.69 %\", \"2.69 %\", \"2.71 …\n$ population              &lt;chr&gt; \"123,379,924\", \"120,283,026\", \"117,190,911\", \"…\n\n\nLet’s remove all unnecessary characters and convert to numeric with a short function.\n\nconvert_to_numeric &lt;- function(x) {\n  as.numeric(str_remove_all(x, \"[$,%\\\\s]\"))\n}\n\ngdp_tbl &lt;- gdp_tbl |&gt; \n        mutate_all(convert_to_numeric)\n\nglimpse(gdp_tbl)\n\nRows: 30\nColumns: 7\n$ year                    &lt;dbl&gt; 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015…\n$ gdp_nominal_current_usd &lt;dbl&gt; 126783000000, 111262000000, 107658000000, 9591…\n$ gdp_real_inflation_adj  &lt;dbl&gt; 105776000000, 100435000000, 95071776945, 89640…\n$ gdp_change              &lt;dbl&gt; 5.32, 5.64, 6.06, 8.36, 6.82, 9.56, 9.43, 10.3…\n$ gdp_per_capita          &lt;dbl&gt; 857, 835, 811, 785, 744, 716, 671, 630, 587, 5…\n$ pop_change              &lt;dbl&gt; 2.57, 2.64, 2.69, 2.69, 2.71, 2.76, 2.75, 2.73…\n$ population              &lt;dbl&gt; 123379924, 120283026, 117190911, 114120594, 11…"
+  },
+  {
+    "objectID": "blog/web-craping-using-rvest/index.html#making-a-graph",
+    "href": "blog/web-craping-using-rvest/index.html#making-a-graph",
+    "title": "Web Scraping in R: Import table directly from website",
+    "section": "Making a Graph",
+    "text": "Making a Graph\nWith a minimal code, we can produce the same graph and customize the way we want.\n\ngdp_tbl |&gt; \n        ggplot() + \n        geom_line(aes(x = factor(year), \n                      y = gdp_nominal_current_usd,\n                      group = 1),\n                  color = \"blue\", linewidth = 1) + \n        scale_y_continuous(labels = scales::dollar_format(\n          scale = 1/1000000000,\n          suffix = \" billion\")) +\n \n        labs(x = \"Year\",\n             y = \"Nominal GDP\",\n             title = \"Ethiopia GDP (Nominal, $USD) 2003-2022\",\n             caption = \"Source: https://www.worldometers.info/gdp/ethiopia-gdp/\") + \n        theme_bw() + \n        theme(axis.text.x = element_text(angle = 45, vjust = 0.5))\n\n\n\n\n\n\n\nHere is the second graph as well.\n\ngdp_tbl |&gt;\n  mutate(growth = ifelse(gdp_change &gt; 0, \"positve\", \"negative\")) |&gt; \n  ggplot(aes(x = factor(year), y = gdp_change, fill = growth)) + \n  geom_col() + \n  labs(title = \"GDP change (%)\",\n       y = \"Ethiopia GDP Change %\",\n       x = \"Year\",\n       fill = \"\",\n       caption = \"Source: https://www.worldometers.info/gdp/ethiopia-gdp/\") +\n  theme_bw() + \n  theme(axis.text.x = element_text(angle = 45, vjust = 0.5),\n        legend.position = \"none\")"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
     "title": "Gutama Girja Urago",
     "section": "",
-    "text": "Order By\n       Default\n         \n          Title\n        \n         \n          Date - Oldest\n        \n         \n          Date - Newest\n        \n         \n          Author\n        \n     \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nWeb Scraping in R: Import table directly from website\n\n\n\n\n\n\nweb scraping\n\n\nrvest\n\n\nggplot2\n\n\n\n\n\n\n\n\n\nMay 20, 2024\n\n\nGutama Girja Urago\n\n\n\n\n\n\n\n\n\n\n\n\nTable Template: Create your own {gt} table theme\n\n\n\n\n\n\ngt\n\n\ntable\n\n\n\n\n\n\n\n\n\nApr 2, 2024\n\n\nGutama Girja Urago\n\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "microData.html#what",
-    "href": "microData.html#what",
-    "title": "microData",
-    "section": "What?",
-    "text": "What?\nI am developing the microData package to search, browse, and extract metadata from microdata provided by the World Bank (WB), Food and Agriculture Organization (FAO), International Household Survey (IHSN), United Nations High Commissioner for Refugees (UNHCR), and International Labor Organization (ILO) via the NADA API. Any researcher who has used microdata from these organizations knows how difficult and time-consuming it is to understand and import these data and variables into R. If you are a user or plan to use micradata, then this is the life-saving R package for you."
-  },
-  {
-    "objectID": "microData.html#abstract",
-    "href": "microData.html#abstract",
-    "title": "microData",
-    "section": "Abstract",
-    "text": "Abstract\nThe purpose of microData is to simplify the process of extracting complex metadata from data provided by various organizations, thereby improving data preparation efficiency. At the moment, it supports five international organizations, namely the World Bank, FAO, UNHCR, IHSN, and ILO. It has the ability to search, filter, extract, and perform other tasks that you can do on the web, but it cannot download the data file itself. This is because, to my knowledge, there is currently no available documentation for use with the API. I think it is due to data license issue because there are few accessible datasets through the API. Furthermore, this package has the ability to assist in obtaining the names of variables from a specific survey, as well as their labels. It also allows you to select only variables that you are interested in and rename them, while assigning variable descriptions as label attributes. You can set custom names and labels for the dataset. Labels play a crucial role when exporting tables and graphs, as they save you from setting long names in manuscripts manually. Therefore, this package is available to alleviate all these difficulties.\nWarning: Since this package is still under development, I don’t recommend you use it in reproducible code, as any changes can happen in the future."
-  },
-  {
-    "objectID": "microData.html#installation",
-    "href": "microData.html#installation",
-    "title": "microData",
-    "section": "Installation",
-    "text": "Installation\nYou can install the development version of microData from GitHub with:\n# install.packages(\"devtools\")\ndevtools::install_github(\"GutUrago/microData\")"
-  },
-  {
-    "objectID": "microData.html#collection",
-    "href": "microData.html#collection",
-    "title": "microData",
-    "section": "Collection",
-    "text": "Collection\nAll organizations supported by this package use the NADA API to publish micro-data, which makes use of similar terminologies. Collection simply means gathering multiple related studies or data sets. To see all available collections, you can use collections() function.\n\nlibrary(microData)\n\ncollections(org = \"wb\") |&gt; \n  head() |&gt; \n  kableExtra::kable()\n\n\n\n\n\n\n\n\nid\nrepo_id\ntitle\n\n\n\n26\nafrobarometer\nAfrobarometer\n\n\n2\ndatafirst\nDataFirst , University of Cape Town, South Africa\n\n\n22\ndime\nDevelopment Impact Evaluation (DIME)\n\n\n1\nmicrodata_rg\nDevelopment Research Microdata\n\n\n4\nenterprise_surveys\nEnterprise Surveys\n\n\n30\nfao\nFAO - Food and Agriculture Microdata Catalog"
-  },
-  {
-    "objectID": "microData.html#searching",
-    "href": "microData.html#searching",
-    "title": "microData",
-    "section": "Searching",
-    "text": "Searching\nThis package gives all flexibility of searching on the web. For more see the documentation for search_catalog().\n\nsearch_catalog(\n  keyword = \"food\",\n  org = \"unhcr\",\n  from = 2015,\n  to = 2024,\n  country =\"Ethiopia\",\n  sort_by = \"year\",\n  sort_order = \"desc\", \n  results = 3) |&gt; \n  kableExtra::kable()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nidno\nformid\ntitle\ncountry\nauthoring_entity\nform_model\nyear_start\nyear_end\nrepositoryid\nrepo_title\ncreated\nchanged\nvarcount\ntotal_views\ntotal_downloads\nrank\ntype\nid\nvar_found\nurl\niso3\n\n\n\nUNHCR_ETH_2023_IKEA_v2.1\n3\nBaseline-Endline Panel Survey of Refugee Cooperative Members in UNHCR Sub-office Operational Area of Melkadida, Ethiopia, 2023\nEthiopia\nUNHCR\nlicensed\n2023\n2023\nEHA\nEast and Horn of Africa\n2023-10-17T15:25:32+00:00\n2024-05-30T11:36:57+00:00\n287\n2576\n0\n0.7357283\nsurvey\n1021\n12\nhttps://microdata.unhcr.org/index.php/catalog/1021\nETH\n\n\nWBG_ETH_2020_HFPSR_v01_M\n5\nMonitoring COVID-19 Impact on Refugees in Ethiopia: High-Frequency Phone Survey of Refugees 2020\nEthiopia\nWorld Bank-UNHCR Joint Data Center on Forced Displacement (JDC)\nremote\n2020\n2020\nEHA\nEast and Horn of Africa\n2022-07-05T11:29:36+00:00\n2022-07-05T11:29:53+00:00\n392\n3413\n0\n0.3826203\nsurvey\n704\n19\nhttps://microdata.unhcr.org/index.php/catalog/704\nETH\n\n\nUNHCR_ETH_SENS_2018_v2.1\n3\nStandardized Expanded Nutrition Survey (SENS) in Melkadida Refugee Camps - 2018\nEthiopia\nUNHCR\nlicensed\n2018\n2018\nEHA\nEast and Horn of Africa\n2019-07-15T13:21:23+00:00\n2019-12-05T13:38:14+00:00\n105\n4480\n212\n0.6687105\nsurvey\n114\n8\nhttps://microdata.unhcr.org/index.php/catalog/114\nETH\n\n\n\n\n\nThere is also handy function to check latest publications of these datasets.\n\nlatest_entries(org = \"wb\", limit = 3) |&gt; \n  kableExtra::kable()\n\n\n\n\n\n\n\n\n\n\n\n\nid\nidno\ntitle\ncountry\ncreated\nchanged\nurl\n\n\n\n6269\nCIV_2021_PEJEDEC-AFL_v01_M\nYouth Employment and Skills Development Project - Apprenticeship Firm Listing 2021\nCôte d’Ivoire\nJul-24-2024\nJul-24-2024\nhttps://microdata.worldbank.org/index.php/catalog/6269\n\n\n6268\nCIV_2014-2016_PEJEDEC-AFS_v01_M\nYouth Employment and Skills Development Project - Apprenticeship Firms Surveys 2014-2016\nCôte d’Ivoire\nJul-24-2024\nJul-24-2024\nhttps://microdata.worldbank.org/index.php/catalog/6268\n\n\n6267\nCIV_2014-2018_PEJEDEC-AYS_v01_M\nYouth Employment and Skills Development Project - Apprenticeship Youth Surveys 2014-2018\nCôte d’Ivoire\nJul-24-2024\nJul-24-2024\nhttps://microdata.worldbank.org/index.php/catalog/6267\n\n\n\n\n\nYou can use data_files to see the data files included in the study. Let’s see one of the popular survey on the WB. We can also use id number of the study, which is 3110 instead of the name (See next code chunk).\n\ndata_files(id = \"IND_2015_DHS_v01_M_v02_A_IPUMS\", org = \"wb\") |&gt; \n  kableExtra::kable()\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nid\nsid\nfile_id\nfile_name\ndescription\ncase_count\nvar_count\n\n\n\nB\n114450\n3110\nB\nIND2015-B.dat\nBirth records\n1315617\nNULL\n\n\nC\n114451\n3110\nC\nIND2015-C.dat\nChild records\n259627\nNULL\n\n\nH\n114453\n3110\nH\nIND2015-H.dat\nHousehold member records\n2869043\nNULL\n\n\nM\n114452\n3110\nM\nIND2015-M.dat\nMan records\n112122\nNULL\n\n\nW\n114449\n3110\nW\nIND2015-W.dat\nWoman records\n699686\nNULL\n\n\n\n\n\nHow about variables included in the data file? Of course you can check them as well.\n\nvariables(id = 3110, file_id = \"W\") |&gt; \n  head() |&gt; \n  kableExtra::kable()\n\n\n\n\n\n\n\n\n\n\n\nuid\nsid\nfid\nvid\nname\nlabl\n\n\n\n2609913\n3110\nW\nW_SAMPLE\nW_SAMPLE\nIPUMS-DHS sample identifier\n\n\n2609914\n3110\nW\nW_SAMPLESTR\nW_SAMPLESTR\nIPUMS-DHS sample identifier (string)\n\n\n2609915\n3110\nW\nW_COUNTRY\nW_COUNTRY\nCountry\n\n\n2609916\n3110\nW\nW_YEAR\nW_YEAR\nYear of sample\n\n\n2609917\n3110\nW\nW_IDHSPID\nW_IDHSPID\nUnique cross-sample respondent identifier\n\n\n2609918\n3110\nW\nW_IDHSHID\nW_IDHSHID\nUnique cross-sample household identifier"
-  },
-  {
-    "objectID": "microData.html#setting-attributes",
-    "href": "microData.html#setting-attributes",
-    "title": "microData",
-    "section": "Setting Attributes",
-    "text": "Setting Attributes\nVariables in microdata are often named something that has nothing to do with the variable except question order like this.\n\n\n\n\nv1\nv2\nv3\n\n\n\n22\nmale\nBE\n\n\n23\nfemale\nDE\n\n\n24\nmale\nBE\n\n\n25\nfemale\nDE\n\n\n\n\n\nThen you can prepare another data that contains metadata like this. It will be explained in detail in vignettes later.\n\n\n\n\nvars\nname\nlabs\n\n\n\nv1\nage\nAge\n\n\nv2\ngender\nGender\n\n\nv3\ncountry\nCountry\n\n\n\n\n\nYou can use set_attributes function to rename and set labels to these variables.\n\nmy_data &lt;- set_attributes(\n  mdt, \n  metadata,\n  old_name = \"vars\",\n  new_name = \"name\",\n  label = \"labs\")\nkableExtra::kable(my_data)\n\n\n\nage\ngender\ncountry\n\n\n\n22\nmale\nBE\n\n\n23\nfemale\nDE\n\n\n24\nmale\nBE\n\n\n25\nfemale\nDE\n\n\n\n\n\nlabels are also assigned.\n\nstr(my_data)\n\n'data.frame':   4 obs. of  3 variables:\n $ age    : int  22 23 24 25\n  ..- attr(*, \"label\")= chr \"Age\"\n $ gender : chr  \"male\" \"female\" \"male\" \"female\"\n  ..- attr(*, \"label\")= chr \"Gender\"\n $ country: chr  \"BE\" \"DE\" \"BE\" \"DE\"\n  ..- attr(*, \"label\")= chr \"Country\"\n\n\nMore coming soon!"
+    "text": "Use two columns, one side chart and text -"
   }
 ]

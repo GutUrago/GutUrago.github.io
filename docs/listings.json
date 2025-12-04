@@ -2,6 +2,8 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/blog/error-handling-in-r-functions/index.html",
+      "/blog/importance-of-functions-in-r/index.html",
       "/blog/web-craping-using-rvest/index.html",
       "/blog/gt-table-theme/index.html"
     ]

@@ -3,35 +3,42 @@ project:
   output-dir: docs
 
 website:
-  search: true
+  search:
+    location: navbar
+    type: textbox
   site-url: https://guturago.github.io
   google-analytics: "G-VVGT96KRKH" 
   title: "Gutama Girja Urago"
-  image: "./images/microData logo.png"
-  favicon: "./images/microData logo.png"
+  image: "./images/favicon.png"
+  favicon: "./images/favicon.png"
   navbar:
-    background: "#DCE3E3"
-    logo: "./images/microData logo.png"
+    background: "#00263A"
+    logo: "./images/favicon.png"
     title: "Home"
     left:
-      - href: blog.html
-        text: All Blog Posts
-      - href: microData.html
-        text: microData
-      - href: resume.html
-        text: Resume
-      - href: about.html
-        text: About
+      - text: Blogs
+        href: blog.html
+      - text: Packages
+        menu: 
+          - text: "ethiodate: Working with Ethiopian Dates in R"
+            href: https://guturago.github.io/ethiodate
+            target: "_blank"
+      - text: Resume
+        href: resume.html
+      - text: About
+        href: about.html
+        
     tools: 
-      - icon: github
+      - text: GutUrago Github
+        icon: github
         href: https://github.com/GutUrago
-        text: GutUrago Github
-      - icon: linkedin
+      - text: Linkedin
+        icon: linkedin
         href: https://www.linkedin.com/in/gutama-girja/
-        text: Linkedin
-      - icon: rss
+      - text: GutUrago Blog RSS
+        icon: rss
         href: blog.xml
-        text: GutUrago Blog RSS
+        
   page-footer: 
     center: 
       - text: "All rights are reserved!"
@@ -50,11 +57,11 @@ format:
     code-overflow: wrap
     code-block-bg: true
     theme: cosmo
-    css: styles.css
+    #css: styles.css
     toc: true
     grid: 
       content-mode: auto
 
 execute:
-  freeze: auto
-
+  freeze: true
+# set freeze to auto -> automatically render when source changes

@@ -5,24 +5,25 @@ format:
     css: ./css/index.css
 ---
 
-
 :::{.text-center .text-uppercase}
-## Welcome to my blogs! 
+## Hello, and welcome!
 :::
 
+Use two columns, one side chart and text - 
 
 ::::{.text-center}
-"When you’ve written the same code 3 times, write a function; when you’ve given the same in-person advice 3 times, write a blog post" David Robinson
+I'm Gutama Girja Urago, a data scientist and research analyst with a passion for turning complex data into clear insights. I specialize in using R, Quarto, and related open-source tools to build reproducible, insightful, and locally relevant data products—especially in the context of development research and survey data analysis.
+
+My work spans from developing custom R packages and dashboards to automating data workflows and building statistical tools. This site is my digital workspace, where I document what I build, reflect on what I learn, and share practical tools and ideas with the broader data community. Whether you're a fellow R user, a researcher, or someone working in development data, I hope you find something here that’s useful and inspiring.
 ::::
 
-
-
-### Check them out!{.text-center .text-uppercase}
+### Thanks for visiting!{.text-center .text-uppercase}
 
 ```{=html}
 <div class="btn">
 <button><a href="https://guturago.github.io/blog.html">Blogs</a></button>
-<button><a href="https://guturago.github.io/microData.html">Functions</a></button>
+<button><a href="https://guturago.github.io/function.html">Functions</a></button>
+<button><a href="https://guturago.github.io/resume.html">Resume</a></button>
 </div>
 
 ```
