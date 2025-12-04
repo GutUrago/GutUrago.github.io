@@ -8,20 +8,22 @@ website:
     type: textbox
   site-url: https://guturago.github.io
   google-analytics: "G-VVGT96KRKH" 
-  title: "Gutama Girja Urago"
+  #title: "Gutama Girja Urago"
   image: "./images/favicon.png"
   favicon: "./images/favicon.png"
   navbar:
     background: "#00263A"
     logo: "./images/favicon.png"
-    title: "Home"
-    left:
+    right:
       - text: Blogs
         href: blog.html
       - text: Packages
         menu: 
-          - text: "ethiodate: Working with Ethiopian Dates in R"
+          - text: "R package to work with Ethiopian dates"
             href: https://guturago.github.io/ethiodate
+            target: "_blank"
+          - text: "Stata module to provide Ethiopian date conversion utilities"
+            href: https://www.statalist.org/forums/forum/general-stata-discussion/general/1779202-ethiodate-stata-module-to-provide-ethiopian-date-conversion-utilities
             target: "_blank"
       - text: Resume
         href: resume.html

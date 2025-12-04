@@ -2,21 +2,21 @@
   {
     "objectID": "resume.html#gutama-girja-urago",
     "href": "resume.html#gutama-girja-urago",
-    "title": "Gutama Girja Urago",
+    "title": "",
     "section": "Gutama Girja Urago",
     "text": "Gutama Girja Urago"
   },
   {
-    "objectID": "resume.html#agricultural-economist",
-    "href": "resume.html#agricultural-economist",
-    "title": "Gutama Girja Urago",
-    "section": "Agricultural Economist",
-    "text": "Agricultural Economist\n\nContact info\nGutama Girja\nGutama Girja\nguturago.github.io\nAddis Ababa, Ethiopia\n\n\nSkills\n\nR\n\n\n\n\n\nSPSS\n\n\n\n\n\nSTATA\n\n\n\n\n\nQGIS\n\n\n\n\n\nLaTeX\n\n\n\n\n\nExcel\n\n\n\n\n\nHTML/CSS\n\n\n\n\n\nJavaScript\n\n\n\n\n\n\n\n\nLanguages\n\nEnglish\n\n\n\n\n\nAmharic\n\n\n\n\n\nTurkish\n\n\n\n\n\nOromo\n\n\n\n\n\nDutch"
+    "objectID": "resume.html#agricultural-economist-and-data-scientist",
+    "href": "resume.html#agricultural-economist-and-data-scientist",
+    "title": "",
+    "section": "Agricultural Economist and Data Scientist",
+    "text": "Agricultural Economist and Data Scientist\n\nContact info\nGutama Girja\nGutama Girja\nguturago.github.io\nAddis Ababa, Ethiopia\n\n\nSkills\n\n\nR\n\n\n\n\n\nPython\n\n\n\n\n\nSTATA\n\n\n\n\n\nSPSS\n\n\n\n\n\nQGIS\n\n\n\n\n\nExcel\n\n\n\n\n\nHTML/CSS\n\n\n\n\n\nLaTeX\n\n\n\n\n\nJavaScript\n\n\n\n\n\n\n\n\n\nLanguages\n\n\nEnglish\n\n\n\n\n\nAmharic\n\n\n\n\n\nTurkish\n\n\n\n\n\nOromo\n\n\n\n\n\nDutch"
   },
   {
     "objectID": "blog.html",
     "href": "blog.html",
-    "title": "Gutama Girja Urago",
+    "title": "",
     "section": "",
     "text": "Order By\n      Default\n      \n        Title\n      \n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Author\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\n\n\n\n\nError Handling in R: A Guide for Data Analysts\n\n\n\ndplyr\n\nR programming\n\nerror-handling\n\nbest-practices\n\n\n\n\n\n\n\n\n\nMay 15, 2025\n\n\nGutama Girja Urago\n\n\n\n\n\n\n\n\n\n\n\n\nImportance of R Functions: A Guide for Data Analysts\n\n\n\ndplyr\n\n\n\n\n\n\n\n\n\nMay 15, 2025\n\n\nGutama Girja Urago\n\n\n\n\n\n\n\n\n\n\n\n\nWeb Scraping in R: Import table directly from website\n\n\n\nweb scraping\n\nrvest\n\nggplot2\n\n\n\n\n\n\n\n\n\nMay 20, 2024\n\n\nGutama Girja Urago\n\n\n\n\n\n\n\n\n\n\n\n\nTable Template: Create your own {gt} table theme\n\n\n\ngt\n\ntable\n\n\n\n\n\n\n\n\n\nApr 2, 2024\n\n\nGutama Girja Urago\n\n\n\n\n\nNo matching items"
   },
@@ -84,11 +84,11 @@
     "text": "5. When to Use stop(), warning(), or message()\n\n\n\n\n\n\n\n\n\nFunction\nStops execution\nUser notification\nIdeal for\n\n\n\nstop()\n✅\n🚨\nFatal input errors\n\n\nwarning()\n❌\n⚠️\nSoft alerts\n\n\nmessage()\n❌\n💬 (quiet alerts)\nInformational logs\n\n\n\nUse each intentionally to design an experience that matches the severity of the situation."
   },
   {
-    "objectID": "blog/error-handling-in-r-functions/index.html#final-thoughts",
-    "href": "blog/error-handling-in-r-functions/index.html#final-thoughts",
+    "objectID": "blog/error-handling-in-r-functions/index.html#conclusion",
+    "href": "blog/error-handling-in-r-functions/index.html#conclusion",
     "title": "Error Handling in R: A Guide for Data Analysts",
-    "section": "Final Thoughts",
-    "text": "Final Thoughts\nEffective error handling makes your R code safer, more transparent, and more professional—especially when shared in collaborative settings or deployed in production dashboards and packages.\nStart small: add one or two checks to your most-used functions, and grow from there. As your codebase scales, you’ll thank yourself for the early investment in resilience.\n\nHave thoughts or questions? Feel free to reach out or leave a comment below.\n\nHappy coding!\n— Gutama Girja Urago"
+    "section": "Conclusion",
+    "text": "Conclusion\nEffective error handling makes your R code safer, more transparent, and more professional—especially when shared in collaborative settings or deployed in production dashboards and packages.\nStart small: add one or two checks to your most-used functions, and grow from there. As your codebase scales, you’ll thank yourself for the early investment in resilience.\nHappy coding!"
   },
   {
     "objectID": "about.html",
@@ -212,8 +212,8 @@
   {
     "objectID": "index.html",
     "href": "index.html",
-    "title": "Gutama Girja Urago",
+    "title": "",
     "section": "",
-    "text": "Use two columns, one side chart and text -"
+    "text": "I am Gutama Girja Urago, a data scientist and research analyst with an academic background in agricultural economics, spanning multiple continents and enriched by hands-on research and teaching experience at diverse universities and research institutions. My academic interests focus on production efficiency, food security, and climate change, where I combine rigorous quantitative analysis with practical insights to address pressing agricultural and development challenges. I am proficient in R, Python, Stata, and QGIS, and skilled in data engineering, API integration, microdata management, survey analytics, geospatial analysis, reproducible research, and statistical programming. I have designed and published several R packages, including ethiodate for Ethiopian date handling and nadaverse for programmatic access to global microdata, reflecting my commitment to building open-source tools that enhance research capacity and data accessibility. I am passionate about transforming complex datasets into actionable insights, producing high-quality analytical reports and academic manuscripts, and promoting transparency, reproducibility, and local relevance in research. Beyond technical expertise, I enjoy mentoring and collaborating with researchers and analysts to strengthen data literacy and foster evidence-based decision-making in agriculture, development, and policy.\n\n\nContact me"
   }
 ]

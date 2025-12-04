@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Gutama Girja Urago">
 <meta name="dcterms.date" content="2025-05-15">
-<title>Error Handling in R: A Guide for Data Analysts – Gutama Girja Urago</title>
+<title>Error Handling in R: A Guide for Data Analysts</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -113,16 +113,13 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
     <img src="../.././images/favicon.png" alt="" class="navbar-logo"></a>
-    <a class="navbar-brand" href="../../index.html">
-    <span class="navbar-title">Home</span>
-    </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
   <span class="navbar-toggler-icon"></span>
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
-            <ul class="navbar-nav navbar-nav-scroll me-auto">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
 <li class="nav-item">
     <a class="nav-link" href="../../blog.html"> 
 <span class="menu-text">Blogs</span></a>
@@ -131,10 +128,14 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
     <a class="nav-link dropdown-toggle" href="#" id="nav-menu-packages" role="link" data-bs-toggle="dropdown" aria-expanded="false">
  <span class="menu-text">Packages</span>
     </a>
-    <ul class="dropdown-menu" aria-labelledby="nav-menu-packages">
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-packages">
 <li>
     <a class="dropdown-item" href="https://guturago.github.io/ethiodate" target="_blank">
- <span class="dropdown-text">ethiodate: Working with Ethiopian Dates in R</span></a>
+ <span class="dropdown-text">R package to work with Ethiopian dates</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="https://www.statalist.org/forums/forum/general-stata-discussion/general/1779202-ethiodate-stata-module-to-provide-ethiopian-date-conversion-utilities" target="_blank">
+ <span class="dropdown-text">Stata module to provide Ethiopian date conversion utilities</span></a>
   </li>  
     </ul>
 </li>
@@ -206,7 +207,7 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
   <li><a href="#handling-runtime-errors-with-try-and-trycatch" id="toc-handling-runtime-errors-with-try-and-trycatch" class="nav-link" data-scroll-target="#handling-runtime-errors-with-try-and-trycatch">3. Handling Runtime Errors with <code>try()</code> and <code>tryCatch()</code></a></li>
   <li><a href="#writing-informative-error-messages" id="toc-writing-informative-error-messages" class="nav-link" data-scroll-target="#writing-informative-error-messages">4. Writing Informative Error Messages</a></li>
   <li><a href="#when-to-use-stop-warning-or-message" id="toc-when-to-use-stop-warning-or-message" class="nav-link" data-scroll-target="#when-to-use-stop-warning-or-message">5. When to Use <code>stop()</code>, <code>warning()</code>, or <code>message()</code></a></li>
-  <li><a href="#final-thoughts" id="toc-final-thoughts" class="nav-link" data-scroll-target="#final-thoughts">Final Thoughts</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
   </ul></nav>
     </div>
 <!-- main -->
@@ -355,14 +356,10 @@ returning NA for those cases.</code></pre>
 </tbody>
 </table>
 <p>Use each intentionally to design an experience that matches the severity of the situation.</p>
-<hr></section><section id="final-thoughts" class="level2"><h2 class="anchored" data-anchor-id="final-thoughts">Final Thoughts</h2>
+<hr></section><section id="conclusion" class="level2"><h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
 <p>Effective error handling makes your R code <strong>safer, more transparent, and more professional</strong>—especially when shared in collaborative settings or deployed in production dashboards and packages.</p>
 <p>Start small: add one or two checks to your most-used functions, and grow from there. As your codebase scales, you’ll thank yourself for the early investment in resilience.</p>
-<hr>
-<p><em>Have thoughts or questions? Feel free to reach out or leave a comment below.</em></p>
-<hr>
-<p>Happy coding!<br>
-— <em>Gutama Girja Urago</em></p>
+<p>Happy coding!</p>
 
 
 </section></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

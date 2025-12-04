@@ -10,20 +10,22 @@ format:
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 ```
 
+<!-- Main container starts -->
 ::: {.grid}
 
+<!-- Left section starts -->
 :::: {.g-col-sm-4 .left-section}
 
+<!-- Profile photo starts -->
 ::::{.profile .text-center}
 
-![](./images/resume_img.jpg)
-
+![](./images/profile_new.jpg)
+<!-- Profile photo ends -->
 ::::
 
 ## Gutama Girja Urago {.name}
 
-## Agricultural Economist {.career}
-
+## Agricultural Economist and Data Scientist {.career}
 
 
 
@@ -40,6 +42,7 @@ format:
 
 ### Skills {.main-title .skills}
 
+<!-- Skills section starts -->
 :::{.skill-lists}
 
 R
@@ -49,10 +52,10 @@ R
 ::::
 :::
 
-SPSS
+Python
 
 :::{.progress-bar}
-::::{.progress .spss-progress}
+::::{.progress .python-progress}
 ::::
 :::
 
@@ -63,17 +66,17 @@ STATA
 ::::
 :::
 
+SPSS
+
+:::{.progress-bar}
+::::{.progress .spss-progress}
+::::
+:::
+
 QGIS
 
 :::{.progress-bar}
 ::::{.progress .qgis-progress}
-::::
-:::
-
-LaTeX
-
-:::{.progress-bar}
-::::{.progress .latex-progress}
 ::::
 :::
 
@@ -91,6 +94,13 @@ HTML/CSS
 ::::
 :::
 
+LaTeX
+
+:::{.progress-bar}
+::::{.progress .latex-progress}
+::::
+:::
+
 JavaScript
 
 :::{.progress-bar}
@@ -98,11 +108,13 @@ JavaScript
 ::::
 :::
 
+<!-- Skills section ends -->
 :::
 
 
 ### Languages {.main-title .languages}
 
+<!-- Languages section starts -->
 :::{.skill-lists}
 
 English
@@ -141,18 +153,18 @@ Dutch
 :::
 
 
-
+<!-- Languages section ends -->
 :::
 
-
-
-
-
+<!-- left section ends -->
 ::::
 
+
+<!-- Right section starts -->
 :::: {.g-col-sm-8 .right-section}
 
 ```{=html}
+<!-- CONSIDER INCLIDING AS EXTENAL HTML -->
 <section class="right-section">
             <div class="right-main-content">
                 <section class="experince sect">
@@ -348,12 +360,10 @@ Dutch
         </section>
 ```
 
-
+<!-- Right section ends -->
 ::::
 
 
 
-
+<!-- Main container ends -->
 :::
-
-

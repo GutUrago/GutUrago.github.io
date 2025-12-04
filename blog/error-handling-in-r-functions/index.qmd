@@ -140,17 +140,11 @@ Use each intentionally to design an experience that matches the severity of the 
 
 ---
 
-## Final Thoughts
+## Conclusion
 
 Effective error handling makes your R code **safer, more transparent, and more professional**—especially when shared in collaborative settings or deployed in production dashboards and packages.
 
 Start small: add one or two checks to your most-used functions, and grow from there. As your codebase scales, you’ll thank yourself for the early investment in resilience.
 
----
-
-*Have thoughts or questions? Feel free to reach out or leave a comment below.*
-
----
 
 Happy coding!  
-— *Gutama Girja Urago*
