@@ -1,0 +1,36 @@
+# Packages shown on software.qmd, in the order written here.
+# cran: CRAN package name (adds install line, badges, CRAN and DOI links)
+# ssc: SSC module name and ssc_url: its RePEc page (adds the Stata install line)
+
+- name: ctoclient
+  icon: bi-cloud-download
+  since: 2026
+  tagline: "A data pipeline for SurveyCTO in R and Stata"
+  description: "An R client for the SurveyCTO REST API, built on httr2. It downloads form submissions and tidies them: fields get their proper types, geopoints are split and select_multiple columns are filled in. It also handles encrypted forms, attachments and server datasets, and writes Stata labelling do-files. The Stata module uses the same command names."
+  functions: ["cto_connect()", "cto_form_data()", "cto_form_data_attachment()", "cto_form_dofile()"]
+  cran: ctoclient
+  ssc: ctoclient
+  ssc_url: "https://ideas.repec.org/c/boc/bocode/s459901.html"
+  docs: "https://guturago.github.io/ctoclient/"
+  github: "https://github.com/GutUrago/ctoclient"
+
+- name: ethiodate
+  icon: bi-calendar3
+  since: 2025
+  tagline: "Ethiopian dates in R and Stata"
+  description: "Ethiopian dates that behave like base R Date objects. The package converts between the Ethiopian and Gregorian calendars, parses dates written in common formats, checks leap years and the thirteenth month (Pagume), and works with dplyr, ggplot2 and lubridate. The core is written in C++ with Rcpp. The Stata module does the same conversions."
+  functions: ["eth_date()", "eth_parse_date()", "eth_weekday()", "scale_x_ethdate()"]
+  cran: ethiodate
+  ssc: ethiodate
+  ssc_url: "https://ideas.repec.org/c/boc/bocode/s459468.html"
+  docs: "https://guturago.github.io/ethiodate/"
+  github: "https://github.com/GutUrago/ethiodate"
+
+- name: nadaverse
+  icon: bi-search
+  since: 2025
+  tagline: "Search the world's microdata catalogs from R"
+  description: "Searches microdata catalogs that run on NADA, including those of the World Bank, IHSN, FAO, UNHCR and ILO, and returns study metadata, file lists and data dictionaries as data frames. Built on httr2."
+  functions: ["catalogs()", "search_catalog()", "data_files()", "data_dictionary()"]
+  cran: nadaverse
+  github: "https://github.com/GutUrago/nadaverse"

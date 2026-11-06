@@ -1,0 +1,27 @@
+```{=html}
+<div class="sw-list">
+<% for (const item of items) { %>
+<article class="sw-card" <%= metadataAttrs(item) %>>
+<div class="sw-main">
+<div class="sw-head">
+<span class="sw-icon"><i class="bi <%= item.icon %>"></i></span>
+<div>
+<h2 class="sw-name"><%= item.name %></h2>
+<p class="sw-tagline"><%= item.tagline %></p>
+</div>
+</div>
+<div class="sw-platforms"><% if (item.cran) { %><span class="sw-pill sw-pill-r">R &middot; CRAN</span><% } %><% if (item.ssc) { %><span class="sw-pill sw-pill-stata">Stata &middot; SSC</span><% } %><span class="sw-since">Since <%= item.since %></span></div>
+<% if (item.cran) { %><div class="sw-badges"><img src="https://www.r-pkg.org/badges/version/<%= item.cran %>" alt="CRAN version of <%= item.name %>" loading="lazy"><img src="https://cranlogs.r-pkg.org/badges/grand-total/<%= item.cran %>" alt="Total CRAN downloads of <%= item.name %>" loading="lazy"></div><% } %>
+<p class="sw-desc"><%= item.description %></p>
+<div class="sw-fns"><% for (const f of (item.functions || [])) { %><code><%= f %></code><% } %></div>
+<div class="sw-links"><% if (item.docs) { %><a class="pub-btn" href="<%= item.docs %>"><i class="bi bi-book"></i> Docs</a><% } %><% if (item.cran) { %><a class="pub-btn" href="https://CRAN.R-project.org/package=<%= item.cran %>"><i class="bi bi-box-seam"></i> CRAN</a><% } %><% if (item.ssc_url) { %><a class="pub-btn" href="<%= item.ssc_url %>"><i class="bi bi-box-seam"></i> SSC</a><% } %><% if (item.github) { %><a class="pub-btn" href="<%= item.github %>"><i class="bi bi-github"></i> GitHub</a><% } %><% if (item.cran) { %><a class="pub-btn" href="https://doi.org/10.32614/CRAN.package.<%= item.cran %>"><i class="bi bi-link-45deg"></i> DOI</a><% } %></div>
+</div>
+<div class="sw-install">
+<span class="sw-install-label">Install</span>
+<% if (item.cran) { %><span class="sw-lang">R</span><pre><code>install.packages("<%= item.cran %>")</code></pre><% } %>
+<% if (item.ssc) { %><span class="sw-lang">Stata</span><pre><code>ssc install <%= item.ssc %></code></pre><% } %>
+</div>
+</article>
+<% } %>
+</div>
+```

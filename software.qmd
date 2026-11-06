@@ -1,0 +1,22 @@
+---
+title: "Software"
+subtitle: "Open-source R and Stata tools for survey and microdata work"
+title-block-banner: true
+toc: false
+listing:
+  - id: sw-packages
+    contents: data/software.yml
+    template: assets/software.ejs
+    sort: false
+---
+
+::: {.research-intro}
+I write these tools for problems that keep coming up in survey work: getting data out of SurveyCTO, handling dates recorded in the Ethiopian calendar, and finding microdata in public catalogs. Three are R packages on CRAN and two are Stata modules on SSC. The R packages are MIT-licensed and the source code is on [GitHub](https://github.com/GutUrago).
+:::
+
+::: {#sw-packages}
+:::
+
+::: {.sw-note}
+Found a bug or want a feature? Open an issue on the package's GitHub page.
+:::
