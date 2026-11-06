@@ -1,45 +1,138 @@
 ---
 title: "Importance of R Functions: A Guide for Data Analysts"
-description: "Why analysis code in R should be built from functions, with examples for summary statistics and data transformation."
+description: "What a function is, how to write one, and when it pays off, with step-by-step examples for summary statistics and grouped summaries."
 author: "Gutama Girja Urago"
 date: "2025-05-15"
-categories: [dplyr]
-editor_options: 
+date-modified: "2026-11-06"
+categories: [R programming, functions, dplyr, beginners]
+editor_options:
   chunk_output_type: console
 ---
 
-### Importance of R Functions: A Guide for Data Analysts
+If you have ever copied a block of R code, pasted it further down your script and changed one variable name, you have already met the problem that functions solve. Copy-paste works for a while. Then you fix a mistake in one copy and forget the other two, and the results from different parts of your script no longer agree.
 
-R is a powerful tool for data analysis, statistical computing, and data visualization. However, to fully harness its potential, one must master the use of functions. Functions are the building blocks of R programming. They allow for modular, reusable, and maintainable code that simplifies complex analyses, reduces redundancy, and enhances overall efficiency.
+A function lets you write that block once, give it a name, and run it on any input you like. This post walks through how functions work in R, from a two-line example to a grouped summary with dplyr. You only need to know how to run code in RStudio and what a data frame is.
 
-### Why Use Functions in R?
+::: {.callout-note}
+## What you will learn
 
-1. **Code Reusability:** Instead of repeating the same set of instructions, you can encapsulate them in a function and call it whenever needed.
+- what a function is and the parts every R function has
+- how arguments, default values and return values work
+- why code inside a function does not change your workspace
+- when it is worth turning code into a function
+- two practical examples: summary statistics for any column, and grouped summaries with dplyr
+:::
 
-2. **Modularity:** Functions break down complex problems into smaller, manageable pieces, making the code easier to read and debug.
+## What is a function?
 
-3. **Scalability:** Once a function is defined, it can be applied to different datasets or parameters, reducing the need for repetitive coding.
+You use functions all the time already. `mean()`, `sum()`, `read.csv()` and `library()` are all functions. Each one takes some input, does a job and gives you something back:
 
-4. **Debugging and Testing:** Isolating functionality into separate functions makes it easier to identify and resolve errors.
+```{r}
+mean(c(2, 4, 9))
+```
 
-### Basic Function Structure in R
+Here the input is the vector `c(2, 4, 9)`, the job is "add the numbers and divide by how many there are", and the output is `5`. The inputs a function accepts are called **arguments**, and the thing it hands back is its **return value**.
 
-R functions have a simple yet powerful structure. Here’s a basic example:
+Writing your own function means doing the same thing for a job that R does not have a ready-made function for.
+
+## Your first function
+
+Here is a function that adds two numbers:
 
 ```{r}
 add_numbers <- function(x, y) {
   result <- x + y
   return(result)
 }
+```
+
+Running this chunk prints nothing. That is expected: you have *defined* the function, the same way `a <- 5` defines a variable without printing it. Line by line:
+
+- `add_numbers <-` stores the function under a name, just like any other object in R.
+- `function(x, y)` says "this is a function, and it takes two arguments called `x` and `y`".
+- Everything between `{` and `}` is the **body**: the code that runs each time you use the function.
+- `return(result)` sends the value of `result` back to whoever called the function.
+
+Now you can **call** it:
+
+```{r}
+add_numbers(5, 2)
+add_numbers(x = 10, y = 3)
+```
+
+The second call names the arguments. Both styles work. Naming them makes longer calls easier to read and lets you give them in any order.
+
+### You do not always need `return()`
+
+An R function automatically returns the value of the last line it runs, so this shorter version does exactly the same thing:
+
+```{r}
+add_numbers <- function(x, y) {
+  x + y
+}
 
 add_numbers(5, 2)
 ```
 
-This function takes two arguments, `x` and `y`, and returns their sum. The use of `return()` is optional but recommended for clarity.
+I still use `return()` in longer functions, because it makes it obvious where the result comes from. In short functions like this one, most R users leave it out.
 
-### Practical Example: Calculating the Mean and Standard Deviation
+## Default values
 
-Suppose you are analyzing a dataset and frequently need to calculate the mean and standard deviation of numeric columns. Instead of repeating the calculations, you can write a reusable function:
+You can give an argument a default, which is used when the caller does not supply that argument:
+
+```{r}
+add_numbers <- function(x, y = 10) {
+  x + y
+}
+
+add_numbers(5)      # y is not given, so the default 10 is used
+add_numbers(5, 1)   # y is given, so the default is ignored
+```
+
+You have used defaults without noticing. `mean()` has an argument `na.rm` that defaults to `FALSE`, which is why `mean(c(1, NA))` returns `NA` until you write `na.rm = TRUE`.
+
+## What happens inside a function stays inside
+
+Variables created inside a function exist only while the function runs. They do not appear in your workspace afterwards:
+
+```{r}
+add_numbers <- function(x, y) {
+  result <- x + y
+  result
+}
+
+add_numbers(5, 2)
+exists("result")
+```
+
+`exists("result")` is `FALSE` because `result` lived inside the function and disappeared when the function finished. This is a good thing. A function cannot accidentally overwrite an object called `result` that you created somewhere else in your script.
+
+## When should you write a function?
+
+A common rule of thumb, from [*R for Data Science*](https://r4ds.hadley.nz/functions.html), is to write a function once you have copied and pasted the same block of code more than twice. Look at this:
+
+```{r}
+mean(mtcars$mpg, na.rm = TRUE)
+sd(mtcars$mpg, na.rm = TRUE)
+
+mean(mtcars$hp, na.rm = TRUE)
+sd(mtcars$hp, na.rm = TRUE)
+
+mean(mtcars$wt, na.rm = TRUE)
+sd(mtcars$mpg, na.rm = TRUE)   # oops: copied from above and not changed to wt
+```
+
+The last line is a real copy-paste bug. It runs without any error and gives you the standard deviation of `mpg` while you think you are looking at `wt`. Bugs like this are hard to spot because nothing looks broken.
+
+Turning repeated code into a function helps in three practical ways:
+
+- **One place to fix things.** If the calculation needs to change, you change it once.
+- **Fewer copy-paste slips.** You only type the column name, so there is less to forget.
+- **Clearer scripts.** A good function name, such as `calc_stats()`, tells the reader what the code does without making them read every line.
+
+## Example 1: mean and standard deviation of any column
+
+Here is the repeated code above, written once as a function:
 
 ```{r}
 calc_stats <- function(data, column) {
@@ -48,30 +141,120 @@ calc_stats <- function(data, column) {
   list(mean = mean_val, sd = sd_val)
 }
 
-# Example usage
 calc_stats(mtcars, "mpg")
 ```
 
-### Advanced Example: Data Transformation Function
+Two details are worth slowing down for:
 
-Imagine you are frequently transforming data by filtering, summarizing, and plotting. You can create a function that performs these steps efficiently:
+- `data[[column]]` pulls out one column of a data frame when the column name is stored as text. `mtcars[["mpg"]]` is the same as `mtcars$mpg`, but the `[[ ]]` form works when the name is inside a variable, which is exactly the situation inside a function.
+- `list(mean = mean_val, sd = sd_val)` returns two values at once by packing them into a named list. You can pull one out with `$`:
 
 ```{r}
-library(dplyr)
-
-analyze_data <- function(data, group_col, num_col) {
-  summary <- data %>%
-    group_by(.data[[group_col]]) %>%
-    summarize(mean_value = mean(.data[[num_col]], na.rm = TRUE),
-              sd_value = sd(.data[[num_col]], na.rm = TRUE))
-  return(summary)
-}
-
-# Example usage
-data <- data.frame(group = rep(c("A", "B"), each = 5), value = rnorm(10))
-analyze_data(data, "group", "value")
+mpg_stats <- calc_stats(mtcars, "mpg")
+mpg_stats$mean
 ```
 
-### Conclusion
+### A small improvement: return a data frame
 
-Functions are essential for writing clean, reusable, and efficient R code. They not only improve code readability but also enhance overall analysis workflow. By incorporating functions in your R scripts, you elevate your coding practice, making your code more robust, modular, and easier to maintain. In upcoming posts, we'll delve deeper into advanced function techniques, such as error handling, vectorization, and functional programming in R.
+A list is fine for one column, but when you summarise several columns you usually want a table. If the function returns a one-row data frame, the results stack neatly:
+
+```{r}
+calc_stats <- function(data, column) {
+  values <- data[[column]]
+  data.frame(
+    variable = column,
+    mean = mean(values, na.rm = TRUE),
+    sd = sd(values, na.rm = TRUE)
+  )
+}
+
+calc_stats(mtcars, "mpg")
+```
+
+Now run it on several columns at once:
+
+```{r}
+columns <- c("mpg", "hp", "wt")
+results <- lapply(columns, function(col) calc_stats(mtcars, col))
+do.call(rbind, results)
+```
+
+`lapply()` calls `calc_stats()` once for each column name and collects the three small data frames in a list. `do.call(rbind, results)` then stacks them into one table. The copy-paste bug from earlier cannot happen here, because each column name is typed exactly once.
+
+## Example 2: grouped summaries with dplyr
+
+A very common task in survey work is "give me the mean and standard deviation of this variable for each group", for example yield by region or income by household type. The dplyr package is built for this.
+
+To have something to work with, let's create a small made-up dataset. `rnorm()` draws random numbers from a normal distribution, and `set.seed()` makes sure you get the same "random" numbers every time you run the code, so your output matches mine:
+
+```{r}
+#| message: false
+library(dplyr)
+
+set.seed(123)
+scores <- data.frame(
+  group = rep(c("A", "B"), each = 5),
+  value = rnorm(10)
+)
+
+scores
+```
+
+Now the function:
+
+```{r}
+analyze_data <- function(data, group_col, num_col) {
+  data |>
+    group_by(.data[[group_col]]) |>
+    summarize(
+      mean_value = mean(.data[[num_col]], na.rm = TRUE),
+      sd_value = sd(.data[[num_col]], na.rm = TRUE)
+    )
+}
+
+analyze_data(scores, "group", "value")
+```
+
+What is going on:
+
+- `|>` is the pipe. It passes the result of one step into the next, so `data |> group_by(...)` means "take `data`, then group it". You may also see `%>%` in older code; for this purpose they do the same thing.
+- `group_by()` splits the data into groups, and `summarize()` computes one row of results per group.
+- `.data[[group_col]]` is how you tell dplyr "use the column whose name is stored in `group_col`". Inside dplyr you normally write bare column names like `group`, but here the name arrives as text, so `.data[[ ]]` does the lookup. It is the dplyr version of `data[[column]]` from Example 1.
+
+Because the column names are arguments, the same function works on any dataset. Fuel efficiency by number of cylinders in `mtcars`:
+
+```{r}
+analyze_data(mtcars, "cyl", "mpg")
+```
+
+### Passing bare column names with `{{ }}`
+
+If you would rather call the function with bare names, like you do with dplyr itself, wrap the arguments in double curly braces (dplyr calls this "embracing"):
+
+```{r}
+analyze_data2 <- function(data, group_col, num_col) {
+  data |>
+    group_by({{ group_col }}) |>
+    summarize(
+      mean_value = mean({{ num_col }}, na.rm = TRUE),
+      sd_value = sd({{ num_col }}, na.rm = TRUE)
+    )
+}
+
+analyze_data2(mtcars, cyl, mpg)
+```
+
+Use `.data[[ ]]` when the column names come as text, for example from a vector of names you loop over. Use `{{ }}` when you want the function to feel like a normal dplyr verb.
+
+## Common mistakes
+
+- **"could not find function".** You called the function before running the chunk that defines it. Run the definition first; in a new R session you have to run it again.
+- **Using objects from outside the function.** If the body refers to a data frame that is not one of the arguments, the function only works in the script where that object happens to exist. Pass everything the function needs as an argument.
+- **Reusing a common name.** Calling your own function `mean` or `c`, or a data frame `data`, hides R's own version and leads to confusing errors. That is why the example dataset above is called `scores`.
+- **Expecting more than the last value back.** Only the last value (or what you pass to `return()`) comes out. If you need several results, return a list or a data frame, as in Example 1.
+
+## Recap
+
+A function is a named piece of code with inputs (arguments) and an output (the return value). You create one with `function()`, give arguments defaults with `=`, and get results back from the last line or from `return()`. Objects created inside a function stay inside it. Once you notice yourself pasting the same block a third time, that block is a good candidate for a function, and the examples above show how far one short function can take you: from one column to many, and from one dataset to any dataset.
+
+The functions in this post trust their inputs. Give `calc_stats()` a column that does not exist and it fails with a confusing message. The next post, [Error Handling in R](../error-handling-in-r-functions/index.qmd), shows how to add checks so your functions fail early with a message that says what went wrong.

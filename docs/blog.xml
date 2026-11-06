@@ -683,18 +683,59 @@ font-style: inherit;">}</span></span></code></pre></div></div>
   <title>Importance of R Functions: A Guide for Data Analysts</title>
   <dc:creator>Gutama Girja Urago</dc:creator>
   <link>https://guturago.github.io/blog/importance-of-functions-in-r/</link>
-  <description><![CDATA[ <section id="importance-of-r-functions-a-guide-for-data-analysts" class="level3"><h3 class="anchored" data-anchor-id="importance-of-r-functions-a-guide-for-data-analysts">Importance of R Functions: A Guide for Data Analysts</h3>
-<p>R is a powerful tool for data analysis, statistical computing, and data visualization. However, to fully harness its potential, one must master the use of functions. Functions are the building blocks of R programming. They allow for modular, reusable, and maintainable code that simplifies complex analyses, reduces redundancy, and enhances overall efficiency.</p>
-</section><section id="why-use-functions-in-r" class="level3"><h3 class="anchored" data-anchor-id="why-use-functions-in-r">Why Use Functions in R?</h3>
-<ol type="1">
-<li><p><strong>Code Reusability:</strong> Instead of repeating the same set of instructions, you can encapsulate them in a function and call it whenever needed.</p></li>
-<li><p><strong>Modularity:</strong> Functions break down complex problems into smaller, manageable pieces, making the code easier to read and debug.</p></li>
-<li><p><strong>Scalability:</strong> Once a function is defined, it can be applied to different datasets or parameters, reducing the need for repetitive coding.</p></li>
-<li><p><strong>Debugging and Testing:</strong> Isolating functionality into separate functions makes it easier to identify and resolve errors.</p></li>
-</ol></section><section id="basic-function-structure-in-r" class="level3"><h3 class="anchored" data-anchor-id="basic-function-structure-in-r">Basic Function Structure in R</h3>
-<p>R functions have a simple yet powerful structure. Here’s a basic example:</p>
+  <description><![CDATA[ <p>If you have ever copied a block of R code, pasted it further down your script and changed one variable name, you have already met the problem that functions solve. Copy-paste works for a while. Then you fix a mistake in one copy and forget the other two, and the results from different parts of your script no longer agree.</p>
+<p>A function lets you write that block once, give it a name, and run it on any input you like. This post walks through how functions work in R, from a two-line example to a grouped summary with dplyr. You only need to know how to run code in RStudio and what a data frame is.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>What you will learn
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>what a function is and the parts every R function has</li>
+<li>how arguments, default values and return values work</li>
+<li>why code inside a function does not change your workspace</li>
+<li>when it is worth turning code into a function</li>
+<li>two practical examples: summary statistics for any column, and grouped summaries with dplyr</li>
+</ul>
+</div>
+</div>
+<section id="what-is-a-function" class="level2"><h2 class="anchored" data-anchor-id="what-is-a-function">What is a function?</h2>
+<p>You use functions all the time already. <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code>, <code><a href="https://rdrr.io/r/base/sum.html">sum()</a></code>, <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code> and <code><a href="https://rdrr.io/r/base/library.html">library()</a></code> are all functions. Each one takes some input, does a job and gives you something back:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">9</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+<p>Here the input is the vector <code>c(2, 4, 9)</code>, the job is “add the numbers and divide by how many there are”, and the output is <code>5</code>. The inputs a function accepts are called <strong>arguments</strong>, and the thing it hands back is its <strong>return value</strong>.</p>
+<p>Writing your own function means doing the same thing for a job that R does not have a ready-made function for.</p>
+</section><section id="your-first-function" class="level2"><h2 class="anchored" data-anchor-id="your-first-function">Your first function</h2>
+<p>Here is a function that adds two numbers:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">add_numbers</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -735,6 +776,85 @@ background-color: null;
 font-style: inherit;">)</span></span>
 <span><span class="op" style="color: #5E5E5E;
 background-color: null;
+font-style: inherit;">}</span></span></code></pre></div></div>
+</div>
+<p>Running this chunk prints nothing. That is expected: you have <em>defined</em> the function, the same way <code>a &lt;- 5</code> defines a variable without printing it. Line by line:</p>
+<ul>
+<li>
+<code>add_numbers &lt;-</code> stores the function under a name, just like any other object in R.</li>
+<li>
+<code>function(x, y)</code> says “this is a function, and it takes two arguments called <code>x</code> and <code>y</code>”.</li>
+<li>Everything between <code>{</code> and <code>}</code> is the <strong>body</strong>: the code that runs each time you use the function.</li>
+<li>
+<code>return(result)</code> sends the value of <code>result</code> back to whoever called the function.</li>
+</ul>
+<p>Now you can <strong>call</strong> it:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_numbers</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_numbers</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span>x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, y <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 13</code></pre>
+</div>
+</div>
+<p>The second call names the arguments. Both styles work. Naming them makes longer calls easier to read and lets you give them in any order.</p>
+<section id="you-do-not-always-need-return" class="level3"><h3 class="anchored" data-anchor-id="you-do-not-always-need-return">You do not always need <code>return()</code>
+</h3>
+<p>An R function automatically returns the value of the last line it runs, so this shorter version does exactly the same thing:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">add_numbers</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">x</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">y</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span>  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">y</span></span>
+<span><span class="op" style="color: #5E5E5E;
+background-color: null;
 font-style: inherit;">}</span></span>
 <span></span>
 <span><span class="fu" style="color: #4758AB;
@@ -752,11 +872,281 @@ font-style: inherit;">)</span></span></code></pre></div></div>
 <pre><code>[1] 7</code></pre>
 </div>
 </div>
-<p>This function takes two arguments, <code>x</code> and <code>y</code>, and returns their sum. The use of <code><a href="https://rdrr.io/r/base/function.html">return()</a></code> is optional but recommended for clarity.</p>
-</section><section id="practical-example-calculating-the-mean-and-standard-deviation" class="level3"><h3 class="anchored" data-anchor-id="practical-example-calculating-the-mean-and-standard-deviation">Practical Example: Calculating the Mean and Standard Deviation</h3>
-<p>Suppose you are analyzing a dataset and frequently need to calculate the mean and standard deviation of numeric columns. Instead of repeating the calculations, you can write a reusable function:</p>
+<p>I still use <code><a href="https://rdrr.io/r/base/function.html">return()</a></code> in longer functions, because it makes it obvious where the result comes from. In short functions like this one, most R users leave it out.</p>
+</section></section><section id="default-values" class="level2"><h2 class="anchored" data-anchor-id="default-values">Default values</h2>
+<p>You can give an argument a default, which is used when the caller does not supply that argument:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">add_numbers</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">x</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">y</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span>  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">y</span></span>
+<span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span></span>
+<span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_numbers</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># y is not given, so the default 10 is used</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 15</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_numbers</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># y is given, so the default is ignored</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6</code></pre>
+</div>
+</div>
+<p>You have used defaults without noticing. <code><a href="https://rdrr.io/r/base/mean.html">mean()</a></code> has an argument <code>na.rm</code> that defaults to <code>FALSE</code>, which is why <code>mean(c(1, NA))</code> returns <code>NA</code> until you write <code>na.rm = TRUE</code>.</p>
+</section><section id="what-happens-inside-a-function-stays-inside" class="level2"><h2 class="anchored" data-anchor-id="what-happens-inside-a-function-stays-inside">What happens inside a function stays inside</h2>
+<p>Variables created inside a function exist only while the function runs. They do not appear in your workspace afterwards:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">add_numbers</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">x</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">y</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span>  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">result</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">x</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">y</span></span>
+<span>  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">result</span></span>
+<span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span></span>
+<span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_numbers</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/exists.html">exists</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"result"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE</code></pre>
+</div>
+</div>
+<p><code>exists("result")</code> is <code>FALSE</code> because <code>result</code> lived inside the function and disappeared when the function finished. This is a good thing. A function cannot accidentally overwrite an object called <code>result</code> that you created somewhere else in your script.</p>
+</section><section id="when-should-you-write-a-function" class="level2"><h2 class="anchored" data-anchor-id="when-should-you-write-a-function">When should you write a function?</h2>
+<p>A common rule of thumb, from <a href="https://r4ds.hadley.nz/functions.html"><em>R for Data Science</em></a>, is to write a function once you have copied and pasted the same block of code more than twice. Look at this:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">mtcars</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">mpg</span>, na.rm <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20.09062</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">mtcars</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">mpg</span>, na.rm <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.026948</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">mtcars</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">hp</span>, na.rm <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 146.6875</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">mtcars</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">hp</span>, na.rm <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 68.56287</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">mtcars</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">wt</span>, na.rm <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3.21725</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb28" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">mtcars</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">mpg</span>, na.rm <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>   <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># oops: copied from above and not changed to wt</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6.026948</code></pre>
+</div>
+</div>
+<p>The last line is a real copy-paste bug. It runs without any error and gives you the standard deviation of <code>mpg</code> while you think you are looking at <code>wt</code>. Bugs like this are hard to spot because nothing looks broken.</p>
+<p>Turning repeated code into a function helps in three practical ways:</p>
+<ul>
+<li>
+<strong>One place to fix things.</strong> If the calculation needs to change, you change it once.</li>
+<li>
+<strong>Fewer copy-paste slips.</strong> You only type the column name, so there is less to forget.</li>
+<li>
+<strong>Clearer scripts.</strong> A good function name, such as <code>calc_stats()</code>, tells the reader what the code does without making them read every line.</li>
+</ul></section><section id="example-1-mean-and-standard-deviation-of-any-column" class="level2"><h2 class="anchored" data-anchor-id="example-1-mean-and-standard-deviation-of-any-column">Example 1: mean and standard deviation of any column</h2>
+<p>Here is the repeated code above, written once as a function:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb30" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">calc_stats</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -843,9 +1233,6 @@ font-style: inherit;">)</span></span>
 background-color: null;
 font-style: inherit;">}</span></span>
 <span></span>
-<span><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Example usage</span></span>
 <span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">calc_stats</span><span class="op" style="color: #5E5E5E;
@@ -865,10 +1252,214 @@ $sd
 [1] 6.026948</code></pre>
 </div>
 </div>
-</section><section id="advanced-example-data-transformation-function" class="level3"><h3 class="anchored" data-anchor-id="advanced-example-data-transformation-function">Advanced Example: Data Transformation Function</h3>
-<p>Imagine you are frequently transforming data by filtering, summarizing, and plotting. You can create a function that performs these steps efficiently:</p>
+<p>Two details are worth slowing down for:</p>
+<ul>
+<li>
+<code>data[[column]]</code> pulls out one column of a data frame when the column name is stored as text. <code>mtcars[["mpg"]]</code> is the same as <code>mtcars$mpg</code>, but the <code>[[ ]]</code> form works when the name is inside a variable, which is exactly the situation inside a function.</li>
+<li>
+<code>list(mean = mean_val, sd = sd_val)</code> returns two values at once by packing them into a named list. You can pull one out with <code>$</code>:</li>
+</ul>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw" style="color: #003B4F;
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb32" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">mpg_stats</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">calc_stats</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">mtcars</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"mpg"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">mpg_stats</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">mean</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 20.09062</code></pre>
+</div>
+</div>
+<section id="a-small-improvement-return-a-data-frame" class="level3"><h3 class="anchored" data-anchor-id="a-small-improvement-return-a-data-frame">A small improvement: return a data frame</h3>
+<p>A list is fine for one column, but when you summarise several columns you usually want a table. If the function returns a one-row data frame, the results stack neatly:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">calc_stats</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">data</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">column</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span>  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">values</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">data</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">[[</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">column</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">]</span></span>
+<span>  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>    variable <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">column</span>,</span>
+<span>    mean <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">values</span>, na.rm <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>    sd <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">values</span>, na.rm <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span></span>
+<span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">calc_stats</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">mtcars</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"mpg"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  variable     mean       sd
+1      mpg 20.09062 6.026948</code></pre>
+</div>
+</div>
+<p>Now run it on several columns at once:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb36" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">columns</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"mpg"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"hp"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"wt"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">results</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">columns</span>, <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">col</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">calc_stats</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">mtcars</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">col</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/do.call.html">do.call</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">rbind</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">results</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  variable      mean         sd
+1      mpg  20.09062  6.0269481
+2       hp 146.68750 68.5628685
+3       wt   3.21725  0.9784574</code></pre>
+</div>
+</div>
+<p><code><a href="https://rdrr.io/r/base/lapply.html">lapply()</a></code> calls <code>calc_stats()</code> once for each column name and collects the three small data frames in a list. <code>do.call(rbind, results)</code> then stacks them into one table. The copy-paste bug from earlier cannot happen here, because each column name is typed exactly once.</p>
+</section></section><section id="example-2-grouped-summaries-with-dplyr" class="level2"><h2 class="anchored" data-anchor-id="example-2-grouped-summaries-with-dplyr">Example 2: grouped summaries with dplyr</h2>
+<p>A very common task in survey work is “give me the mean and standard deviation of this variable for each group”, for example yield by region or income by household type. The dplyr package is built for this.</p>
+<p>To have something to work with, let’s create a small made-up dataset. <code><a href="https://rdrr.io/r/stats/Normal.html">rnorm()</a></code> draws random numbers from a normal distribution, and <code><a href="https://rdrr.io/r/base/Random.html">set.seed()</a></code> makes sure you get the same “random” numbers every time you run the code, so your output matches mine:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb38" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw" style="color: #003B4F;
 background-color: null;
 font-weight: bold;
 font-style: inherit;"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op" style="color: #5E5E5E;
@@ -877,22 +1468,84 @@ font-style: inherit;">(</span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">)</span></span></code></pre></div></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'dplyr'</code></pre>
+font-style: inherit;">)</span></span>
+<span></span>
+<span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">123</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">scores</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>  group <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"A"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"B"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>, each <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>  value <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span></span>
+<span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">scores</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   group       value
+1      A -0.56047565
+2      A -0.23017749
+3      A  1.55870831
+4      A  0.07050839
+5      A  0.12928774
+6      B  1.71506499
+7      B  0.46091621
+8      B -1.26506123
+9      B -0.68685285
+10     B -0.44566197</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:stats':
-
-    filter, lag</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:base':
-
-    intersect, setdiff, setequal, union</code></pre>
-</div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+<p>Now the function:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
 background-color: null;
 font-style: inherit;">analyze_data</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
@@ -914,13 +1567,9 @@ background-color: null;
 font-style: inherit;">{</span></span>
 <span>  <span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">summary</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="va" style="color: #111111;
-background-color: null;
 font-style: inherit;">data</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+font-style: inherit;">|&gt;</span></span>
 <span>    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op" style="color: #5E5E5E;
@@ -939,12 +1588,13 @@ font-style: inherit;">]</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+font-style: inherit;">|&gt;</span></span>
 <span>    <span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">(</span>mean_value <span class="op" style="color: #5E5E5E;
+font-style: inherit;">(</span></span>
+<span>      mean_value <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -967,7 +1617,7 @@ background-color: null;
 font-style: inherit;">TRUE</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span>,</span>
-<span>              sd_value <span class="op" style="color: #5E5E5E;
+<span>      sd_value <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
 background-color: null;
@@ -989,76 +1639,21 @@ font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
 background-color: null;
 font-style: inherit;">TRUE</span><span class="op" style="color: #5E5E5E;
 background-color: null;
-font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
-background-color: null;
 font-style: inherit;">)</span></span>
-<span>  <span class="kw" style="color: #003B4F;
-background-color: null;
-font-weight: bold;
-font-style: inherit;"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">(</span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">summary</span><span class="op" style="color: #5E5E5E;
+<span>    <span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">)</span></span>
 <span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">}</span></span>
 <span></span>
-<span><span class="co" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;"># Example usage</span></span>
-<span><span class="va" style="color: #111111;
-background-color: null;
-font-style: inherit;">data</span> <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">(</span>group <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;"><a href="https://rdrr.io/r/base/rep.html">rep</a></span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">(</span><span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">(</span><span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"A"</span>, <span class="st" style="color: #20794D;
-background-color: null;
-font-style: inherit;">"B"</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">)</span>, each <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">5</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">)</span>, value <span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
-background-color: null;
-font-style: inherit;"><a href="https://rdrr.io/r/stats/Normal.html">rnorm</a></span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">(</span><span class="fl" style="color: #AD0000;
-background-color: null;
-font-style: inherit;">10</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">)</span><span class="op" style="color: #5E5E5E;
-background-color: null;
-font-style: inherit;">)</span></span>
 <span><span class="fu" style="color: #4758AB;
 background-color: null;
 font-style: inherit;">analyze_data</span><span class="op" style="color: #5E5E5E;
 background-color: null;
 font-style: inherit;">(</span><span class="va" style="color: #111111;
 background-color: null;
-font-style: inherit;">data</span>, <span class="st" style="color: #20794D;
+font-style: inherit;">scores</span>, <span class="st" style="color: #20794D;
 background-color: null;
 font-style: inherit;">"group"</span>, <span class="st" style="color: #20794D;
 background-color: null;
@@ -1069,16 +1664,192 @@ font-style: inherit;">)</span></span></code></pre></div></div>
 <pre><code># A tibble: 2 × 3
   group mean_value sd_value
   &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;
-1 A        0.00706    0.589
-2 B       -0.519      0.369</code></pre>
+1 A         0.194     0.811
+2 B        -0.0443    1.16 </code></pre>
 </div>
 </div>
-</section><section id="conclusion" class="level3"><h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
-<p>Functions are essential for writing clean, reusable, and efficient R code. They not only improve code readability but also enhance overall analysis workflow. By incorporating functions in your R scripts, you elevate your coding practice, making your code more robust, modular, and easier to maintain. In upcoming posts, we’ll delve deeper into advanced function techniques, such as error handling, vectorization, and functional programming in R.</p>
+<p>What is going on:</p>
+<ul>
+<li>
+<code>|&gt;</code> is the pipe. It passes the result of one step into the next, so <code>data |&gt; group_by(...)</code> means “take <code>data</code>, then group it”. You may also see <code>%&gt;%</code> in older code; for this purpose they do the same thing.</li>
+<li>
+<code><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by()</a></code> splits the data into groups, and <code><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize()</a></code> computes one row of results per group.</li>
+<li>
+<code>.data[[group_col]]</code> is how you tell dplyr “use the column whose name is stored in <code>group_col</code>”. Inside dplyr you normally write bare column names like <code>group</code>, but here the name arrives as text, so <code>.data[[ ]]</code> does the lookup. It is the dplyr version of <code>data[[column]]</code> from Example 1.</li>
+</ul>
+<p>Because the column names are arguments, the same function works on any dataset. Fuel efficiency by number of cylinders in <code>mtcars</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">analyze_data</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">mtcars</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"cyl"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"mpg"</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+    cyl mean_value sd_value
+  &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+1     4       26.7     4.51
+2     6       19.7     1.45
+3     8       15.1     2.56</code></pre>
+</div>
+</div>
+<section id="passing-bare-column-names-with" class="level3"><h3 class="anchored" data-anchor-id="passing-bare-column-names-with">Passing bare column names with <code>{ }</code>
+</h3>
+<p>If you would rather call the function with bare names, like you do with dplyr itself, wrap the arguments in double curly braces (dplyr calls this “embracing”):</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb44" style="background: #f1f3f5;"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">analyze_data2</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">data</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">group_col</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">num_col</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span></span>
+<span>  <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">data</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span>    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">group_col</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span>    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarize</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span></span>
+<span>      mean_value <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">num_col</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span>, na.rm <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span>,</span>
+<span>      sd_value <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">num_col</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span>, na.rm <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span>    <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span>
+<span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span></span>
+<span></span>
+<span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">analyze_data2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">(</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">mtcars</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">cyl</span>, <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">mpg</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">)</span></span></code></pre></div></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 3
+    cyl mean_value sd_value
+  &lt;dbl&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+1     4       26.7     4.51
+2     6       19.7     1.45
+3     8       15.1     2.56</code></pre>
+</div>
+</div>
+<p>Use <code>.data[[ ]]</code> when the column names come as text, for example from a vector of names you loop over. Use <code><a href="https://rdrr.io/r/base/Paren.html">{ }</a></code> when you want the function to feel like a normal dplyr verb.</p>
+</section></section><section id="common-mistakes" class="level2"><h2 class="anchored" data-anchor-id="common-mistakes">Common mistakes</h2>
+<ul>
+<li>
+<strong>“could not find function”.</strong> You called the function before running the chunk that defines it. Run the definition first; in a new R session you have to run it again.</li>
+<li>
+<strong>Using objects from outside the function.</strong> If the body refers to a data frame that is not one of the arguments, the function only works in the script where that object happens to exist. Pass everything the function needs as an argument.</li>
+<li>
+<strong>Reusing a common name.</strong> Calling your own function <code>mean</code> or <code>c</code>, or a data frame <code>data</code>, hides R’s own version and leads to confusing errors. That is why the example dataset above is called <code>scores</code>.</li>
+<li>
+<strong>Expecting more than the last value back.</strong> Only the last value (or what you pass to <code><a href="https://rdrr.io/r/base/function.html">return()</a></code>) comes out. If you need several results, return a list or a data frame, as in Example 1.</li>
+</ul></section><section id="recap" class="level2"><h2 class="anchored" data-anchor-id="recap">Recap</h2>
+<p>A function is a named piece of code with inputs (arguments) and an output (the return value). You create one with <code>function()</code>, give arguments defaults with <code>=</code>, and get results back from the last line or from <code><a href="https://rdrr.io/r/base/function.html">return()</a></code>. Objects created inside a function stay inside it. Once you notice yourself pasting the same block a third time, that block is a good candidate for a function, and the examples above show how far one short function can take you: from one column to many, and from one dataset to any dataset.</p>
+<p>The functions in this post trust their inputs. Give <code>calc_stats()</code> a column that does not exist and it fails with a confusing message. The next post, <a href="../../blog/error-handling-in-r-functions/index.html">Error Handling in R</a>, shows how to add checks so your functions fail early with a message that says what went wrong.</p>
 
 
 </section><a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a> ]]></description>
+  <category>R programming</category>
+  <category>functions</category>
   <category>dplyr</category>
+  <category>beginners</category>
   <guid>https://guturago.github.io/blog/importance-of-functions-in-r/</guid>
   <pubDate>Wed, 14 May 2025 21:00:00 GMT</pubDate>
   <media:content url="https://guturago.github.io/images/blog-placeholder.png" medium="image" type="image/png" height="81" width="144"/>
