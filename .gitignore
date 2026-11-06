@@ -6,3 +6,5 @@ microData logo.psd
 
 
 /.quarto/
+
+**/*.quarto_ipynb

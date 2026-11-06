@@ -1,21 +1,24 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.7.32">
-
+<meta name="generator" content="quarto-1.10.18">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-
 <meta name="author" content="Gutama Girja Urago">
 <meta name="dcterms.date" content="2025-05-15">
 <meta name="description" content="How to use stop(), warning(), try() and tryCatch() so R functions fail with clear messages and recover when they can.">
-
 <title>Error Handling in R: A Guide for Data Analysts – Gutama Girja Urago</title>
 <style>
-code{white-space: pre-wrap;}
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
 span.smallcaps{font-variant: small-caps;}
-div.columns{display: flex; gap: min(4vw, 1.5em);}
-div.column{flex: auto; overflow-x: auto;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
 div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
 ul.task-list{list-style: none;}
 ul.task-list li input[type="checkbox"] {
@@ -60,7 +63,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 }
 </style>
 
-
 <script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
 <script src="../../site_libs/quarto-nav/headroom.min.js"></script>
 <script src="../../site_libs/clipboard/clipboard.min.js"></script>
@@ -75,11 +77,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-b0742e0cd9d71d9e6e8bf2d026a6fc93.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
-<script id="quarto-search-options" type="application/json">{
+<link href="../../site_libs/bootstrap/bootstrap-8d06cbfed1d39b5a49b73aa8493e58f4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -104,19 +105,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-submit-button-title": "Submit",
     "search-label": "Search"
   }
-}</script>
-<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-VVGT96KRKH"></script>
-
-<script type="text/javascript">
+}</script><script async="" src="https://www.googletagmanager.com/gtag/js?id=G-VVGT96KRKH"></script><script type="text/javascript">
 
 window.dataLayer = window.dataLayer || [];
 function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
-</script>
-<style>html{ scroll-behavior: smooth; }</style>
-
-
+</script><style>html{ scroll-behavior: smooth; }</style>
 <meta property="og:title" content="Error Handling in R: A Guide for Data Analysts – Gutama Girja Urago">
 <meta property="og:description" content="How to use stop(), warning(), try() and tryCatch() so R functions fail with clear messages and recover when they can.">
 <meta property="og:image" content="https://guturago.github.io/images/blog-placeholder.png">
@@ -130,17 +125,13 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 <meta name="twitter:image-width" content="1200">
 <meta name="twitter:card" content="summary_large_image">
 </head>
-
 <body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top quarto-banner">
-    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
-      <div class="navbar-container container-fluid">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../images/favicon.png" alt="GutUrago logo" class="navbar-logo">
-    </a>
+    <img src="../../images/favicon.png" alt="GutUrago logo" class="navbar-logo light-content"><img src="../../images/favicon.png" alt="GutUrago logo" class="navbar-logo dark-content"></a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Gutama Girja Urago</span>
     </a>
@@ -151,7 +142,7 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 </button>
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
-  <li class="nav-item">
+<li class="nav-item">
     <a class="nav-link" href="../../index.html"> 
 <span class="menu-text">Home</span></a>
   </li>  
@@ -172,7 +163,7 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 <span class="menu-text">CV</span></a>
   </li>  
 </ul>
-          </div> <!-- /navcollapse -->
+</div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools tools-wide">
     <a href="https://github.com/GutUrago" title="" class="quarto-navigation-tool px-1" aria-label="GitHub"><i class="bi bi-github"></i></a>
     <a href="https://www.linkedin.com/in/gutama-girja/" title="" class="quarto-navigation-tool px-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
@@ -180,11 +171,7 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
     <a href="../../blog.xml" title="" class="quarto-navigation-tool px-1" aria-label="Blog RSS feed"><i class="bi bi-rss"></i></a>
 </div>
       </div> <!-- /container-fluid -->
-    </nav>
-</header>
-<!-- content -->
-<header id="title-block-header" class="quarto-title-block default page-columns page-full">
-  <div class="quarto-title-banner page-columns page-full">
+    </nav></header><!-- content --><header id="title-block-header" class="quarto-title-block default page-columns page-full"><div class="quarto-title-banner page-columns page-full">
     <div class="quarto-title column-body">
       <h1 class="title">Error Handling in R: A Guide for Data Analysts</h1>
                   <div>
@@ -226,94 +213,78 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">On this page</h2>
+        <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#error-handling-in-r-functions-a-comprehensive-guide" id="toc-error-handling-in-r-functions-a-comprehensive-guide" class="nav-link active" data-scroll-target="#error-handling-in-r-functions-a-comprehensive-guide">Error Handling in R Functions: A Comprehensive Guide</a></li>
-  <li><a href="#why-implement-error-handling" id="toc-why-implement-error-handling" class="nav-link" data-scroll-target="#why-implement-error-handling">Why Implement Error Handling?</a>
+<li><a href="#error-handling-in-r-functions-a-comprehensive-guide" id="toc-error-handling-in-r-functions-a-comprehensive-guide" class="nav-link active" data-scroll-target="#error-handling-in-r-functions-a-comprehensive-guide">Error Handling in R Functions: A Comprehensive Guide</a></li>
+  <li>
+<a href="#why-implement-error-handling" id="toc-why-implement-error-handling" class="nav-link" data-scroll-target="#why-implement-error-handling">Why Implement Error Handling?</a>
   <ul class="collapse">
-  <li><a href="#key-benefits" id="toc-key-benefits" class="nav-link" data-scroll-target="#key-benefits">Key Benefits:</a></li>
-  </ul></li>
+<li><a href="#key-benefits" id="toc-key-benefits" class="nav-link" data-scroll-target="#key-benefits">Key Benefits:</a></li>
+  </ul>
+</li>
   <li><a href="#basic-error-handling-with-stop" id="toc-basic-error-handling-with-stop" class="nav-link" data-scroll-target="#basic-error-handling-with-stop">1. Basic Error Handling with <code>stop()</code></a></li>
   <li><a href="#gentle-alerts-with-warning" id="toc-gentle-alerts-with-warning" class="nav-link" data-scroll-target="#gentle-alerts-with-warning">2. Gentle Alerts with <code>warning()</code></a></li>
   <li><a href="#handling-runtime-errors-with-try-and-trycatch" id="toc-handling-runtime-errors-with-try-and-trycatch" class="nav-link" data-scroll-target="#handling-runtime-errors-with-try-and-trycatch">3. Handling Runtime Errors with <code>try()</code> and <code>tryCatch()</code></a></li>
   <li><a href="#writing-informative-error-messages" id="toc-writing-informative-error-messages" class="nav-link" data-scroll-target="#writing-informative-error-messages">4. Writing Informative Error Messages</a></li>
   <li><a href="#when-to-use-stop-warning-or-message" id="toc-when-to-use-stop-warning-or-message" class="nav-link" data-scroll-target="#when-to-use-stop-warning-or-message">5. When to Use <code>stop()</code>, <code>warning()</code>, or <code>message()</code></a></li>
   <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
-  </ul>
-</nav>
+  </ul></nav>
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content">
-
-
-
-
-
-<section id="error-handling-in-r-functions-a-comprehensive-guide" class="level2">
-<h2 class="anchored" data-anchor-id="error-handling-in-r-functions-a-comprehensive-guide">Error Handling in R Functions: A Comprehensive Guide</h2>
+<main class="content quarto-banner-title-block" id="quarto-document-content"><section id="error-handling-in-r-functions-a-comprehensive-guide" class="level2"><h2 class="anchored" data-anchor-id="error-handling-in-r-functions-a-comprehensive-guide">Error Handling in R Functions: A Comprehensive Guide</h2>
 <p>As data analysts, we often rely on custom functions to automate repetitive tasks, clean datasets, and perform complex analyses. However, even the most well-written function can break unexpectedly—especially when it encounters invalid input. That’s where <strong>error handling</strong> comes in.</p>
 <p>This guide walks through best practices for incorporating error and warning handling into your R functions to make them more <strong>robust, user-friendly, and maintainable</strong>.</p>
-<hr>
-</section>
-<section id="why-implement-error-handling" class="level2">
-<h2 class="anchored" data-anchor-id="why-implement-error-handling">Why Implement Error Handling?</h2>
+<hr></section><section id="why-implement-error-handling" class="level2"><h2 class="anchored" data-anchor-id="why-implement-error-handling">Why Implement Error Handling?</h2>
 <p>Without proper checks and feedback, functions can fail silently or return misleading results. Implementing error handling is not just a defensive programming habit—it is a <strong>critical part of writing reliable analytical code</strong>.</p>
-<section id="key-benefits" class="level3">
-<h3 class="anchored" data-anchor-id="key-benefits">Key Benefits:</h3>
+<section id="key-benefits" class="level3"><h3 class="anchored" data-anchor-id="key-benefits">Key Benefits:</h3>
 <ul>
 <li>🔍 <strong>Data Validation:</strong> Prevents incorrect types, structures, or values from corrupting your logic.</li>
 <li>🐞 <strong>Easier Debugging:</strong> Pinpoints the root cause of a failure more effectively.</li>
 <li>💡 <strong>Better UX:</strong> Communicates clearly with users, especially those who didn’t write the function.</li>
 <li>🔁 <strong>Reusability:</strong> Makes your functions portable and safe to use in larger pipelines.</li>
 </ul>
-<hr>
-</section>
-</section>
-<section id="basic-error-handling-with-stop" class="level2">
-<h2 class="anchored" data-anchor-id="basic-error-handling-with-stop">1. Basic Error Handling with <code>stop()</code></h2>
-<p>Use <code>stop()</code> to halt execution and print a clear error message when the input doesn’t meet expectations.</p>
+<hr></section></section><section id="basic-error-handling-with-stop" class="level2"><h2 class="anchored" data-anchor-id="basic-error-handling-with-stop">1. Basic Error Handling with <code>stop()</code>
+</h2>
+<p>Use <code><a href="https://rdrr.io/r/base/stop.html">stop()</a></code> to halt execution and print a clear error message when the input doesn’t meet expectations.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>divide_numbers <span class="ot">&lt;-</span> <span class="cf">function</span>(x, y) {</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.numeric</span>(x) <span class="sc">||</span> <span class="sc">!</span><span class="fu">is.numeric</span>(y)) {</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Both x and y must be numeric."</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (y <span class="sc">==</span> <span class="dv">0</span>) {</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">"Division by zero is not allowed."</span>)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x <span class="sc">/</span> y)</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Test cases</span></span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">divide_numbers</span>(<span class="dv">10</span>, <span class="dv">2</span>)      <span class="co"># Works fine</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">divide_numbers</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">is.numeric</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">||</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">is.numeric</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"Both x and y must be numeric."</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">y</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"Division by zero is not allowed."</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">x</span> <span class="op">/</span> <span class="va">y</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Test cases</span></span>
+<span><span class="fu">divide_numbers</span><span class="op">(</span><span class="fl">10</span>, <span class="fl">2</span><span class="op">)</span>      <span class="co"># Works fine</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">divide_numbers</span>(<span class="dv">10</span>, <span class="st">"a"</span>)    <span class="co"># Triggers a type error</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">divide_numbers</span><span class="op">(</span><span class="fl">10</span>, <span class="st">"a"</span><span class="op">)</span>    <span class="co"># Triggers a type error</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in divide_numbers(10, "a"): Both x and y must be numeric.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">divide_numbers</span>(<span class="dv">10</span>, <span class="dv">0</span>)      <span class="co"># Triggers division error</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">divide_numbers</span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span>      <span class="co"># Triggers division error</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in divide_numbers(10, 0): Division by zero is not allowed.</code></pre>
 </div>
 </div>
 <p>By proactively validating arguments, we avoid mysterious bugs later in the analysis.</p>
-<hr>
-</section>
-<section id="gentle-alerts-with-warning" class="level2">
-<h2 class="anchored" data-anchor-id="gentle-alerts-with-warning">2. Gentle Alerts with <code>warning()</code></h2>
-<p>Use <code>warning()</code> when you want to inform users of an issue without stopping execution.</p>
+<hr></section><section id="gentle-alerts-with-warning" class="level2"><h2 class="anchored" data-anchor-id="gentle-alerts-with-warning">2. Gentle Alerts with <code>warning()</code>
+</h2>
+<p>Use <code><a href="https://rdrr.io/r/base/warning.html">warning()</a></code> when you want to inform users of an issue without stopping execution.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>log_value <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">any</span>(x <span class="sc">&lt;=</span> <span class="dv">0</span>)) {</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">warning</span>(<span class="st">"Input contains non-positive values; returning NA for those cases."</span>)</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">ifelse</span>(x <span class="sc">&gt;</span> <span class="dv">0</span>, <span class="fu">log</span>(x), <span class="cn">NA</span>))</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a><span class="fu">log_value</span>(<span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">10</span>, <span class="sc">-</span><span class="dv">3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">log_value</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span><span class="op">(</span><span class="va">x</span> <span class="op">&lt;=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/warning.html">warning</a></span><span class="op">(</span><span class="st">"Input contains non-positive values; returning NA for those cases."</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">log_value</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span>, <span class="op">-</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in log_value(c(1, 10, -3)): Input contains non-positive values;
 returning NA for those cases.</code></pre>
@@ -326,58 +297,51 @@ returning NA for those cases.</code></pre>
 </div>
 </div>
 <p>Warnings are especially useful for <strong>partial failures</strong>—when the function can continue but with caveats.</p>
-<hr>
-</section>
-<section id="handling-runtime-errors-with-try-and-trycatch" class="level2">
-<h2 class="anchored" data-anchor-id="handling-runtime-errors-with-try-and-trycatch">3. Handling Runtime Errors with <code>try()</code> and <code>tryCatch()</code></h2>
-<p>When calling code that might fail unpredictably (e.g., reading a file or hitting an API), wrap it in <code>try()</code> or <code>tryCatch()</code> to recover gracefully.</p>
+<hr></section><section id="handling-runtime-errors-with-try-and-trycatch" class="level2"><h2 class="anchored" data-anchor-id="handling-runtime-errors-with-try-and-trycatch">3. Handling Runtime Errors with <code>try()</code> and <code>tryCatch()</code>
+</h2>
+<p>When calling code that might fail unpredictably (e.g., reading a file or hitting an API), wrap it in <code><a href="https://rdrr.io/r/base/try.html">try()</a></code> or <code><a href="https://rdrr.io/r/base/conditions.html">tryCatch()</a></code> to recover gracefully.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>read_data_safe <span class="ot">&lt;-</span> <span class="cf">function</span>(path) {</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="fu">try</span>(<span class="fu">read.csv</span>(path), <span class="at">silent =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (<span class="fu">inherits</span>(result, <span class="st">"try-error"</span>)) {</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">warning</span>(<span class="st">"Could not read the file. Please check the path or format."</span>)</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  }</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(result)</span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">read_data_safe</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">path</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/try.html">try</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span>, silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html">inherits</a></span><span class="op">(</span><span class="va">result</span>, <span class="st">"try-error"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/warning.html">warning</a></span><span class="op">(</span><span class="st">"Could not read the file. Please check the path or format."</span><span class="op">)</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Or, using <code>tryCatch()</code> for finer control:</p>
+<p>Or, using <code><a href="https://rdrr.io/r/base/conditions.html">tryCatch()</a></code> for finer control:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>read_data_robust <span class="ot">&lt;-</span> <span class="cf">function</span>(path) {</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tryCatch</span>(</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    {</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>      df <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(path)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>      <span class="fu">message</span>(<span class="st">"File read successfully."</span>)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(df)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">error =</span> <span class="cf">function</span>(e) {</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>      <span class="fu">message</span>(<span class="st">"Error: "</span>, e<span class="sc">$</span>message)</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>      <span class="fu">return</span>(<span class="cn">NULL</span>)</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    },</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">warning =</span> <span class="cf">function</span>(w) {</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>      <span class="fu">message</span>(<span class="st">"Warning: "</span>, w<span class="sc">$</span>message)</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>    }</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">read_data_robust</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">path</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/conditions.html">tryCatch</a></span><span class="op">(</span></span>
+<span>    <span class="op">{</span></span>
+<span>      <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"File read successfully."</span><span class="op">)</span></span>
+<span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span>    <span class="op">}</span>,</span>
+<span>    error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"Error: "</span>, <span class="va">e</span><span class="op">$</span><span class="va">message</span><span class="op">)</span></span>
+<span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
+<span>    <span class="op">}</span>,</span>
+<span>    warning <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">w</span><span class="op">)</span> <span class="op">{</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"Warning: "</span>, <span class="va">w</span><span class="op">$</span><span class="va">message</span><span class="op">)</span></span>
+<span>    <span class="op">}</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<hr>
-</section>
-<section id="writing-informative-error-messages" class="level2">
-<h2 class="anchored" data-anchor-id="writing-informative-error-messages">4. Writing Informative Error Messages</h2>
+<hr></section><section id="writing-informative-error-messages" class="level2"><h2 class="anchored" data-anchor-id="writing-informative-error-messages">4. Writing Informative Error Messages</h2>
 <p>A good error message tells users <strong>what went wrong</strong>, <strong>why</strong>, and ideally <strong>how to fix it</strong>.</p>
 <p>✅ Good: <code>"Input 'y' must be a numeric vector of length greater than 0."</code><br>
 ❌ Bad: <code>"Error in y"</code></p>
-<p>You can even use <code>stopifnot()</code> for compact assertions:</p>
+<p>You can even use <code><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot()</a></code> for compact assertions:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>my_mean <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stopifnot</span>(<span class="fu">is.numeric</span>(x), <span class="fu">length</span>(x) <span class="sc">&gt;</span> <span class="dv">0</span>)</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mean</span>(x)</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">is.numeric</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<hr>
-</section>
-<section id="when-to-use-stop-warning-or-message" class="level2">
-<h2 class="anchored" data-anchor-id="when-to-use-stop-warning-or-message">5. When to Use <code>stop()</code>, <code>warning()</code>, or <code>message()</code></h2>
+<hr></section><section id="when-to-use-stop-warning-or-message" class="level2"><h2 class="anchored" data-anchor-id="when-to-use-stop-warning-or-message">5. When to Use <code>stop()</code>, <code>warning()</code>, or <code>message()</code>
+</h2>
 <table class="caption-top table">
 <colgroup>
 <col style="width: 22%">
@@ -385,29 +349,27 @@ returning NA for those cases.</code></pre>
 <col style="width: 30%">
 <col style="width: 19%">
 </colgroup>
-<thead>
-<tr class="header">
+<thead><tr class="header">
 <th>Function</th>
 <th>Stops execution</th>
 <th>User notification</th>
 <th>Ideal for</th>
-</tr>
-</thead>
+</tr></thead>
 <tbody>
 <tr class="odd">
-<td><code>stop()</code></td>
+<td><code><a href="https://rdrr.io/r/base/stop.html">stop()</a></code></td>
 <td>✅</td>
 <td>🚨</td>
 <td>Fatal input errors</td>
 </tr>
 <tr class="even">
-<td><code>warning()</code></td>
+<td><code><a href="https://rdrr.io/r/base/warning.html">warning()</a></code></td>
 <td>❌</td>
 <td>⚠️</td>
 <td>Soft alerts</td>
 </tr>
 <tr class="odd">
-<td><code>message()</code></td>
+<td><code><a href="https://rdrr.io/r/base/message.html">message()</a></code></td>
 <td>❌</td>
 <td>💬 (quiet alerts)</td>
 <td>Informational logs</td>
@@ -415,19 +377,13 @@ returning NA for those cases.</code></pre>
 </tbody>
 </table>
 <p>Use each intentionally to design an experience that matches the severity of the situation.</p>
-<hr>
-</section>
-<section id="conclusion" class="level2">
-<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<hr></section><section id="conclusion" class="level2"><h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
 <p>Effective error handling makes your R code <strong>safer, more transparent, and more professional</strong>—especially when shared in collaborative settings or deployed in production dashboards and packages.</p>
 <p>Start small: add one or two checks to your most-used functions, and grow from there. As your codebase scales, you’ll thank yourself for the early investment in resilience.</p>
 <p>Happy coding!</p>
 
 
-</section>
-
-<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
-<script id="quarto-html-after-body" type="application/javascript">
+</section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
@@ -478,13 +434,14 @@ returning NA for those cases.</code></pre>
       e.clearSelection();
     }
     const getTextToCopy = function(trigger) {
-        const codeEl = trigger.previousElementSibling.cloneNode(true);
-        for (const childEl of codeEl.children) {
-          if (isCodeAnnotation(childEl)) {
-            childEl.remove();
-          }
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
         }
-        return codeEl.innerText;
+      }
+      return codeEl.innerText;
     }
     const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
       text: getTextToCopy
@@ -832,8 +789,7 @@ returning NA for those cases.</code></pre>
   });
   </script>
 </div> <!-- /content -->
-<footer class="footer">
-  <div class="nav-footer">
+<footer class="footer"><div class="nav-footer">
     <div class="nav-footer-left">
 <p>© 2026 Gutama Girja Urago</p>
 </div>   
@@ -842,7 +798,7 @@ returning NA for those cases.</code></pre>
 </div>
     <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
-    <li class="nav-item compact">
+<li class="nav-item compact">
     <a class="nav-link" href="https://github.com/GutUrago">
       <i class="bi bi-github" role="img" aria-label="GitHub">
 </i> 
@@ -867,11 +823,9 @@ returning NA for those cases.</code></pre>
     </a>
   </li>  
 </ul>
-    </div>
+</div>
   </div>
 </footer>
-
-
 
 
 <script src="../../site_libs/quarto-html/zenscroll-min.js"></script>
