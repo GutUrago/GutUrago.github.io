@@ -1,14 +1,290 @@
 ---
+pagetitle: "Gutama Girja Urago | Agricultural economist"
+description: "Agricultural economist and research analyst in Addis Ababa. Research on smallholder productivity, crop commercialization and food insecurity in Ethiopia; open-source R and Stata tools for survey data."
+page-layout: custom
 toc: false
-format: html
+include-in-header:
+  text: |
+    <script>document.documentElement.classList.add("js-reveal");</script>
+listing:
+  - id: latest-posts
+    contents: blog
+    sort: "date desc"
+    type: grid
+    max-items: 3
+    grid-columns: 3
+    fields: [date, title, description, reading-time]
+    max-description-length: 140
+    sort-ui: false
+    filter-ui: false
+    categories: false
 ---
 
-::: {.text-center}
-I am Gutama Girja Urago, a data scientist and research analyst with an academic background in agricultural economics, spanning multiple continents and enriched by hands-on research and teaching experience at diverse universities and research institutions. My academic interests focus on production efficiency, food security, and climate change, where I combine rigorous quantitative analysis with practical insights to address pressing agricultural and development challenges. I am proficient in R, Python, Stata, and QGIS, and skilled in data engineering, API integration, microdata management, survey analytics, geospatial analysis, reproducible research, and statistical programming. I have designed and published several R packages, including ethiodate for Ethiopian date handling and nadaverse for programmatic access to global microdata, reflecting my commitment to building open-source tools that enhance research capacity and data accessibility. I am passionate about transforming complex datasets into actionable insights, producing high-quality analytical reports and academic manuscripts, and promoting transparency, reproducibility, and local relevance in research. Beyond technical expertise, I enjoy mentoring and collaborating with researchers and analysts to strengthen data literacy and foster evidence-based decision-making in agriculture, development, and policy.
+```{=html}
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true">
+    <span class="blob blob-1"></span>
+    <span class="blob blob-2"></span>
+  </div>
+  <div class="container hero-inner">
+    <div class="hero-text">
+      <span class="eyebrow eyebrow-light">Agricultural economist &middot; Research analyst</span>
+      <h1 class="hero-name">Gutama Girja Urago</h1>
+      <p class="hero-pitch">
+        I study how Ethiopian smallholders produce, sell and cope with shocks,
+        and I build open-source R and Stata tools for survey data.
+      </p>
+      <p class="hero-place"><i class="bi bi-geo-alt"></i> Addis Ababa, Ethiopia</p>
+      <div class="hero-actions">
+        <a class="btn btn-accent" href="cv.html"><i class="bi bi-file-earmark-person"></i> View CV</a>
+        <a class="btn btn-ghost" href="research.html">Research</a>
+        <a class="btn btn-ghost" href="software.html">Software</a>
+      </div>
+      <div class="hero-social">
+        <a href="https://github.com/GutUrago" aria-label="GitHub"><i class="bi bi-github"></i></a>
+        <a href="https://www.linkedin.com/in/gutama-girja/" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+        <a href="https://orcid.org/0000-0001-5588-2301" aria-label="ORCID"><i class="bi bi-orcid"></i></a>
+        <a href="mailto:girjagutama@gmail.com" aria-label="Email"><i class="bi bi-envelope"></i></a>
+      </div>
+    </div>
+    <div class="hero-photo">
+      <div class="photo-ring">
+        <img src="images/profile-web.jpg" alt="Portrait of Gutama Girja Urago" width="800" height="800">
+      </div>
+      <span class="chip chip-1"><i class="bi bi-box-seam"></i> 3 packages on CRAN</span>
+      <span class="chip chip-2"><i class="bi bi-mortarboard"></i> Erasmus Mundus alumnus</span>
+    </div>
+  </div>
+</section>
+
+<section class="stats-wrap">
+  <div class="container">
+  <div class="stats reveal">
+    <div class="stat">
+      <span class="stat-num" data-count="5">5</span>
+      <span class="stat-label">open-source packages for R and Stata</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num" data-count="3">3</span>
+      <span class="stat-label">peer-reviewed articles, one more under review</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num" data-count="2" data-suffix="+">2+</span>
+      <span class="stat-label">years designing and running field surveys</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num" data-count="5">5</span>
+      <span class="stat-label">countries I have studied in</span>
+    </div>
+  </div>
+  </div>
+</section>
+
+<section class="home-section home-about">
+  <div class="container about-grid">
+    <div class="about-text reveal">
+      <span class="eyebrow">About</span>
+      <h2 class="section-title">Field data, farm economics and code</h2>
+      <p>
+        I'm an agricultural economist and a research analyst at Laterite in Addis Ababa.
+        My work covers the whole life of a survey: designing the questionnaire and the sample,
+        programming it in SurveyCTO, checking data quality while teams are in the field,
+        then cleaning and analysing what comes back. The studies cover agriculture, clean energy,
+        health, nutrition, education and refugee livelihoods, in Ethiopia and elsewhere in Africa.
+      </p>
+      <p>
+        My own research is about Ethiopian smallholders: how productive they are, whether selling
+        more of their harvest changes that, and how households hold up when prices or conflict hit
+        the whole economy. Outside work I write R and Stata packages that other researchers use to
+        pull, clean and convert survey data.
+      </p>
+      <a class="link-arrow" href="cv.html">Read the full CV <i class="bi bi-arrow-right"></i></a>
+    </div>
+    <ol class="path reveal">
+      <li>
+        <span class="path-year">2024 &ndash; now</span>
+        <strong>Research Analyst, Laterite</strong>
+        <span>Addis Ababa, Ethiopia</span>
+      </li>
+      <li>
+        <span class="path-year">2022 &ndash; 2024</span>
+        <strong>International MSc in Rural Development</strong>
+        <span>Erasmus Mundus: Ghent, Nitra and Pisa. Summa cum laude.</span>
+      </li>
+      <li>
+        <span class="path-year">2019 &ndash; 2022</span>
+        <strong>MSc in Agricultural Economics</strong>
+        <span>Ondokuz Mayıs University, Türkiye. CGPA 3.88/4.00.</span>
+      </li>
+      <li>
+        <span class="path-year">2018 &ndash; 2019</span>
+        <strong>Graduate Teaching Assistant</strong>
+        <span>Haramaya University, Ethiopia</span>
+      </li>
+      <li>
+        <span class="path-year">2015 &ndash; 2018</span>
+        <strong>BSc in Agricultural Economics</strong>
+        <span>Haramaya University. Gold medal, CGPA 3.99/4.00.</span>
+      </li>
+    </ol>
+  </div>
+</section>
+
+<section class="home-section band-soft">
+  <div class="container">
+    <span class="eyebrow">Research interests</span>
+    <h2 class="section-title">What I work on</h2>
+    <p class="section-lead">Applied microeconometrics with field surveys and household panel data from Ethiopia.</p>
+    <div class="card-grid card-grid-3">
+      <div class="reveal">
+        <div class="card-soft interest">
+          <span class="interest-icon"><i class="bi bi-flower1"></i></span>
+          <h3>Smallholder productivity</h3>
+          <p>Technical efficiency and input adoption on Ethiopian farms, measured with stochastic frontier models.</p>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="card-soft interest">
+          <span class="interest-icon"><i class="bi bi-shop"></i></span>
+          <h3>Crop commercialization</h3>
+          <p>Whether farmers who sell more of their cereal harvest are more efficient. My Ghent thesis used instrumental variables to answer it, and I am reworking it into a paper on productivity misallocation.</p>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="card-soft interest">
+          <span class="interest-icon"><i class="bi bi-basket"></i></span>
+          <h3>Food insecurity and shocks</h3>
+          <p>How exposed urban and rural households are when a shock hits the whole economy. A paper on this is in its second round of review at <em>Scientific Reports</em>.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="home-section">
+  <div class="container">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">Selected work</span>
+      <h2 class="section-title">Papers and packages</h2>
+    </div>
+    <div class="section-links">
+      <a class="link-arrow" href="research.html">All research <i class="bi bi-arrow-right"></i></a>
+      <a class="link-arrow" href="software.html">All software <i class="bi bi-arrow-right"></i></a>
+    </div>
+  </div>
+  <div class="card-grid card-grid-4">
+    <div class="reveal">
+      <article class="card-soft work">
+        <span class="work-type">Paper &middot; under review</span>
+        <h3>The fragility of the urban advantage</h3>
+        <p>Vulnerability to food insecurity under systemic shocks. Sole author, second round at <em>Scientific Reports</em>.</p>
+        <div class="work-links"><a href="research.html">Details</a></div>
+      </article>
+    </div>
+    <div class="reveal">
+      <article class="card-soft work">
+        <span class="work-type">R package &middot; Stata module</span>
+        <h3>ctoclient</h3>
+        <p>A data pipeline for SurveyCTO: download form data, attachments and server datasets, with optional tidying into analysis-ready tables.</p>
+        <div class="work-links">
+          <a href="https://guturago.github.io/ctoclient/">Docs</a>
+          <a href="https://CRAN.R-project.org/package=ctoclient">CRAN</a>
+        </div>
+      </article>
+    </div>
+    <div class="reveal">
+      <article class="card-soft work">
+        <span class="work-type">R package &middot; Stata module</span>
+        <h3>ethiodate</h3>
+        <p>Converts between Ethiopian and Gregorian dates and works with dplyr and ggplot2. The core is written in C++.</p>
+        <div class="work-links">
+          <a href="https://guturago.github.io/ethiodate/">Docs</a>
+          <a href="https://CRAN.R-project.org/package=ethiodate">CRAN</a>
+        </div>
+      </article>
+    </div>
+    <div class="reveal">
+      <article class="card-soft work">
+        <span class="work-type">R package</span>
+        <h3>nadaverse</h3>
+        <p>Searches microdata catalogs built on NADA, such as those of the World Bank, FAO and IHSN, and pulls study metadata, file lists and variable dictionaries.</p>
+        <div class="work-links">
+          <a href="https://CRAN.R-project.org/package=nadaverse">CRAN</a>
+          <a href="https://github.com/guturago/nadaverse">GitHub</a>
+        </div>
+      </article>
+    </div>
+  </div>
+  </div>
+</section>
+
+<section class="home-section posts">
+  <div class="container">
+  <div class="section-head">
+    <div>
+      <span class="eyebrow">Blog</span>
+      <h2 class="section-title">Latest writing</h2>
+    </div>
+    <div class="section-links">
+      <a class="link-arrow" href="blog.html">All posts <i class="bi bi-arrow-right"></i></a>
+    </div>
+  </div>
+```
+
+::: {#latest-posts}
 :::
 
+```{=html}
+  </div>
+</section>
 
-::: {.text-center}
-[Contact me](resume.qmd#contact-info)
-:::
+<section class="contact-band">
+  <div class="container contact-inner reveal">
+    <div>
+      <h2>Get in touch</h2>
+      <p>Email is the quickest way to reach me, whether it's about a collaboration, a survey question or one of the packages.</p>
+    </div>
+    <div class="hero-actions">
+      <a class="btn btn-accent" href="mailto:girjagutama@gmail.com"><i class="bi bi-envelope"></i> Email me</a>
+      <a class="btn btn-ghost" href="cv.html">View CV</a>
+    </div>
+  </div>
+</section>
 
+<script>
+(function () {
+  var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var items = document.querySelectorAll(".reveal");
+
+  function countUp(el) {
+    var target = parseInt(el.getAttribute("data-count"), 10);
+    var suffix = el.getAttribute("data-suffix") || "";
+    var start = null;
+    function step(ts) {
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / 900, 1);
+      el.textContent = Math.round(target * p) + suffix;
+      if (p < 1) window.requestAnimationFrame(step);
+    }
+    window.requestAnimationFrame(step);
+  }
+
+  if (reduce || !("IntersectionObserver" in window)) {
+    items.forEach(function (el) { el.classList.add("is-visible"); });
+    return;
+  }
+
+  var io = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add("is-visible");
+      entry.target.querySelectorAll(".stat-num[data-count]").forEach(countUp);
+      io.unobserve(entry.target);
+    });
+  }, { threshold: 0.15 });
+
+  items.forEach(function (el) { io.observe(el); });
+})();
+</script>
+```
