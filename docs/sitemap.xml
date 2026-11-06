@@ -1,35 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://guturago.github.io/resume.html</loc>
-    <lastmod>2025-12-04T12:11:51.535Z</lastmod>
-  </url>
-  <url>
-    <loc>https://guturago.github.io/blog.html</loc>
-    <lastmod>2025-05-15T06:23:10.612Z</lastmod>
-  </url>
-  <url>
-    <loc>https://guturago.github.io/blog/importance-of-functions-in-r/index.html</loc>
-    <lastmod>2025-05-15T07:45:41.778Z</lastmod>
-  </url>
-  <url>
-    <loc>https://guturago.github.io/blog/error-handling-in-r-functions/index.html</loc>
-    <lastmod>2025-12-04T13:25:44.062Z</lastmod>
-  </url>
-  <url>
-    <loc>https://guturago.github.io/about.html</loc>
-    <lastmod>2025-01-29T13:47:24.599Z</lastmod>
-  </url>
-  <url>
-    <loc>https://guturago.github.io/blog/gt-table-theme/index.html</loc>
-    <lastmod>2024-11-19T13:59:34.145Z</lastmod>
-  </url>
-  <url>
-    <loc>https://guturago.github.io/blog/web-craping-using-rvest/index.html</loc>
-    <lastmod>2024-11-19T13:59:34.145Z</lastmod>
+    <loc>https://guturago.github.io/software.html</loc>
+    <lastmod>2026-11-06T07:39:19.292Z</lastmod>
   </url>
   <url>
     <loc>https://guturago.github.io/index.html</loc>
-    <lastmod>2025-12-04T13:15:11.937Z</lastmod>
+    <lastmod>2026-11-06T07:48:02.778Z</lastmod>
+  </url>
+  <url>
+    <loc>https://guturago.github.io/blog.html</loc>
+    <lastmod>2026-11-06T07:48:01.789Z</lastmod>
+  </url>
+  <url>
+    <loc>https://guturago.github.io/blog/importance-of-functions-in-r/index.html</loc>
+    <lastmod>2026-11-06T07:48:10.510Z</lastmod>
+  </url>
+  <url>
+    <loc>https://guturago.github.io/blog/error-handling-in-r-functions/index.html</loc>
+    <lastmod>2026-11-06T07:48:10.479Z</lastmod>
+  </url>
+  <url>
+    <loc>https://guturago.github.io/blog/gt-table-theme/index.html</loc>
+    <lastmod>2026-11-06T07:48:10.496Z</lastmod>
+  </url>
+  <url>
+    <loc>https://guturago.github.io/blog/web-craping-using-rvest/index.html</loc>
+    <lastmod>2026-11-06T07:48:10.526Z</lastmod>
+  </url>
+  <url>
+    <loc>https://guturago.github.io/cv.html</loc>
+    <lastmod>2026-11-06T07:46:03.893Z</lastmod>
+  </url>
+  <url>
+    <loc>https://guturago.github.io/research.html</loc>
+    <lastmod>2026-11-06T07:25:50.393Z</lastmod>
   </url>
 </urlset>

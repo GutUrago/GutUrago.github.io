@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>blog</title>
+<title>Blog – Gutama Girja Urago</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,7 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="././images/favicon.png" rel="icon" type="image/png">
+<link href="./images/favicon.png" rel="icon" type="image/png">
 <script src="site_libs/quarto-listing/list.min.js"></script>
 <script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
@@ -42,13 +42,13 @@ ul.task-list li input[type="checkbox"] {
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-960a24964e96cc96b66b9a8e8f8f4e4d.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-b0742e0cd9d71d9e6e8bf2d026a6fc93.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
   "panel-placement": "end",
-  "type": "textbox",
+  "type": "overlay",
   "limit": 50,
   "keyboard-shortcut": [
     "f",
@@ -79,9 +79,9 @@ ul.task-list li input[type="checkbox"] {
     }
 
     const options = {
-      valueNames: ['listing-date','listing-title','listing-author','listing-image','listing-description','listing-categories',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      valueNames: ['listing-image','listing-date','listing-title','listing-description','listing-categories','listing-reading-time',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
       
-      searchColumns: ["listing-date","listing-title","listing-author","listing-image","listing-description","listing-categories"],
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description","listing-categories"],
     };
 
     window['quarto-listings'] = window['quarto-listings'] || {};
@@ -107,6 +107,7 @@ function gtag(){dataLayer.push(arguments);}
 gtag('js', new Date());
 gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 </script>
+<style>html{ scroll-behavior: smooth; }</style>
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -138,17 +139,32 @@ window.Quarto = {
 };
 </script>
 
+<link rel="alternate" type="application/rss+xml" title="Gutama Girja Urago" href="blog.xml" data-external="1"><meta property="og:title" content="Blog – Gutama Girja Urago">
+<meta property="og:description" content="Notes on R, Stata and working with survey data">
+<meta property="og:image" content="https://guturago.github.io/images/blog-placeholder.png">
+<meta property="og:site_name" content="Gutama Girja Urago">
+<meta property="og:image:height" content="675">
+<meta property="og:image:width" content="1200">
+<meta name="twitter:title" content="Blog – Gutama Girja Urago">
+<meta name="twitter:description" content="Notes on R, Stata and working with survey data">
+<meta name="twitter:image" content="https://guturago.github.io/images/blog-placeholder.png">
+<meta name="twitter:image-height" content="675">
+<meta name="twitter:image-width" content="1200">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed quarto-light">
 
 <div id="quarto-search-results"></div>
-  <header id="quarto-header" class="headroom fixed-top">
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
     <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="./index.html" class="navbar-brand navbar-brand-logo">
-    <img src="././images/favicon.png" alt="" class="navbar-logo">
+    <img src="./images/favicon.png" alt="GutUrago logo" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="./index.html">
+    <span class="navbar-title">Gutama Girja Urago</span>
     </a>
   </div>
             <div id="quarto-search" class="" title="Search"></div>
@@ -158,51 +174,61 @@ window.Quarto = {
           <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav navbar-nav-scroll ms-auto">
   <li class="nav-item">
+    <a class="nav-link" href="./index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./research.html"> 
+<span class="menu-text">Research</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="./software.html"> 
+<span class="menu-text">Software</span></a>
+  </li>  
+  <li class="nav-item">
     <a class="nav-link active" href="./blog.html" aria-current="page"> 
-<span class="menu-text">Blogs</span></a>
-  </li>  
-  <li class="nav-item dropdown ">
-    <a class="nav-link dropdown-toggle" href="#" id="nav-menu-packages" role="link" data-bs-toggle="dropdown" aria-expanded="false">
- <span class="menu-text">Packages</span>
-    </a>
-    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="nav-menu-packages">    
-        <li>
-    <a class="dropdown-item" href="https://guturago.github.io/ethiodate" target="_blank">
- <span class="dropdown-text">R package to work with Ethiopian dates</span></a>
-  </li>  
-        <li>
-    <a class="dropdown-item" href="https://www.statalist.org/forums/forum/general-stata-discussion/general/1779202-ethiodate-stata-module-to-provide-ethiopian-date-conversion-utilities" target="_blank">
- <span class="dropdown-text">Stata module to provide Ethiopian date conversion utilities</span></a>
-  </li>  
-    </ul>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="./resume.html"> 
-<span class="menu-text">Resume</span></a>
+<span class="menu-text">Blog</span></a>
   </li>  
   <li class="nav-item">
-    <a class="nav-link" href="./about.html"> 
-<span class="menu-text">About</span></a>
+    <a class="nav-link" href="./cv.html"> 
+<span class="menu-text">CV</span></a>
   </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools tools-wide">
-    <a href="https://github.com/GutUrago" title="GutUrago Github" class="quarto-navigation-tool px-1" aria-label="GutUrago Github"><i class="bi bi-github"></i></a>
-    <a href="https://www.linkedin.com/in/gutama-girja/" title="Linkedin" class="quarto-navigation-tool px-1" aria-label="Linkedin"><i class="bi bi-linkedin"></i></a>
-    <a href="./blog.xml" title="GutUrago Blog RSS" class="quarto-navigation-tool px-1" aria-label="GutUrago Blog RSS"><i class="bi bi-rss"></i></a>
+    <a href="https://github.com/GutUrago" title="" class="quarto-navigation-tool px-1" aria-label="GitHub"><i class="bi bi-github"></i></a>
+    <a href="https://www.linkedin.com/in/gutama-girja/" title="" class="quarto-navigation-tool px-1" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+    <a href="https://orcid.org/0000-0001-5588-2301" title="" class="quarto-navigation-tool px-1" aria-label="ORCID"><i class="bi bi-orcid"></i></a>
+    <a href="./blog.xml" title="" class="quarto-navigation-tool px-1" aria-label="Blog RSS feed"><i class="bi bi-rss"></i></a>
 </div>
       </div> <!-- /container-fluid -->
     </nav>
 </header>
 <!-- content -->
-<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-page-left">
+      <h1 class="title">Blog</h1>
+            <p class="subtitle lead">Notes on R, Stata and working with survey data</p>
+                      </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta column-page-left">
+
+      
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
     <h5 class="quarto-listing-category-title">Categories</h5><div class="quarto-listing-category category-default"><div class="category" data-category="">All <span class="quarto-category-count">(4)</span></div><div class="category" data-category="YmVzdC1wcmFjdGljZXM=">best-practices <span class="quarto-category-count">(1)</span></div><div class="category" data-category="ZHBseXI=">dplyr <span class="quarto-category-count">(2)</span></div><div class="category" data-category="ZXJyb3ItaGFuZGxpbmc=">error-handling <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Z2dwbG90Mg==">ggplot2 <span class="quarto-category-count">(1)</span></div><div class="category" data-category="Z3Q=">gt <span class="quarto-category-count">(1)</span></div><div class="category" data-category="UiUyMHByb2dyYW1taW5n">R programming <span class="quarto-category-count">(1)</span></div><div class="category" data-category="cnZlc3Q=">rvest <span class="quarto-category-count">(1)</span></div><div class="category" data-category="dGFibGU=">table <span class="quarto-category-count">(1)</span></div><div class="category" data-category="d2ViJTIwc2NyYXBpbmc=">web scraping <span class="quarto-category-count">(1)</span></div></div></div>
 <!-- main -->
-<main class="content column-page-left" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block"></header>
+<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
 
 
 
@@ -211,7 +237,8 @@ window.Quarto = {
 
 
 
-<div class="quarto-listing quarto-listing-container-default" id="listing-listing">
+
+<div class="quarto-listing quarto-listing-container-grid" id="listing-listing">
 <div class="listing-actions-group">
    <div class="input-group input-group-sm quarto-listing-sort">
     <span class="input-group-text"><i class="bi bi-sort-down"></i></span>
@@ -227,9 +254,6 @@ window.Quarto = {
       <option value="listing-date-sort" data-direction="desc">
         Date - Newest
       </option>
-      <option value="listing-author" data-direction="asc">
-        Author
-      </option>
     </select>
   </div>
     <div class="input-group input-group-sm quarto-listing-filter">
@@ -237,17 +261,18 @@ window.Quarto = {
       <input type="text" class="search form-control" placeholder="Filter">
     </div>
 </div>
-<div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="ZHBseXIlMkNSJTIwcHJvZ3JhbW1pbmclMkNlcnJvci1oYW5kbGluZyUyQ2Jlc3QtcHJhY3RpY2Vz" data-listing-date-sort="1747256400000" data-listing-file-modified-sort="1764854744062" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="732">
-<div class="thumbnail"><a href="./blog/error-handling-in-r-functions/index.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/error-handling-in-r-functions/index.html" class="no-external">Error Handling in R: A Guide for Data Analysts</a>
-</h3>
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-categories="ZHBseXIlMkNSJTIwcHJvZ3JhbW1pbmclMkNlcnJvci1oYW5kbGluZyUyQ2Jlc3QtcHJhY3RpY2Vz" data-listing-date-sort="1747267200000" data-listing-file-modified-sort="1793951290479" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="4" data-listing-word-count-sort="732">
+<a href="./blog/error-handling-in-r-functions/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./images/blog-placeholder.png" class="thumbnail-image card-img" style="height: 190px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Error Handling in R: A Guide for Data Analysts
+</h5>
+<div class="listing-reading-time card-text text-muted">4 min</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('ZHBseXI='); return false;">dplyr</div>
@@ -259,61 +284,55 @@ window.Quarto = {
 <div class="listing-category" onclick="window.quartoListingCategory('YmVzdC1wcmFjdGljZXM='); return false;">best-practices</div>
 
 </div>
-<div class="delink listing-description"><a href="./blog/error-handling-in-r-functions/index.html" class="no-external">
-As data analysts, we often rely on custom functions to automate repetitive tasks, clean datasets, and perform complex analyses. However, even the most well-written function…<strong></strong>
-</a></div>
+<div class="card-text listing-description delink">
+<p>How to use stop(), warning(), try() and tryCatch() so R functions fail with clear messages and recover when they can.</p>
 </div>
-<div class="metadata">
-<a href="./blog/error-handling-in-r-functions/index.html" class="no-external">
+<div class="card-attribution card-text-small end">
 <div class="listing-date">
 May 15, 2025
 </div>
-<div class="listing-author">
-Gutama Girja Urago
-</div>
-</a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="1" data-categories="ZHBseXI=" data-listing-date-sort="1747256400000" data-listing-file-modified-sort="1747295141778" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="399">
-<div class="thumbnail"><a href="./blog/importance-of-functions-in-r/index.html" class="no-external">
-
-<div class="listing-item-img-placeholder card-img-top" >&nbsp;</div>
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/importance-of-functions-in-r/index.html" class="no-external">Importance of R Functions: A Guide for Data Analysts</a>
-</h3>
+</div></a>
+</div>
+<div class="g-col-1" data-index="1" data-categories="ZHBseXI=" data-listing-date-sort="1747267200000" data-listing-file-modified-sort="1793951290510" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="2" data-listing-word-count-sort="399">
+<a href="./blog/importance-of-functions-in-r/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./images/blog-placeholder.png" class="thumbnail-image card-img" style="height: 190px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Importance of R Functions: A Guide for Data Analysts
+</h5>
+<div class="listing-reading-time card-text text-muted">2 min</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('ZHBseXI='); return false;">dplyr</div>
 
 </div>
-<div class="delink listing-description"><a href="./blog/importance-of-functions-in-r/index.html" class="no-external">
-R is a powerful tool for data analysis, statistical computing, and data visualization. However, to fully harness its potential, one must master the use of functions.…
-</a></div>
+<div class="card-text listing-description delink">
+<p>Why analysis code in R should be built from functions, with examples for summary statistics and data transformation.</p>
 </div>
-<div class="metadata">
-<a href="./blog/importance-of-functions-in-r/index.html" class="no-external">
+<div class="card-attribution card-text-small end">
 <div class="listing-date">
 May 15, 2025
 </div>
-<div class="listing-author">
-Gutama Girja Urago
-</div>
-</a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="2" data-categories="d2ViJTIwc2NyYXBpbmclMkNydmVzdCUyQ2dncGxvdDI=" data-listing-date-sort="1716152400000" data-listing-file-modified-sort="1732024774145" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="823">
-<div class="thumbnail"><a href="./blog/web-craping-using-rvest/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/web-craping-using-rvest/inspect.png" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/web-craping-using-rvest/index.html" class="no-external">Web Scraping in R: Import table directly from website</a>
-</h3>
+</div></a>
+</div>
+<div class="g-col-1" data-index="2" data-categories="d2ViJTIwc2NyYXBpbmclMkNydmVzdCUyQ2dncGxvdDI=" data-listing-date-sort="1716163200000" data-listing-file-modified-sort="1793951290526" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="5" data-listing-word-count-sort="823">
+<a href="./blog/web-craping-using-rvest/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./blog/web-craping-using-rvest/inspect.png" class="thumbnail-image card-img" style="height: 190px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Web Scraping in R: Import table directly from website
+</h5>
+<div class="listing-reading-time card-text text-muted">5 min</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('d2ViJTIwc2NyYXBpbmc='); return false;">web scraping</div>
@@ -323,31 +342,28 @@ Gutama Girja Urago
 <div class="listing-category" onclick="window.quartoListingCategory('Z2dwbG90Mg=='); return false;">ggplot2</div>
 
 </div>
-<div class="delink listing-description"><a href="./blog/web-craping-using-rvest/index.html" class="no-external">
-In this blog, we are going to import table from website into R. This is very important because it saves a time to copy the table manually and going through a lot of pain in…<code></code><code></code>
-</a></div>
+<div class="card-text listing-description delink">
+<p>Import Ethiopia’s GDP table from Worldometers into R with rvest, clean it with janitor and plot it with ggplot2.</p>
 </div>
-<div class="metadata">
-<a href="./blog/web-craping-using-rvest/index.html" class="no-external">
+<div class="card-attribution card-text-small end">
 <div class="listing-date">
 May 20, 2024
 </div>
-<div class="listing-author">
-Gutama Girja Urago
-</div>
-</a>
 </div>
 </div>
-<div class="quarto-post image-right" data-index="3" data-categories="Z3QlMkN0YWJsZQ==" data-listing-date-sort="1712005200000" data-listing-file-modified-sort="1732024774145" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1546">
-<div class="thumbnail"><a href="./blog/gt-table-theme/index.html" class="no-external">
-
-<img loading="lazy" src="./blog/gt-table-theme/image.jpg" class="thumbnail-image">
-
-</a></div>
-<div class="body">
-<h3 class="no-anchor listing-title">
-<a href="./blog/gt-table-theme/index.html" class="no-external">Table Template: Create your own {gt} table theme</a>
-</h3>
+</div></a>
+</div>
+<div class="g-col-1" data-index="3" data-categories="Z3QlMkN0YWJsZQ==" data-listing-date-sort="1712016000000" data-listing-file-modified-sort="1793951290496" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="8" data-listing-word-count-sort="1546">
+<a href="./blog/gt-table-theme/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img loading="lazy" src="./blog/gt-table-theme/image.jpg" class="thumbnail-image card-img" style="height: 190px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Table Template: Create your own {gt} table theme
+</h5>
+<div class="listing-reading-time card-text text-muted">8 min</div>
 <div class="listing-categories">
 
 <div class="listing-category" onclick="window.quartoListingCategory('Z3Q='); return false;">gt</div>
@@ -355,24 +371,20 @@ Gutama Girja Urago
 <div class="listing-category" onclick="window.quartoListingCategory('dGFibGU='); return false;">table</div>
 
 </div>
-<div class="delink listing-description"><a href="./blog/gt-table-theme/index.html" class="no-external">
-Creating visually appealing and informative tables is a key aspect of data presentation, and the <code>gt</code> package in R provides powerful tools for this purpose. In this post, we…
-</a></div>
+<div class="card-text listing-description delink">
+<p>Build a reusable {gt} table theme step by step: header, row striping, spanners and column labels, then wrap it all in one function.</p>
 </div>
-<div class="metadata">
-<a href="./blog/gt-table-theme/index.html" class="no-external">
+<div class="card-attribution card-text-small end">
 <div class="listing-date">
 Apr 2, 2024
 </div>
-<div class="listing-author">
-Gutama Girja Urago
 </div>
-</a>
 </div>
+</div></a>
 </div>
 </div>
 <div class="listing-no-matching d-none">No matching items</div>
-</div></main> <!-- /main -->
+</div><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -459,6 +471,11 @@ Gutama Girja Urago
           if (link.dataset.originalHref !== undefined) {
             link.href = link.dataset.originalHref;
           }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
         }
       }
     function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
@@ -776,17 +793,38 @@ Gutama Girja Urago
 <footer class="footer">
   <div class="nav-footer">
     <div class="nav-footer-left">
-      &nbsp;
-    </div>   
+<p>© 2026 Gutama Girja Urago</p>
+</div>   
     <div class="nav-footer-center">
+<p>Made with <a href="https://quarto.org">Quarto</a> and R</p>
+</div>
+    <div class="nav-footer-right">
       <ul class="footer-items list-unstyled">
-    <li class="nav-item">
- All rights are reserved!
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/GutUrago">
+      <i class="bi bi-github" role="img" aria-label="GitHub">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/gutama-girja/">
+      <i class="bi bi-linkedin" role="img" aria-label="LinkedIn">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://orcid.org/0000-0001-5588-2301">
+      <i class="bi bi-orcid" role="img" aria-label="ORCID">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="mailto:girjagutama@gmail.com">
+      <i class="bi bi-envelope" role="img" aria-label="Email">
+</i> 
+    </a>
   </li>  
 </ul>
-    </div>
-    <div class="nav-footer-right">
-      &nbsp;
     </div>
   </div>
 </footer>
@@ -794,4 +832,5 @@ Gutama Girja Urago
 
 
 
+<script src="site_libs/quarto-html/zenscroll-min.js"></script>
 </body></html>

@@ -1,0 +1,5638 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>Gutama Girja Urago</title>
+<link>https://guturago.github.io/blog.html</link>
+<atom:link href="https://guturago.github.io/blog.xml" rel="self" type="application/rss+xml"/>
+<description>Agricultural economist and research analyst working on smallholder productivity, food security and open-source tools for survey data in R and Stata.</description>
+<image>
+<url>https://guturago.github.io/images/profile-web.jpg</url>
+<title>Gutama Girja Urago</title>
+<link>https://guturago.github.io/blog.html</link>
+</image>
+<generator>quarto-1.7.32</generator>
+<lastBuildDate>Thu, 15 May 2025 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Error Handling in R: A Guide for Data Analysts</title>
+  <dc:creator>Gutama Girja Urago</dc:creator>
+  <link>https://guturago.github.io/blog/error-handling-in-r-functions/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="error-handling-in-r-functions-a-comprehensive-guide" class="level2">
+<h2 class="anchored" data-anchor-id="error-handling-in-r-functions-a-comprehensive-guide">Error Handling in R Functions: A Comprehensive Guide</h2>
+<p>As data analysts, we often rely on custom functions to automate repetitive tasks, clean datasets, and perform complex analyses. However, even the most well-written function can break unexpectedly—especially when it encounters invalid input. That’s where <strong>error handling</strong> comes in.</p>
+<p>This guide walks through best practices for incorporating error and warning handling into your R functions to make them more <strong>robust, user-friendly, and maintainable</strong>.</p>
+<hr>
+</section>
+<section id="why-implement-error-handling" class="level2">
+<h2 class="anchored" data-anchor-id="why-implement-error-handling">Why Implement Error Handling?</h2>
+<p>Without proper checks and feedback, functions can fail silently or return misleading results. Implementing error handling is not just a defensive programming habit—it is a <strong>critical part of writing reliable analytical code</strong>.</p>
+<section id="key-benefits" class="level3">
+<h3 class="anchored" data-anchor-id="key-benefits">Key Benefits:</h3>
+<ul>
+<li>🔍 <strong>Data Validation:</strong> Prevents incorrect types, structures, or values from corrupting your logic.</li>
+<li>🐞 <strong>Easier Debugging:</strong> Pinpoints the root cause of a failure more effectively.</li>
+<li>💡 <strong>Better UX:</strong> Communicates clearly with users, especially those who didn’t write the function.</li>
+<li>🔁 <strong>Reusability:</strong> Makes your functions portable and safe to use in larger pipelines.</li>
+</ul>
+<hr>
+</section>
+</section>
+<section id="basic-error-handling-with-stop" class="level2">
+<h2 class="anchored" data-anchor-id="basic-error-handling-with-stop">1. Basic Error Handling with <code>stop()</code></h2>
+<p>Use <code>stop()</code> to halt execution and print a clear error message when the input doesn’t meet expectations.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">divide_numbers <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(x, y) {</span>
+<span id="cb1-2">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">is.numeric</span>(x) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">||</span> <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">!</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">is.numeric</span>(y)) {</span>
+<span id="cb1-3">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stop</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Both x and y must be numeric."</span>)</span>
+<span id="cb1-4">  }</span>
+<span id="cb1-5">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (y <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>) {</span>
+<span id="cb1-6">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stop</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Division by zero is not allowed."</span>)</span>
+<span id="cb1-7">  }</span>
+<span id="cb1-8">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(x <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> y)</span>
+<span id="cb1-9">}</span>
+<span id="cb1-10"></span>
+<span id="cb1-11"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Test cases</span></span>
+<span id="cb1-12"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">divide_numbers</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Works fine</span></span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">divide_numbers</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"a"</span>)    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Triggers a type error</span></span></code></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in divide_numbers(10, "a"): Both x and y must be numeric.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">divide_numbers</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)      <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Triggers division error</span></span></code></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in divide_numbers(10, 0): Division by zero is not allowed.</code></pre>
+</div>
+</div>
+<p>By proactively validating arguments, we avoid mysterious bugs later in the analysis.</p>
+<hr>
+</section>
+<section id="gentle-alerts-with-warning" class="level2">
+<h2 class="anchored" data-anchor-id="gentle-alerts-with-warning">2. Gentle Alerts with <code>warning()</code></h2>
+<p>Use <code>warning()</code> when you want to inform users of an issue without stopping execution.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">log_value <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(x) {</span>
+<span id="cb7-2">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">any</span>(x <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)) {</span>
+<span id="cb7-3">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">warning</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Input contains non-positive values; returning NA for those cases."</span>)</span>
+<span id="cb7-4">  }</span>
+<span id="cb7-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ifelse</span>(x <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">log</span>(x), <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NA</span>))</span>
+<span id="cb7-6">}</span>
+<span id="cb7-7"></span>
+<span id="cb7-8"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">log_value</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>, <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>))</span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in log_value(c(1, 10, -3)): Input contains non-positive values;
+returning NA for those cases.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in log(x): NaNs produced</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.000000 2.302585       NA</code></pre>
+</div>
+</div>
+<p>Warnings are especially useful for <strong>partial failures</strong>—when the function can continue but with caveats.</p>
+<hr>
+</section>
+<section id="handling-runtime-errors-with-try-and-trycatch" class="level2">
+<h2 class="anchored" data-anchor-id="handling-runtime-errors-with-try-and-trycatch">3. Handling Runtime Errors with <code>try()</code> and <code>tryCatch()</code></h2>
+<p>When calling code that might fail unpredictably (e.g., reading a file or hitting an API), wrap it in <code>try()</code> or <code>tryCatch()</code> to recover gracefully.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1">read_data_safe <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(path) {</span>
+<span id="cb11-2">  result <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">try</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read.csv</span>(path), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">silent =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb11-3">  <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> (<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">inherits</span>(result, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"try-error"</span>)) {</span>
+<span id="cb11-4">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">warning</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Could not read the file. Please check the path or format."</span>)</span>
+<span id="cb11-5">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(<span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span>)</span>
+<span id="cb11-6">  }</span>
+<span id="cb11-7">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(result)</span>
+<span id="cb11-8">}</span></code></pre></div>
+</div>
+<p>Or, using <code>tryCatch()</code> for finer control:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1">read_data_robust <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(path) {</span>
+<span id="cb12-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tryCatch</span>(</span>
+<span id="cb12-3">    {</span>
+<span id="cb12-4">      df <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read.csv</span>(path)</span>
+<span id="cb12-5">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">message</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"File read successfully."</span>)</span>
+<span id="cb12-6">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(df)</span>
+<span id="cb12-7">    },</span>
+<span id="cb12-8">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">error =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(e) {</span>
+<span id="cb12-9">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">message</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Error: "</span>, e<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>message)</span>
+<span id="cb12-10">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(<span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">NULL</span>)</span>
+<span id="cb12-11">    },</span>
+<span id="cb12-12">    <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">warning =</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(w) {</span>
+<span id="cb12-13">      <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">message</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Warning: "</span>, w<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">$</span>message)</span>
+<span id="cb12-14">    }</span>
+<span id="cb12-15">  )</span>
+<span id="cb12-16">}</span></code></pre></div>
+</div>
+<hr>
+</section>
+<section id="writing-informative-error-messages" class="level2">
+<h2 class="anchored" data-anchor-id="writing-informative-error-messages">4. Writing Informative Error Messages</h2>
+<p>A good error message tells users <strong>what went wrong</strong>, <strong>why</strong>, and ideally <strong>how to fix it</strong>.</p>
+<p>✅ Good: <code>"Input 'y' must be a numeric vector of length greater than 0."</code><br>
+❌ Bad: <code>"Error in y"</code></p>
+<p>You can even use <code>stopifnot()</code> for compact assertions:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1">my_mean <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(x) {</span>
+<span id="cb13-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">stopifnot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">is.numeric</span>(x), <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">length</span>(x) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>)</span>
+<span id="cb13-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mean</span>(x)</span>
+<span id="cb13-4">}</span></code></pre></div>
+</div>
+<hr>
+</section>
+<section id="when-to-use-stop-warning-or-message" class="level2">
+<h2 class="anchored" data-anchor-id="when-to-use-stop-warning-or-message">5. When to Use <code>stop()</code>, <code>warning()</code>, or <code>message()</code></h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 28%">
+<col style="width: 30%">
+<col style="width: 19%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Function</th>
+<th>Stops execution</th>
+<th>User notification</th>
+<th>Ideal for</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>stop()</code></td>
+<td>✅</td>
+<td>🚨</td>
+<td>Fatal input errors</td>
+</tr>
+<tr class="even">
+<td><code>warning()</code></td>
+<td>❌</td>
+<td>⚠️</td>
+<td>Soft alerts</td>
+</tr>
+<tr class="odd">
+<td><code>message()</code></td>
+<td>❌</td>
+<td>💬 (quiet alerts)</td>
+<td>Informational logs</td>
+</tr>
+</tbody>
+</table>
+<p>Use each intentionally to design an experience that matches the severity of the situation.</p>
+<hr>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>Effective error handling makes your R code <strong>safer, more transparent, and more professional</strong>—especially when shared in collaborative settings or deployed in production dashboards and packages.</p>
+<p>Start small: add one or two checks to your most-used functions, and grow from there. As your codebase scales, you’ll thank yourself for the early investment in resilience.</p>
+<p>Happy coding!</p>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a> ]]></description>
+  <category>dplyr</category>
+  <category>R programming</category>
+  <category>error-handling</category>
+  <category>best-practices</category>
+  <guid>https://guturago.github.io/blog/error-handling-in-r-functions/</guid>
+  <pubDate>Thu, 15 May 2025 00:00:00 GMT</pubDate>
+  <media:content url="https://guturago.github.io/images/blog-placeholder.png" medium="image" type="image/png" height="81" width="144"/>
+</item>
+<item>
+  <title>Importance of R Functions: A Guide for Data Analysts</title>
+  <dc:creator>Gutama Girja Urago</dc:creator>
+  <link>https://guturago.github.io/blog/importance-of-functions-in-r/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="importance-of-r-functions-a-guide-for-data-analysts" class="level3">
+<h3 class="anchored" data-anchor-id="importance-of-r-functions-a-guide-for-data-analysts">Importance of R Functions: A Guide for Data Analysts</h3>
+<p>R is a powerful tool for data analysis, statistical computing, and data visualization. However, to fully harness its potential, one must master the use of functions. Functions are the building blocks of R programming. They allow for modular, reusable, and maintainable code that simplifies complex analyses, reduces redundancy, and enhances overall efficiency.</p>
+</section>
+<section id="why-use-functions-in-r" class="level3">
+<h3 class="anchored" data-anchor-id="why-use-functions-in-r">Why Use Functions in R?</h3>
+<ol type="1">
+<li><p><strong>Code Reusability:</strong> Instead of repeating the same set of instructions, you can encapsulate them in a function and call it whenever needed.</p></li>
+<li><p><strong>Modularity:</strong> Functions break down complex problems into smaller, manageable pieces, making the code easier to read and debug.</p></li>
+<li><p><strong>Scalability:</strong> Once a function is defined, it can be applied to different datasets or parameters, reducing the need for repetitive coding.</p></li>
+<li><p><strong>Debugging and Testing:</strong> Isolating functionality into separate functions makes it easier to identify and resolve errors.</p></li>
+</ol>
+</section>
+<section id="basic-function-structure-in-r" class="level3">
+<h3 class="anchored" data-anchor-id="basic-function-structure-in-r">Basic Function Structure in R</h3>
+<p>R functions have a simple yet powerful structure. Here’s a basic example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1">add_numbers <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(x, y) {</span>
+<span id="cb1-2">  result <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> x <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> y</span>
+<span id="cb1-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(result)</span>
+<span id="cb1-4">}</span>
+<span id="cb1-5"></span>
+<span id="cb1-6"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">add_numbers</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 7</code></pre>
+</div>
+</div>
+<p>This function takes two arguments, <code>x</code> and <code>y</code>, and returns their sum. The use of <code>return()</code> is optional but recommended for clarity.</p>
+</section>
+<section id="practical-example-calculating-the-mean-and-standard-deviation" class="level3">
+<h3 class="anchored" data-anchor-id="practical-example-calculating-the-mean-and-standard-deviation">Practical Example: Calculating the Mean and Standard Deviation</h3>
+<p>Suppose you are analyzing a dataset and frequently need to calculate the mean and standard deviation of numeric columns. Instead of repeating the calculations, you can write a reusable function:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">calc_stats <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(data, column) {</span>
+<span id="cb3-2">  mean_val <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mean</span>(data[[column]], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">na.rm =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb3-3">  sd_val <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sd</span>(data[[column]], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">na.rm =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>)</span>
+<span id="cb3-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">list</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mean =</span> mean_val, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sd =</span> sd_val)</span>
+<span id="cb3-5">}</span>
+<span id="cb3-6"></span>
+<span id="cb3-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Example usage</span></span>
+<span id="cb3-8"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">calc_stats</span>(mtcars, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"mpg"</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$mean
+[1] 20.09062
+
+$sd
+[1] 6.026948</code></pre>
+</div>
+</div>
+</section>
+<section id="advanced-example-data-transformation-function" class="level3">
+<h3 class="anchored" data-anchor-id="advanced-example-data-transformation-function">Advanced Example: Data Transformation Function</h3>
+<p>Imagine you are frequently transforming data by filtering, summarizing, and plotting. You can create a function that performs these steps efficiently:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(dplyr)</span></code></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'dplyr'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:stats':
+
+    filter, lag</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:base':
+
+    intersect, setdiff, setequal, union</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">analyze_data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(data, group_col, num_col) {</span>
+<span id="cb9-2">  summary <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> data <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb9-3">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(.data[[group_col]]) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">%&gt;%</span></span>
+<span id="cb9-4">    <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">summarize</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">mean_value =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mean</span>(.data[[num_col]], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">na.rm =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>),</span>
+<span id="cb9-5">              <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">sd_value =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">sd</span>(.data[[num_col]], <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">na.rm =</span> <span class="cn" style="color: #8f5902;
+background-color: null;
+font-style: inherit;">TRUE</span>))</span>
+<span id="cb9-6">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(summary)</span>
+<span id="cb9-7">}</span>
+<span id="cb9-8"></span>
+<span id="cb9-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Example usage</span></span>
+<span id="cb9-10">data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">data.frame</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">group =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rep</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">c</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"A"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"B"</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">each =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">value =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">rnorm</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">10</span>))</span>
+<span id="cb9-11"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">analyze_data</span>(data, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"group"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"value"</span>)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 3
+  group mean_value sd_value
+  &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;
+1 A        0.00706    0.589
+2 B       -0.519      0.369</code></pre>
+</div>
+</div>
+</section>
+<section id="conclusion" class="level3">
+<h3 class="anchored" data-anchor-id="conclusion">Conclusion</h3>
+<p>Functions are essential for writing clean, reusable, and efficient R code. They not only improve code readability but also enhance overall analysis workflow. By incorporating functions in your R scripts, you elevate your coding practice, making your code more robust, modular, and easier to maintain. In upcoming posts, we’ll delve deeper into advanced function techniques, such as error handling, vectorization, and functional programming in R.</p>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a> ]]></description>
+  <category>dplyr</category>
+  <guid>https://guturago.github.io/blog/importance-of-functions-in-r/</guid>
+  <pubDate>Thu, 15 May 2025 00:00:00 GMT</pubDate>
+  <media:content url="https://guturago.github.io/images/blog-placeholder.png" medium="image" type="image/png" height="81" width="144"/>
+</item>
+<item>
+  <title>Web Scraping in R: Import table directly from website</title>
+  <dc:creator>Gutama Girja Urago</dc:creator>
+  <link>https://guturago.github.io/blog/web-craping-using-rvest/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<section id="what-and-why" class="level1">
+<h1>What and why?</h1>
+<p>In this blog, we are going to import table from website into R. This is very important because it saves a time to copy the table manually and going through a lot of pain in excel to import the table into R. Doing it in that way is time consuming, tedious and prone to mistake. That’s why <code>rvest</code> (harvest) package is there for you on CRAN. Install the package from CRAN using <code>install.packages()</code> function and let’s dive in.</p>
+</section>
+<section id="web-scrapping" class="level1">
+<h1>Web Scrapping</h1>
+<p>First we need to have the url for the website from which we are planning to import the data as a dataframe in R. Here I am using Ethiopian GDP table from <a href="https://www.worldometers.info/gdp/ethiopia-gdp/">worldmeters</a> website. Once we have the link to the website, we have to load the package and read html file from that page of website, which also contains the table of interest.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># install.packages(rvest)         # Install the package if you do</span></span>
+<span id="cb1-2"></span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(rvest)</span>
+<span id="cb1-4"></span>
+<span id="cb1-5">tbl_url <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"https://www.worldometers.info/gdp/ethiopia-gdp/"</span></span>
+<span id="cb1-6"></span>
+<span id="cb1-7">raw_html <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">read_html</span>(tbl_url)</span>
+<span id="cb1-8"></span>
+<span id="cb1-9"></span>
+<span id="cb1-10">raw_html</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{html_document}
+&lt;html lang="en"&gt;
+[1] &lt;head&gt;\n&lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8 ...
+[2] &lt;body&gt;\n&lt;!-- Google tag (gtag.js) --&gt;&lt;script async src="https://www.googl ...</code></pre>
+</div>
+</div>
+<p>The above HTML content contains two main parts: the head and the body. The body part of the document typically contains the content of interest. HTML documents are usually styled using CSS, and the CSS selector helps us pick specific elements that we are interested in. To find the CSS of the element that we are interested in, <strong>right-click</strong> on the element of interest on the web and select <strong>inspect</strong>. Next, move your mouse over the codes in the Elements section until it highlights all parts of the table in blue.</p>
+<p><img src="https://guturago.github.io/blog/web-craping-using-rvest/inspect.png" class="img-fluid"></p>
+<p>There are two widely used CSS selectors, namely, class and id. One HTML element can have multiple classes. In this case, a table is one of the class selectors. Whenever you use the class selector, put a dot (.) before the class name. The precise CSS selector is the code that appears at the top of the table (shown by a red arrow), but it requires a significant amount of time to write. So, let’s start with the first class name, which is table. We could have also used xpath instead of CSS to select an element, but let’s keep it aside for now.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">element <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">html_elements</span>(raw_html, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">css =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">".table"</span>)</span>
+<span id="cb3-2">element</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>{xml_nodeset (1)}
+[1] &lt;table class="table table-striped table-bordered table-hover table-conden ...</code></pre>
+</div>
+</div>
+<p>Once you select the element, it’s still in HTML format and hard to understand. So, let’s convert it into an R object. Now, we see that there are actually two table objects in the returned HTML.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">tables <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">html_table</span>(element)</span>
+<span id="cb5-2">tables</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+# A tibble: 30 × 7
+    Year `GDP Nominal (Current USD)` `GDP Real  (Inflation adj.)` `GDP change`
+   &lt;int&gt; &lt;chr&gt;                       &lt;chr&gt;                        &lt;chr&gt;       
+ 1  2022 $126,783,000,000            $105,776,000,000             5.32%       
+ 2  2021 $111,262,000,000            $100,435,000,000             5.64%       
+ 3  2020 $107,658,000,000            $95,071,776,945              6.06%       
+ 4  2019 $95,912,607,970             $89,640,012,689              8.36%       
+ 5  2018 $84,269,196,152             $82,721,145,212              6.82%       
+ 6  2017 $81,770,886,909             $77,442,546,767              9.56%       
+ 7  2016 $74,296,745,599             $70,682,352,527              9.43%       
+ 8  2015 $64,589,329,345             $64,589,329,345              10.39%      
+ 9  2014 $55,612,228,234             $58,508,821,687              10.26%      
+10  2013 $47,648,276,190             $53,065,619,502              10.58%      
+# ℹ 20 more rows
+# ℹ 3 more variables: `GDP per capita` &lt;chr&gt;, `Pop. change` &lt;chr&gt;,
+#   Population &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>It is stored as a list, let extract it and the rest is cleaning.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">gdp_tbl <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> tables[[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>]] </span>
+<span id="cb7-2">gdp_tbl</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 30 × 7
+    Year `GDP Nominal (Current USD)` `GDP Real  (Inflation adj.)` `GDP change`
+   &lt;int&gt; &lt;chr&gt;                       &lt;chr&gt;                        &lt;chr&gt;       
+ 1  2022 $126,783,000,000            $105,776,000,000             5.32%       
+ 2  2021 $111,262,000,000            $100,435,000,000             5.64%       
+ 3  2020 $107,658,000,000            $95,071,776,945              6.06%       
+ 4  2019 $95,912,607,970             $89,640,012,689              8.36%       
+ 5  2018 $84,269,196,152             $82,721,145,212              6.82%       
+ 6  2017 $81,770,886,909             $77,442,546,767              9.56%       
+ 7  2016 $74,296,745,599             $70,682,352,527              9.43%       
+ 8  2015 $64,589,329,345             $64,589,329,345              10.39%      
+ 9  2014 $55,612,228,234             $58,508,821,687              10.26%      
+10  2013 $47,648,276,190             $53,065,619,502              10.58%      
+# ℹ 20 more rows
+# ℹ 3 more variables: `GDP per capita` &lt;chr&gt;, `Pop. change` &lt;chr&gt;,
+#   Population &lt;chr&gt;</code></pre>
+</div>
+</div>
+<section id="cleaning-the-data" class="level2">
+<h2 class="anchored" data-anchor-id="cleaning-the-data">Cleaning the Data</h2>
+<p>Below we can see that all columns, except year, are stored as character because of dollar sign ($) and commas (,), which R doesn’t allow to happen.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">gdp_tbl <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> janitor<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">clean_names</span>(gdp_tbl)</span>
+<span id="cb9-2"></span>
+<span id="cb9-3"></span>
+<span id="cb9-4"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse)</span>
+<span id="cb9-5"></span>
+<span id="cb9-6"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">glimpse</span>(gdp_tbl)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 30
+Columns: 7
+$ year                    &lt;int&gt; 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015…
+$ gdp_nominal_current_usd &lt;chr&gt; "$126,783,000,000", "$111,262,000,000", "$107,…
+$ gdp_real_inflation_adj  &lt;chr&gt; "$105,776,000,000", "$100,435,000,000", "$95,0…
+$ gdp_change              &lt;chr&gt; "5.32%", "5.64%", "6.06%", "8.36%", "6.82%", "…
+$ gdp_per_capita          &lt;chr&gt; "$857", "$835", "$811", "$785", "$744", "$716"…
+$ pop_change              &lt;chr&gt; "2.57 %", "2.64 %", "2.69 %", "2.69 %", "2.71 …
+$ population              &lt;chr&gt; "123,379,924", "120,283,026", "117,190,911", "…</code></pre>
+</div>
+</div>
+<p>Let’s remove all unnecessary characters and convert to numeric with a short function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1">convert_to_numeric <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(x) {</span>
+<span id="cb11-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">as.numeric</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str_remove_all</span>(x, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"[$,%</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">\\</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">s]"</span>))</span>
+<span id="cb11-3">}</span>
+<span id="cb11-4"></span>
+<span id="cb11-5">gdp_tbl <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> gdp_tbl <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb11-6">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate_all</span>(convert_to_numeric)</span>
+<span id="cb11-7"></span>
+<span id="cb11-8"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">glimpse</span>(gdp_tbl)</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 30
+Columns: 7
+$ year                    &lt;dbl&gt; 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015…
+$ gdp_nominal_current_usd &lt;dbl&gt; 126783000000, 111262000000, 107658000000, 9591…
+$ gdp_real_inflation_adj  &lt;dbl&gt; 105776000000, 100435000000, 95071776945, 89640…
+$ gdp_change              &lt;dbl&gt; 5.32, 5.64, 6.06, 8.36, 6.82, 9.56, 9.43, 10.3…
+$ gdp_per_capita          &lt;dbl&gt; 857, 835, 811, 785, 744, 716, 671, 630, 587, 5…
+$ pop_change              &lt;dbl&gt; 2.57, 2.64, 2.69, 2.69, 2.71, 2.76, 2.75, 2.73…
+$ population              &lt;dbl&gt; 123379924, 120283026, 117190911, 114120594, 11…</code></pre>
+</div>
+</div>
+</section>
+<section id="making-a-graph" class="level2">
+<h2 class="anchored" data-anchor-id="making-a-graph">Making a Graph</h2>
+<p>With a minimal code, we can produce the same graph and customize the way we want.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1">gdp_tbl <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb13-2">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb13-3">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_line</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(year), </span>
+<span id="cb13-4">                      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> gdp_nominal_current_usd,</span>
+<span id="cb13-5">                      <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">group =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>),</span>
+<span id="cb13-6">                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"blue"</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">linewidth =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb13-7">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">scale_y_continuous</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">labels =</span> scales<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">dollar_format</span>(</span>
+<span id="cb13-8">          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">scale =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1000000000</span>,</span>
+<span id="cb13-9">          <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">suffix =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">" billion"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb13-10"> </span>
+<span id="cb13-11">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Year"</span>,</span>
+<span id="cb13-12">             <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Nominal GDP"</span>,</span>
+<span id="cb13-13">             <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Ethiopia GDP (Nominal, $USD) 2003-2022"</span>,</span>
+<span id="cb13-14">             <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">caption =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Source: https://www.worldometers.info/gdp/ethiopia-gdp/"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb13-15">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_bw</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb13-16">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.text.x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">angle =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">vjust =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>))</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://guturago.github.io/blog/web-craping-using-rvest/index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Here is the second graph as well.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1">gdp_tbl <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb14-2">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">growth =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ifelse</span>(gdp_change <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"positve"</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"negative"</span>)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb14-3">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ggplot</span>(<span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">aes</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">factor</span>(year), <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> gdp_change, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> growth)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb14-4">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">geom_col</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb14-5">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">labs</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"GDP change (%)"</span>,</span>
+<span id="cb14-6">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">y =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Ethiopia GDP Change %"</span>,</span>
+<span id="cb14-7">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">x =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Year"</span>,</span>
+<span id="cb14-8">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">fill =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>,</span>
+<span id="cb14-9">       <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">caption =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Source: https://www.worldometers.info/gdp/ethiopia-gdp/"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span></span>
+<span id="cb14-10">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme_bw</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> </span>
+<span id="cb14-11">  <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">theme</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">axis.text.x =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">element_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">angle =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">45</span>, <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">vjust =</span> <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>),</span>
+<span id="cb14-12">        <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">legend.position =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"none"</span>)</span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://guturago.github.io/blog/web-craping-using-rvest/index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+
+
+</section>
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a> ]]></description>
+  <category>web scraping</category>
+  <category>rvest</category>
+  <category>ggplot2</category>
+  <guid>https://guturago.github.io/blog/web-craping-using-rvest/</guid>
+  <pubDate>Mon, 20 May 2024 00:00:00 GMT</pubDate>
+  <media:content url="https://guturago.github.io/blog/web-craping-using-rvest/inspect.png" medium="image" type="image/png" height="65" width="144"/>
+</item>
+<item>
+  <title>Table Template: Create your own {gt} table theme</title>
+  <dc:creator>Gutama Girja Urago</dc:creator>
+  <link>https://guturago.github.io/blog/gt-table-theme/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>Creating visually appealing and informative tables is a key aspect of data presentation, and the <code>gt</code> package in R provides powerful tools for this purpose. In this post, we will walk through creating a customizable table template using gt. By following these steps, you can easily create tables that are both functional and aesthetically pleasing, tailored to your specific needs. This blog post is motivated by this <a href="https://youtu.be/YzmLB2z9whw?si=qHvE_42mn2xwtI72">video</a> on tutorial</p>
+<section id="load-required-libraries" class="level2">
+<h2 class="anchored" data-anchor-id="load-required-libraries">Load Required Libraries</h2>
+<p>First, ensure that you have the <code>gt</code> package loaded. All function used below are from <code>gt</code> package, except the data setup which I showed where it comes from.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># install.packages("gt")        Run only once if don't have the package installed</span></span>
+<span id="cb1-2"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(gt)</span>
+<span id="cb1-3"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">library</span>(tidyverse)              <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># For data manipulation</span></span></code></pre></div>
+</div>
+</section>
+<section id="prepare-your-data" class="level2">
+<h2 class="anchored" data-anchor-id="prepare-your-data">Prepare Your Data</h2>
+<p>For this example, we’ll use the iris dataset and select a subset of it. We’ll group the data by species and take the first two entries from each group. It is already appealing, but we can do better!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1">data <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> iris <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-2">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">mutate</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">Species =</span> stringr<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">::</span><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">str_to_title</span>(Species)) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-3">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">group_by</span>(Species) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-4">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">slice_head</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">n =</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb2-5">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">ungroup</span>() <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb2-6">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">select</span>(Species, <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">everything</span>())</span>
+<span id="cb2-7"></span>
+<span id="cb2-8">tbl <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">gt</span>(data)</span>
+<span id="cb2-9">tbl</span></code></pre></div>
+<div class="cell-output-display">
+<div id="aulscaywam" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#aulscaywam table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#aulscaywam thead, #aulscaywam tbody, #aulscaywam tfoot, #aulscaywam tr, #aulscaywam td, #aulscaywam th {
+  border-style: none;
+}
+
+#aulscaywam p {
+  margin: 0;
+  padding: 0;
+}
+
+#aulscaywam .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#aulscaywam .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#aulscaywam .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#aulscaywam .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#aulscaywam .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#aulscaywam .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#aulscaywam .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#aulscaywam .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#aulscaywam .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#aulscaywam .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#aulscaywam .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#aulscaywam .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#aulscaywam .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#aulscaywam .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#aulscaywam .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#aulscaywam .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#aulscaywam .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#aulscaywam .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#aulscaywam .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#aulscaywam .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#aulscaywam .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#aulscaywam .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#aulscaywam .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#aulscaywam .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#aulscaywam .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#aulscaywam .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#aulscaywam .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#aulscaywam .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#aulscaywam .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#aulscaywam .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#aulscaywam .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#aulscaywam .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#aulscaywam .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#aulscaywam .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#aulscaywam .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#aulscaywam .gt_left {
+  text-align: left;
+}
+
+#aulscaywam .gt_center {
+  text-align: center;
+}
+
+#aulscaywam .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#aulscaywam .gt_font_normal {
+  font-weight: normal;
+}
+
+#aulscaywam .gt_font_bold {
+  font-weight: bold;
+}
+
+#aulscaywam .gt_font_italic {
+  font-style: italic;
+}
+
+#aulscaywam .gt_super {
+  font-size: 65%;
+}
+
+#aulscaywam .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#aulscaywam .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#aulscaywam .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#aulscaywam .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#aulscaywam .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#aulscaywam .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#aulscaywam .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_col_headings header">
+<th id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Species</th>
+<th id="Sepal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Length</th>
+<th id="Sepal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Width</th>
+<th id="Petal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Length</th>
+<th id="Petal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Width</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
+<td class="gt_row gt_right" headers="Sepal.Length">5.1</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.5</td>
+<td class="gt_row gt_right" headers="Petal.Length">1.4</td>
+<td class="gt_row gt_right" headers="Petal.Width">0.2</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
+<td class="gt_row gt_right" headers="Sepal.Length">4.9</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.0</td>
+<td class="gt_row gt_right" headers="Petal.Length">1.4</td>
+<td class="gt_row gt_right" headers="Petal.Width">0.2</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
+<td class="gt_row gt_right" headers="Sepal.Length">7.0</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
+<td class="gt_row gt_right" headers="Petal.Length">4.7</td>
+<td class="gt_row gt_right" headers="Petal.Width">1.4</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
+<td class="gt_row gt_right" headers="Sepal.Length">6.4</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
+<td class="gt_row gt_right" headers="Petal.Length">4.5</td>
+<td class="gt_row gt_right" headers="Petal.Width">1.5</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
+<td class="gt_row gt_right" headers="Sepal.Length">6.3</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.3</td>
+<td class="gt_row gt_right" headers="Petal.Length">6.0</td>
+<td class="gt_row gt_right" headers="Petal.Width">2.5</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
+<td class="gt_row gt_right" headers="Sepal.Length">5.8</td>
+<td class="gt_row gt_right" headers="Sepal.Width">2.7</td>
+<td class="gt_row gt_right" headers="Petal.Length">5.1</td>
+<td class="gt_row gt_right" headers="Petal.Width">1.9</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="add-a-header" class="level2">
+<h2 class="anchored" data-anchor-id="add-a-header">Add a Header</h2>
+<p>Next, add a title and subtitle to your table for better context and readability.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1">tbl <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> tbl <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb3-2">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_header</span>(</span>
+<span id="cb3-3">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Main Title"</span>,</span>
+<span id="cb3-4">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Subtitle"</span></span>
+<span id="cb3-5">        )</span>
+<span id="cb3-6"></span>
+<span id="cb3-7">tbl</span></code></pre></div>
+<div class="cell-output-display">
+<div id="ctiekapxjo" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ctiekapxjo table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#ctiekapxjo thead, #ctiekapxjo tbody, #ctiekapxjo tfoot, #ctiekapxjo tr, #ctiekapxjo td, #ctiekapxjo th {
+  border-style: none;
+}
+
+#ctiekapxjo p {
+  margin: 0;
+  padding: 0;
+}
+
+#ctiekapxjo .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ctiekapxjo .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#ctiekapxjo .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ctiekapxjo .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ctiekapxjo .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ctiekapxjo .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ctiekapxjo .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ctiekapxjo .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ctiekapxjo .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ctiekapxjo .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ctiekapxjo .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ctiekapxjo .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ctiekapxjo .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#ctiekapxjo .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#ctiekapxjo .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ctiekapxjo .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ctiekapxjo .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ctiekapxjo .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ctiekapxjo .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ctiekapxjo .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#ctiekapxjo .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#ctiekapxjo .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#ctiekapxjo .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ctiekapxjo .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#ctiekapxjo .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#ctiekapxjo .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ctiekapxjo .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ctiekapxjo .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ctiekapxjo .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ctiekapxjo .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ctiekapxjo .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ctiekapxjo .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ctiekapxjo .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ctiekapxjo .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ctiekapxjo .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ctiekapxjo .gt_left {
+  text-align: left;
+}
+
+#ctiekapxjo .gt_center {
+  text-align: center;
+}
+
+#ctiekapxjo .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ctiekapxjo .gt_font_normal {
+  font-weight: normal;
+}
+
+#ctiekapxjo .gt_font_bold {
+  font-weight: bold;
+}
+
+#ctiekapxjo .gt_font_italic {
+  font-style: italic;
+}
+
+#ctiekapxjo .gt_super {
+  font-size: 65%;
+}
+
+#ctiekapxjo .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#ctiekapxjo .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#ctiekapxjo .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#ctiekapxjo .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#ctiekapxjo .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#ctiekapxjo .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#ctiekapxjo .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<th colspan="5" class="gt_heading gt_title gt_font_normal">Main Title</th>
+</tr>
+<tr class="gt_heading even">
+<th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">Subtitle</th>
+</tr>
+<tr class="gt_col_headings header">
+<th id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Species</th>
+<th id="Sepal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Length</th>
+<th id="Sepal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Width</th>
+<th id="Petal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Length</th>
+<th id="Petal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Width</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
+<td class="gt_row gt_right" headers="Sepal.Length">5.1</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.5</td>
+<td class="gt_row gt_right" headers="Petal.Length">1.4</td>
+<td class="gt_row gt_right" headers="Petal.Width">0.2</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
+<td class="gt_row gt_right" headers="Sepal.Length">4.9</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.0</td>
+<td class="gt_row gt_right" headers="Petal.Length">1.4</td>
+<td class="gt_row gt_right" headers="Petal.Width">0.2</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
+<td class="gt_row gt_right" headers="Sepal.Length">7.0</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
+<td class="gt_row gt_right" headers="Petal.Length">4.7</td>
+<td class="gt_row gt_right" headers="Petal.Width">1.4</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
+<td class="gt_row gt_right" headers="Sepal.Length">6.4</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
+<td class="gt_row gt_right" headers="Petal.Length">4.5</td>
+<td class="gt_row gt_right" headers="Petal.Width">1.5</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
+<td class="gt_row gt_right" headers="Sepal.Length">6.3</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.3</td>
+<td class="gt_row gt_right" headers="Petal.Length">6.0</td>
+<td class="gt_row gt_right" headers="Petal.Width">2.5</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
+<td class="gt_row gt_right" headers="Sepal.Length">5.8</td>
+<td class="gt_row gt_right" headers="Sepal.Width">2.7</td>
+<td class="gt_row gt_right" headers="Petal.Length">5.1</td>
+<td class="gt_row gt_right" headers="Petal.Width">1.9</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="style-the-header" class="level2">
+<h2 class="anchored" data-anchor-id="style-the-header">Style the Header</h2>
+<p>Apply styling to the header to make it stand out. Here, we set the text color to blue and make it bold.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1">tbl <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> tbl <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb4-2">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb4-3">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>, </span>
+<span id="cb4-4">                                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">weight =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>),</span>
+<span id="cb4-5">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_title</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">groups =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"title"</span>)</span>
+<span id="cb4-6">        )</span>
+<span id="cb4-7"></span>
+<span id="cb4-8">tbl</span></code></pre></div>
+<div class="cell-output-display">
+<div id="mptxrmnqwx" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#mptxrmnqwx table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#mptxrmnqwx thead, #mptxrmnqwx tbody, #mptxrmnqwx tfoot, #mptxrmnqwx tr, #mptxrmnqwx td, #mptxrmnqwx th {
+  border-style: none;
+}
+
+#mptxrmnqwx p {
+  margin: 0;
+  padding: 0;
+}
+
+#mptxrmnqwx .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#mptxrmnqwx .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#mptxrmnqwx .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#mptxrmnqwx .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#mptxrmnqwx .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mptxrmnqwx .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mptxrmnqwx .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#mptxrmnqwx .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#mptxrmnqwx .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#mptxrmnqwx .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#mptxrmnqwx .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#mptxrmnqwx .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#mptxrmnqwx .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#mptxrmnqwx .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#mptxrmnqwx .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#mptxrmnqwx .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#mptxrmnqwx .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#mptxrmnqwx .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#mptxrmnqwx .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mptxrmnqwx .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#mptxrmnqwx .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#mptxrmnqwx .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#mptxrmnqwx .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mptxrmnqwx .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#mptxrmnqwx .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#mptxrmnqwx .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mptxrmnqwx .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mptxrmnqwx .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#mptxrmnqwx .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mptxrmnqwx .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#mptxrmnqwx .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#mptxrmnqwx .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mptxrmnqwx .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mptxrmnqwx .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#mptxrmnqwx .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#mptxrmnqwx .gt_left {
+  text-align: left;
+}
+
+#mptxrmnqwx .gt_center {
+  text-align: center;
+}
+
+#mptxrmnqwx .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#mptxrmnqwx .gt_font_normal {
+  font-weight: normal;
+}
+
+#mptxrmnqwx .gt_font_bold {
+  font-weight: bold;
+}
+
+#mptxrmnqwx .gt_font_italic {
+  font-style: italic;
+}
+
+#mptxrmnqwx .gt_super {
+  font-size: 65%;
+}
+
+#mptxrmnqwx .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#mptxrmnqwx .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#mptxrmnqwx .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#mptxrmnqwx .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#mptxrmnqwx .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#mptxrmnqwx .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#mptxrmnqwx .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #000000; font-weight: bold">Main Title</th>
+</tr>
+<tr class="gt_heading even">
+<th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">Subtitle</th>
+</tr>
+<tr class="gt_col_headings header">
+<th id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Species</th>
+<th id="Sepal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Length</th>
+<th id="Sepal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Width</th>
+<th id="Petal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Length</th>
+<th id="Petal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Width</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
+<td class="gt_row gt_right" headers="Sepal.Length">5.1</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.5</td>
+<td class="gt_row gt_right" headers="Petal.Length">1.4</td>
+<td class="gt_row gt_right" headers="Petal.Width">0.2</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
+<td class="gt_row gt_right" headers="Sepal.Length">4.9</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.0</td>
+<td class="gt_row gt_right" headers="Petal.Length">1.4</td>
+<td class="gt_row gt_right" headers="Petal.Width">0.2</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
+<td class="gt_row gt_right" headers="Sepal.Length">7.0</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
+<td class="gt_row gt_right" headers="Petal.Length">4.7</td>
+<td class="gt_row gt_right" headers="Petal.Width">1.4</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
+<td class="gt_row gt_right" headers="Sepal.Length">6.4</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
+<td class="gt_row gt_right" headers="Petal.Length">4.5</td>
+<td class="gt_row gt_right" headers="Petal.Width">1.5</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
+<td class="gt_row gt_right" headers="Sepal.Length">6.3</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.3</td>
+<td class="gt_row gt_right" headers="Petal.Length">6.0</td>
+<td class="gt_row gt_right" headers="Petal.Width">2.5</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
+<td class="gt_row gt_right" headers="Sepal.Length">5.8</td>
+<td class="gt_row gt_right" headers="Sepal.Width">2.7</td>
+<td class="gt_row gt_right" headers="Petal.Length">5.1</td>
+<td class="gt_row gt_right" headers="Petal.Width">1.9</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="style-the-body" class="level2">
+<h2 class="anchored" data-anchor-id="style-the-body">Style the Body</h2>
+<p>To enhance readability, apply a background color to alternating rows in the table body.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1">tbl <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> tbl <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb5-2">               <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb5-3">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_fill</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"grey90"</span>),</span>
+<span id="cb5-4">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_body</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">rows =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>))</span>
+<span id="cb5-5">        )</span>
+<span id="cb5-6"></span>
+<span id="cb5-7">tbl</span></code></pre></div>
+<div class="cell-output-display">
+<div id="hzsovrkqla" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#hzsovrkqla table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#hzsovrkqla thead, #hzsovrkqla tbody, #hzsovrkqla tfoot, #hzsovrkqla tr, #hzsovrkqla td, #hzsovrkqla th {
+  border-style: none;
+}
+
+#hzsovrkqla p {
+  margin: 0;
+  padding: 0;
+}
+
+#hzsovrkqla .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#hzsovrkqla .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#hzsovrkqla .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#hzsovrkqla .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#hzsovrkqla .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hzsovrkqla .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hzsovrkqla .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#hzsovrkqla .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#hzsovrkqla .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#hzsovrkqla .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#hzsovrkqla .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#hzsovrkqla .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#hzsovrkqla .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#hzsovrkqla .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#hzsovrkqla .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#hzsovrkqla .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#hzsovrkqla .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#hzsovrkqla .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#hzsovrkqla .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hzsovrkqla .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#hzsovrkqla .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#hzsovrkqla .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#hzsovrkqla .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hzsovrkqla .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#hzsovrkqla .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#hzsovrkqla .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hzsovrkqla .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hzsovrkqla .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#hzsovrkqla .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hzsovrkqla .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#hzsovrkqla .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#hzsovrkqla .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hzsovrkqla .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hzsovrkqla .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#hzsovrkqla .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#hzsovrkqla .gt_left {
+  text-align: left;
+}
+
+#hzsovrkqla .gt_center {
+  text-align: center;
+}
+
+#hzsovrkqla .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#hzsovrkqla .gt_font_normal {
+  font-weight: normal;
+}
+
+#hzsovrkqla .gt_font_bold {
+  font-weight: bold;
+}
+
+#hzsovrkqla .gt_font_italic {
+  font-style: italic;
+}
+
+#hzsovrkqla .gt_super {
+  font-size: 65%;
+}
+
+#hzsovrkqla .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#hzsovrkqla .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#hzsovrkqla .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#hzsovrkqla .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#hzsovrkqla .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#hzsovrkqla .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#hzsovrkqla .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #000000; font-weight: bold">Main Title</th>
+</tr>
+<tr class="gt_heading even">
+<th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">Subtitle</th>
+</tr>
+<tr class="gt_col_headings header">
+<th id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Species</th>
+<th id="Sepal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Length</th>
+<th id="Sepal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Width</th>
+<th id="Petal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Length</th>
+<th id="Petal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Width</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Setosa</td>
+<td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">5.1</td>
+<td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.5</td>
+<td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">1.4</td>
+<td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">0.2</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
+<td class="gt_row gt_right" headers="Sepal.Length">4.9</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.0</td>
+<td class="gt_row gt_right" headers="Petal.Length">1.4</td>
+<td class="gt_row gt_right" headers="Petal.Width">0.2</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Versicolor</td>
+<td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">7.0</td>
+<td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.2</td>
+<td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">4.7</td>
+<td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">1.4</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
+<td class="gt_row gt_right" headers="Sepal.Length">6.4</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
+<td class="gt_row gt_right" headers="Petal.Length">4.5</td>
+<td class="gt_row gt_right" headers="Petal.Width">1.5</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Virginica</td>
+<td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">6.3</td>
+<td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.3</td>
+<td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">6.0</td>
+<td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">2.5</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
+<td class="gt_row gt_right" headers="Sepal.Length">5.8</td>
+<td class="gt_row gt_right" headers="Sepal.Width">2.7</td>
+<td class="gt_row gt_right" headers="Petal.Length">5.1</td>
+<td class="gt_row gt_right" headers="Petal.Width">1.9</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="adjust-table-options" class="level2">
+<h2 class="anchored" data-anchor-id="adjust-table-options">Adjust Table Options</h2>
+<p>Customize the table width, column label background color, and heading alignment to suit your design preferences.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1">tbl <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> tbl <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span></span>
+<span id="cb6-2">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_options</span>(</span>
+<span id="cb6-3">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">table.width =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pct</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>),</span>
+<span id="cb6-4">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">column_labels.background.color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"steelblue"</span>,</span>
+<span id="cb6-5">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">heading.align =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"left"</span>)</span>
+<span id="cb6-6"></span>
+<span id="cb6-7">tbl</span></code></pre></div>
+<div class="cell-output-display">
+<div id="icmownlpck" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#icmownlpck table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#icmownlpck thead, #icmownlpck tbody, #icmownlpck tfoot, #icmownlpck tr, #icmownlpck td, #icmownlpck th {
+  border-style: none;
+}
+
+#icmownlpck p {
+  margin: 0;
+  padding: 0;
+}
+
+#icmownlpck .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: 100%;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#icmownlpck .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#icmownlpck .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#icmownlpck .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#icmownlpck .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#icmownlpck .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#icmownlpck .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#icmownlpck .gt_col_heading {
+  color: #FFFFFF;
+  background-color: #4682B4;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#icmownlpck .gt_column_spanner_outer {
+  color: #FFFFFF;
+  background-color: #4682B4;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#icmownlpck .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#icmownlpck .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#icmownlpck .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#icmownlpck .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#icmownlpck .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#icmownlpck .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#icmownlpck .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#icmownlpck .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#icmownlpck .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#icmownlpck .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#icmownlpck .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#icmownlpck .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#icmownlpck .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#icmownlpck .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#icmownlpck .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#icmownlpck .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#icmownlpck .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#icmownlpck .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#icmownlpck .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#icmownlpck .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#icmownlpck .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#icmownlpck .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#icmownlpck .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#icmownlpck .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#icmownlpck .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#icmownlpck .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#icmownlpck .gt_left {
+  text-align: left;
+}
+
+#icmownlpck .gt_center {
+  text-align: center;
+}
+
+#icmownlpck .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#icmownlpck .gt_font_normal {
+  font-weight: normal;
+}
+
+#icmownlpck .gt_font_bold {
+  font-weight: bold;
+}
+
+#icmownlpck .gt_font_italic {
+  font-style: italic;
+}
+
+#icmownlpck .gt_super {
+  font-size: 65%;
+}
+
+#icmownlpck .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#icmownlpck .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#icmownlpck .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#icmownlpck .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#icmownlpck .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#icmownlpck .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#icmownlpck .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #000000; font-weight: bold">Main Title</th>
+</tr>
+<tr class="gt_heading even">
+<th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">Subtitle</th>
+</tr>
+<tr class="gt_col_headings header">
+<th id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Species</th>
+<th id="Sepal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Length</th>
+<th id="Sepal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Sepal.Width</th>
+<th id="Petal.Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Length</th>
+<th id="Petal.Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Petal.Width</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Setosa</td>
+<td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">5.1</td>
+<td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.5</td>
+<td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">1.4</td>
+<td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">0.2</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
+<td class="gt_row gt_right" headers="Sepal.Length">4.9</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.0</td>
+<td class="gt_row gt_right" headers="Petal.Length">1.4</td>
+<td class="gt_row gt_right" headers="Petal.Width">0.2</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Versicolor</td>
+<td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">7.0</td>
+<td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.2</td>
+<td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">4.7</td>
+<td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">1.4</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
+<td class="gt_row gt_right" headers="Sepal.Length">6.4</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
+<td class="gt_row gt_right" headers="Petal.Length">4.5</td>
+<td class="gt_row gt_right" headers="Petal.Width">1.5</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Virginica</td>
+<td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">6.3</td>
+<td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.3</td>
+<td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">6.0</td>
+<td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">2.5</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
+<td class="gt_row gt_right" headers="Sepal.Length">5.8</td>
+<td class="gt_row gt_right" headers="Sepal.Width">2.7</td>
+<td class="gt_row gt_right" headers="Petal.Length">5.1</td>
+<td class="gt_row gt_right" headers="Petal.Width">1.9</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="add-spanners" class="level2">
+<h2 class="anchored" data-anchor-id="add-spanners">Add Spanners</h2>
+<p>If your table has grouped columns, add spanners to better organize and present these groups.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1">tbl <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> tbl <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb7-2">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_spanner_delim</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"."</span>)</span>
+<span id="cb7-3"></span>
+<span id="cb7-4">tbl</span></code></pre></div>
+<div class="cell-output-display">
+<div id="rwogzdliib" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#rwogzdliib table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#rwogzdliib thead, #rwogzdliib tbody, #rwogzdliib tfoot, #rwogzdliib tr, #rwogzdliib td, #rwogzdliib th {
+  border-style: none;
+}
+
+#rwogzdliib p {
+  margin: 0;
+  padding: 0;
+}
+
+#rwogzdliib .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: 100%;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#rwogzdliib .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#rwogzdliib .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#rwogzdliib .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#rwogzdliib .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rwogzdliib .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rwogzdliib .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#rwogzdliib .gt_col_heading {
+  color: #FFFFFF;
+  background-color: #4682B4;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#rwogzdliib .gt_column_spanner_outer {
+  color: #FFFFFF;
+  background-color: #4682B4;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#rwogzdliib .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#rwogzdliib .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#rwogzdliib .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#rwogzdliib .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#rwogzdliib .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#rwogzdliib .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#rwogzdliib .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#rwogzdliib .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#rwogzdliib .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#rwogzdliib .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rwogzdliib .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#rwogzdliib .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#rwogzdliib .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#rwogzdliib .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rwogzdliib .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#rwogzdliib .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#rwogzdliib .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rwogzdliib .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rwogzdliib .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#rwogzdliib .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rwogzdliib .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#rwogzdliib .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#rwogzdliib .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rwogzdliib .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rwogzdliib .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#rwogzdliib .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#rwogzdliib .gt_left {
+  text-align: left;
+}
+
+#rwogzdliib .gt_center {
+  text-align: center;
+}
+
+#rwogzdliib .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#rwogzdliib .gt_font_normal {
+  font-weight: normal;
+}
+
+#rwogzdliib .gt_font_bold {
+  font-weight: bold;
+}
+
+#rwogzdliib .gt_font_italic {
+  font-style: italic;
+}
+
+#rwogzdliib .gt_super {
+  font-size: 65%;
+}
+
+#rwogzdliib .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#rwogzdliib .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#rwogzdliib .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#rwogzdliib .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#rwogzdliib .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#rwogzdliib .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#rwogzdliib .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #000000; font-weight: bold">Main Title</th>
+</tr>
+<tr class="gt_heading even">
+<th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">Subtitle</th>
+</tr>
+<tr class="gt_col_headings gt_spanner_row header">
+<th rowspan="2" id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" scope="col">Species</th>
+<th colspan="2" id="Sepal" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><span class="gt_column_spanner">Sepal</span></th>
+<th colspan="2" id="Petal" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><span class="gt_column_spanner">Petal</span></th>
+</tr>
+<tr class="gt_col_headings even">
+<th id="Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Length</th>
+<th id="Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Width</th>
+<th id="Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Length</th>
+<th id="Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Width</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Setosa</td>
+<td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">5.1</td>
+<td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.5</td>
+<td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">1.4</td>
+<td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">0.2</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
+<td class="gt_row gt_right" headers="Sepal.Length">4.9</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.0</td>
+<td class="gt_row gt_right" headers="Petal.Length">1.4</td>
+<td class="gt_row gt_right" headers="Petal.Width">0.2</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Versicolor</td>
+<td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">7.0</td>
+<td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.2</td>
+<td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">4.7</td>
+<td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">1.4</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
+<td class="gt_row gt_right" headers="Sepal.Length">6.4</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
+<td class="gt_row gt_right" headers="Petal.Length">4.5</td>
+<td class="gt_row gt_right" headers="Petal.Width">1.5</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Virginica</td>
+<td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">6.3</td>
+<td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.3</td>
+<td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">6.0</td>
+<td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">2.5</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
+<td class="gt_row gt_right" headers="Sepal.Length">5.8</td>
+<td class="gt_row gt_right" headers="Sepal.Width">2.7</td>
+<td class="gt_row gt_right" headers="Petal.Length">5.1</td>
+<td class="gt_row gt_right" headers="Petal.Width">1.9</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="style-column-labels-and-spanners" class="level2">
+<h2 class="anchored" data-anchor-id="style-column-labels-and-spanners">Style Column Labels and Spanners</h2>
+<p>Ensure that your column labels and spanners are easily distinguishable by applying bold text and adjusting the size for spanners.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1">tbl <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> tbl <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb8-2">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb8-3">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">weight =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>),</span>
+<span id="cb8-4">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_column_labels</span>()</span>
+<span id="cb8-5">        ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb8-6">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb8-7">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">weight =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>,</span>
+<span id="cb8-8">                                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"medium"</span>),</span>
+<span id="cb8-9">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_column_spanners</span>()</span>
+<span id="cb8-10">        )</span>
+<span id="cb8-11"></span>
+<span id="cb8-12">tbl</span></code></pre></div>
+<div class="cell-output-display">
+<div id="ocxgehlgrj" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#ocxgehlgrj table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#ocxgehlgrj thead, #ocxgehlgrj tbody, #ocxgehlgrj tfoot, #ocxgehlgrj tr, #ocxgehlgrj td, #ocxgehlgrj th {
+  border-style: none;
+}
+
+#ocxgehlgrj p {
+  margin: 0;
+  padding: 0;
+}
+
+#ocxgehlgrj .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: 100%;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#ocxgehlgrj .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#ocxgehlgrj .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#ocxgehlgrj .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#ocxgehlgrj .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ocxgehlgrj .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ocxgehlgrj .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#ocxgehlgrj .gt_col_heading {
+  color: #FFFFFF;
+  background-color: #4682B4;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#ocxgehlgrj .gt_column_spanner_outer {
+  color: #FFFFFF;
+  background-color: #4682B4;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#ocxgehlgrj .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#ocxgehlgrj .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#ocxgehlgrj .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#ocxgehlgrj .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#ocxgehlgrj .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#ocxgehlgrj .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#ocxgehlgrj .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#ocxgehlgrj .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#ocxgehlgrj .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#ocxgehlgrj .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ocxgehlgrj .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#ocxgehlgrj .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#ocxgehlgrj .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#ocxgehlgrj .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ocxgehlgrj .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#ocxgehlgrj .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#ocxgehlgrj .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ocxgehlgrj .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ocxgehlgrj .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#ocxgehlgrj .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ocxgehlgrj .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#ocxgehlgrj .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#ocxgehlgrj .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ocxgehlgrj .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ocxgehlgrj .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#ocxgehlgrj .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#ocxgehlgrj .gt_left {
+  text-align: left;
+}
+
+#ocxgehlgrj .gt_center {
+  text-align: center;
+}
+
+#ocxgehlgrj .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#ocxgehlgrj .gt_font_normal {
+  font-weight: normal;
+}
+
+#ocxgehlgrj .gt_font_bold {
+  font-weight: bold;
+}
+
+#ocxgehlgrj .gt_font_italic {
+  font-style: italic;
+}
+
+#ocxgehlgrj .gt_super {
+  font-size: 65%;
+}
+
+#ocxgehlgrj .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#ocxgehlgrj .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#ocxgehlgrj .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#ocxgehlgrj .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#ocxgehlgrj .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#ocxgehlgrj .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#ocxgehlgrj .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #000000; font-weight: bold">Main Title</th>
+</tr>
+<tr class="gt_heading even">
+<th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">Subtitle</th>
+</tr>
+<tr class="gt_col_headings gt_spanner_row header">
+<th rowspan="2" id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Species</th>
+<th colspan="2" id="Sepal" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" style="font-size: medium; font-weight: bold" scope="colgroup"><span class="gt_column_spanner">Sepal</span></th>
+<th colspan="2" id="Petal" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" style="font-size: medium; font-weight: bold" scope="colgroup"><span class="gt_column_spanner">Petal</span></th>
+</tr>
+<tr class="gt_col_headings even">
+<th id="Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Length</th>
+<th id="Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Width</th>
+<th id="Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Length</th>
+<th id="Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Width</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Setosa</td>
+<td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">5.1</td>
+<td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.5</td>
+<td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">1.4</td>
+<td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">0.2</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
+<td class="gt_row gt_right" headers="Sepal.Length">4.9</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.0</td>
+<td class="gt_row gt_right" headers="Petal.Length">1.4</td>
+<td class="gt_row gt_right" headers="Petal.Width">0.2</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Versicolor</td>
+<td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">7.0</td>
+<td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.2</td>
+<td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">4.7</td>
+<td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">1.4</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
+<td class="gt_row gt_right" headers="Sepal.Length">6.4</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
+<td class="gt_row gt_right" headers="Petal.Length">4.5</td>
+<td class="gt_row gt_right" headers="Petal.Width">1.5</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Virginica</td>
+<td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">6.3</td>
+<td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.3</td>
+<td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">6.0</td>
+<td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">2.5</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
+<td class="gt_row gt_right" headers="Sepal.Length">5.8</td>
+<td class="gt_row gt_right" headers="Sepal.Width">2.7</td>
+<td class="gt_row gt_right" headers="Petal.Length">5.1</td>
+<td class="gt_row gt_right" headers="Petal.Width">1.9</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+</section>
+<section id="make-it-reusable" class="level2">
+<h2 class="anchored" data-anchor-id="make-it-reusable">Make it Reusable</h2>
+<p>We can write a reusable function that produces exactly the same theme.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1">my_gt_theme <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">function</span>(</span>
+<span id="cb9-2">                gt_table,</span>
+<span id="cb9-3">                title,</span>
+<span id="cb9-4">                subtitle,</span>
+<span id="cb9-5">                ...</span>
+<span id="cb9-6">                ) {</span>
+<span id="cb9-7">        </span>
+<span id="cb9-8">        rows <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">nrow</span>(gt_table[[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"_data"</span>]])</span>
+<span id="cb9-9">        </span>
+<span id="cb9-10">        my_table <span class="ot" style="color: #003B4F;
+background-color: null;
+font-style: inherit;">&lt;-</span> gt_table <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb9-11">                <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_header</span>(</span>
+<span id="cb9-12">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> title,</span>
+<span id="cb9-13">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle =</span> subtitle</span>
+<span id="cb9-14">        ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb9-15">                <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb9-16">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"black"</span>, </span>
+<span id="cb9-17">                                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">weight =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>),</span>
+<span id="cb9-18">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_title</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">groups =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"title"</span>)</span>
+<span id="cb9-19">        ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb9-20">                <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb9-21">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_fill</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"grey90"</span>),</span>
+<span id="cb9-22">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_body</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">rows =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">seq</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, rows, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>))</span>
+<span id="cb9-23">        ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb9-24">                <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_options</span>(</span>
+<span id="cb9-25">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">table.width =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">pct</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">100</span>),</span>
+<span id="cb9-26">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">column_labels.background.color =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"steelblue"</span>,</span>
+<span id="cb9-27">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">heading.align =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"left"</span>) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb9-28">                <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb9-29">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">weight =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>),</span>
+<span id="cb9-30">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_column_labels</span>()</span>
+<span id="cb9-31">        ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb9-32">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_style</span>(</span>
+<span id="cb9-33">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">style =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cell_text</span>(<span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">weight =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"bold"</span>,</span>
+<span id="cb9-34">                                  <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">size =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"medium"</span>),</span>
+<span id="cb9-35">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">locations =</span> <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">cells_column_spanners</span>()</span>
+<span id="cb9-36">        ) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb9-37">                <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">tab_spanner_delim</span>(...)</span>
+<span id="cb9-38">        </span>
+<span id="cb9-39">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">return</span>(my_table)</span>
+<span id="cb9-40">        </span>
+<span id="cb9-41">}</span></code></pre></div>
+</div>
+<p>Then, we can store our function and apply it whenever we need it, without rewriting everything. It’s impressive to do all that with a few lines of code (See code chunk below).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">gt</span>(data) <span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">|&gt;</span> </span>
+<span id="cb10-2">        <span class="fu" style="color: #4758AB;
+background-color: null;
+font-style: inherit;">my_gt_theme</span>(</span>
+<span id="cb10-3">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">title =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Easy and Beautiful Theme"</span>,</span>
+<span id="cb10-4">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">subtitle =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"With very minimal code"</span>,</span>
+<span id="cb10-5">                <span class="at" style="color: #657422;
+background-color: null;
+font-style: inherit;">delim =</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"."</span></span>
+<span id="cb10-6">        )</span></code></pre></div>
+<div class="cell-output-display">
+<div id="unwrufuriy" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#unwrufuriy table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#unwrufuriy thead, #unwrufuriy tbody, #unwrufuriy tfoot, #unwrufuriy tr, #unwrufuriy td, #unwrufuriy th {
+  border-style: none;
+}
+
+#unwrufuriy p {
+  margin: 0;
+  padding: 0;
+}
+
+#unwrufuriy .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: 100%;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#unwrufuriy .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#unwrufuriy .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#unwrufuriy .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#unwrufuriy .gt_heading {
+  background-color: #FFFFFF;
+  text-align: left;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#unwrufuriy .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#unwrufuriy .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#unwrufuriy .gt_col_heading {
+  color: #FFFFFF;
+  background-color: #4682B4;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#unwrufuriy .gt_column_spanner_outer {
+  color: #FFFFFF;
+  background-color: #4682B4;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#unwrufuriy .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#unwrufuriy .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#unwrufuriy .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#unwrufuriy .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#unwrufuriy .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#unwrufuriy .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#unwrufuriy .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#unwrufuriy .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#unwrufuriy .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#unwrufuriy .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#unwrufuriy .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#unwrufuriy .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#unwrufuriy .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#unwrufuriy .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#unwrufuriy .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#unwrufuriy .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#unwrufuriy .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#unwrufuriy .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#unwrufuriy .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#unwrufuriy .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#unwrufuriy .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#unwrufuriy .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#unwrufuriy .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#unwrufuriy .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#unwrufuriy .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#unwrufuriy .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#unwrufuriy .gt_left {
+  text-align: left;
+}
+
+#unwrufuriy .gt_center {
+  text-align: center;
+}
+
+#unwrufuriy .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#unwrufuriy .gt_font_normal {
+  font-weight: normal;
+}
+
+#unwrufuriy .gt_font_bold {
+  font-weight: bold;
+}
+
+#unwrufuriy .gt_font_italic {
+  font-style: italic;
+}
+
+#unwrufuriy .gt_super {
+  font-size: 65%;
+}
+
+#unwrufuriy .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#unwrufuriy .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#unwrufuriy .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#unwrufuriy .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#unwrufuriy .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#unwrufuriy .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#unwrufuriy .gt_indent_5 {
+  text-indent: 25px;
+}
+</style>
+
+<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
+<thead>
+<tr class="gt_heading header">
+<th colspan="5" class="gt_heading gt_title gt_font_normal" style="color: #000000; font-weight: bold">Easy and Beautiful Theme</th>
+</tr>
+<tr class="gt_heading even">
+<th colspan="5" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">With very minimal code</th>
+</tr>
+<tr class="gt_col_headings gt_spanner_row header">
+<th rowspan="2" id="Species" class="gt_col_heading gt_columns_bottom_border gt_left" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Species</th>
+<th colspan="2" id="Sepal" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><span class="gt_column_spanner">Sepal</span></th>
+<th colspan="2" id="Petal" class="gt_center gt_columns_top_border gt_column_spanner_outer" data-quarto-table-cell-role="th" scope="colgroup"><span class="gt_column_spanner">Petal</span></th>
+</tr>
+<tr class="gt_col_headings even">
+<th id="Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Length</th>
+<th id="Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Width</th>
+<th id="Length" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Length</th>
+<th id="Width" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" style="font-weight: bold" scope="col">Width</th>
+</tr>
+</thead>
+<tbody class="gt_table_body">
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Setosa</td>
+<td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">5.1</td>
+<td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.5</td>
+<td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">1.4</td>
+<td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">0.2</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Setosa</td>
+<td class="gt_row gt_right" headers="Sepal.Length">4.9</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.0</td>
+<td class="gt_row gt_right" headers="Petal.Length">1.4</td>
+<td class="gt_row gt_right" headers="Petal.Width">0.2</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Versicolor</td>
+<td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">7.0</td>
+<td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.2</td>
+<td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">4.7</td>
+<td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">1.4</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Versicolor</td>
+<td class="gt_row gt_right" headers="Sepal.Length">6.4</td>
+<td class="gt_row gt_right" headers="Sepal.Width">3.2</td>
+<td class="gt_row gt_right" headers="Petal.Length">4.5</td>
+<td class="gt_row gt_right" headers="Petal.Width">1.5</td>
+</tr>
+<tr class="odd">
+<td class="gt_row gt_left" headers="Species" style="background-color: #E5E5E5">Virginica</td>
+<td class="gt_row gt_right" headers="Sepal.Length" style="background-color: #E5E5E5">6.3</td>
+<td class="gt_row gt_right" headers="Sepal.Width" style="background-color: #E5E5E5">3.3</td>
+<td class="gt_row gt_right" headers="Petal.Length" style="background-color: #E5E5E5">6.0</td>
+<td class="gt_row gt_right" headers="Petal.Width" style="background-color: #E5E5E5">2.5</td>
+</tr>
+<tr class="even">
+<td class="gt_row gt_left" headers="Species">Virginica</td>
+<td class="gt_row gt_right" headers="Sepal.Length">5.8</td>
+<td class="gt_row gt_right" headers="Sepal.Width">2.7</td>
+<td class="gt_row gt_right" headers="Petal.Length">5.1</td>
+<td class="gt_row gt_right" headers="Petal.Width">1.9</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<p>The end!</p>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a> ]]></description>
+  <category>gt</category>
+  <category>table</category>
+  <guid>https://guturago.github.io/blog/gt-table-theme/</guid>
+  <pubDate>Tue, 02 Apr 2024 00:00:00 GMT</pubDate>
+  <media:content url="https://guturago.github.io/blog/gt-table-theme/image.jpg" medium="image" type="image/jpeg"/>
+</item>
+</channel>
+</rss>
