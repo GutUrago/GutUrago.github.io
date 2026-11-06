@@ -3,210 +3,280 @@ title: "Table Template: Create your own {gt} table theme"
 description: "Build a reusable {gt} table theme step by step: header, row striping, spanners and column labels, then wrap it all in one function."
 author: "Gutama Girja Urago"
 date: "2024-04-02"
-categories: [gt, table]
+date-modified: "2026-11-06"
+categories: [gt, tables, R programming, beginners]
 image: "image.jpg"
-editor_options: 
+editor_options:
   chunk_output_type: console
 ---
 
-Creating visually appealing and informative tables is a key aspect of data presentation, and the `gt` package in R provides powerful tools for this purpose. In this post, we will walk through creating a customizable table template using gt. By following these steps, you can easily create tables that are both functional and aesthetically pleasing, tailored to your specific needs. This blog post is motivated by this [ video](https://youtu.be/YzmLB2z9whw?si=qHvE_42mn2xwtI72) on tutorial
+Most analysis ends with a table: summary statistics for a report, balance checks for an evaluation, a results table for a paper. R prints data frames in the console just fine, but those printouts are not something you would paste into a report. The [gt](https://gt.rstudio.com/) package turns a data frame into a clean, formatted table that you can put in a Quarto document, a web page or a Word file.
 
-## Load Required Libraries
+In this post we build a table step by step, one layer of styling at a time, and then wrap all the steps into a single function. Once you have that function, every table in your report can have the same look with one line of code. The post was inspired by [this video tutorial](https://youtu.be/YzmLB2z9whw?si=qHvE_42mn2xwtI72).
 
-First, ensure that you have the `gt` package loaded. All function used below are from `gt` package, except the data setup which I showed where it comes from. 
+::: {.callout-note}
+## What you will learn
+
+- the parts of a gt table and what each one is called
+- how `tab_style()` works: *what* to change and *where* to change it
+- how to add a title, striped rows, column group labels (spanners) and a source note
+- how to turn your styling into a reusable theme function
+:::
+
+## Setting up
+
+You need two packages: gt for the table and dplyr to prepare the data. If you have never installed them, run the `install.packages()` line once (it is commented out here so it does not reinstall every time).
 
 ```{r}
 #| warning: false
 #| message: false
 
-# install.packages("gt")        Run only once if don't have the package installed
+# install.packages(c("gt", "dplyr"))   # run once if needed
 library(gt)
-library(tidyverse)              # For data manipulation
+library(dplyr)
 ```
 
+## The parts of a gt table
 
-## Prepare Your Data
+gt names each part of a table, and you will use these names when you style it. From top to bottom:
 
-For this example, we'll use the iris dataset and select a subset of it. We'll group the data by species and take the first two entries from each group. It is already appealing, but we can do better! 
+- **Header**: the title and an optional subtitle.
+- **Column labels**: the names above each column.
+- **Spanners**: labels that sit above a group of related columns, such as "Sepal" above "Length" and "Width".
+- **Body**: the rows of data.
+- **Footer**: source notes and footnotes under the table.
 
+Keep this list in mind. Almost every gt function either adds one of these parts or changes how one of them looks.
+
+## Prepare the data
+
+We use R's built-in `iris` dataset, which has flower measurements for three species of iris. To keep the table short, we take the first two rows of each species:
 
 ```{r}
-data <- iris |> 
-        mutate(Species = stringr::str_to_title(Species)) |> 
-        group_by(Species) |> 
-        slice_head(n = 2) |>
-        ungroup() |> 
-        select(Species, everything())
+iris_sample <- iris |>
+  mutate(Species = stringr::str_to_title(Species)) |>
+  group_by(Species) |>
+  slice_head(n = 2) |>
+  ungroup() |>
+  select(Species, everything())
 
-tbl <- gt(data)
+iris_sample
+```
+
+What each step does:
+
+- `mutate(Species = stringr::str_to_title(Species))` capitalises the species names, so "setosa" becomes "Setosa". The `stringr::` prefix lets us use one function from the stringr package without loading the whole package.
+- `group_by(Species)` and `slice_head(n = 2)` keep the first two rows of each species. `ungroup()` removes the grouping again so it does not affect later steps.
+- `select(Species, everything())` moves `Species` to the first column and keeps all the others after it.
+
+## Your first gt table
+
+Turning a data frame into a gt table takes one function:
+
+```{r}
+tbl <- gt(iris_sample)
 tbl
 ```
 
-## Add a Header
+This already looks better than the console output. Each of the steps below takes `tbl`, adds one thing to it with the pipe `|>`, and saves the result back into `tbl`. That way you can run the post chunk by chunk and watch the table change.
 
-Next, add a title and subtitle to your table for better context and readability.
+## Add a header
 
-```{r}
-tbl <- tbl |> 
-        tab_header(
-                title = "Main Title",
-                subtitle = "Subtitle"
-        )
-
-tbl
-```
-
-## Style the Header
-
-Apply styling to the header to make it stand out. Here, we set the text color to blue and make it bold.
-
-
-```{r}
-tbl <- tbl |> 
-        tab_style(
-                style = cell_text(color = "black", 
-                                  weight = "bold"),
-                locations = cells_title(groups = "title")
-        )
-
-tbl
-```
-
-## Style the Body
-
-To enhance readability, apply a background color to alternating rows in the table body.
-
-
-```{r}
-tbl <- tbl |> 
-               tab_style(
-                style = cell_fill(color = "grey90"),
-                locations = cells_body(rows = seq(1, 6, 2))
-        )
-
-tbl
-```
-
-## Adjust Table Options
-
-Customize the table width, column label background color, and heading alignment to suit your design preferences.
-
+`tab_header()` adds a title and a subtitle above the table:
 
 ```{r}
 tbl <- tbl |>
-        tab_options(
-                table.width = pct(100),
-                column_labels.background.color = "steelblue",
-                heading.align = "left")
+  tab_header(
+    title = "Main Title",
+    subtitle = "Subtitle"
+  )
 
 tbl
 ```
 
-## Add Spanners
+In a real report, the title says what the table shows ("Iris measurements by species") and the subtitle adds detail ("First two plants of each species, in cm").
 
-If your table has grouped columns, add spanners to better organize and present these groups.
+## How styling works: `tab_style()`
 
+Before we change any colours, it helps to see how gt thinks about style. `tab_style()` always takes two arguments:
 
+- `style`: **what** to change. Helper functions describe it, for example `cell_text()` for the font, `cell_fill()` for the background colour and `cell_borders()` for the lines.
+- `locations`: **where** to change it. Another set of helpers points at a part of the table: `cells_title()`, `cells_column_labels()`, `cells_column_spanners()`, `cells_body()` and so on, matching the parts listed earlier.
+
+So "make the title bold" becomes "style = bold text, location = the title".
+
+## Style the title
+
+Here we make the title black and bold. `cells_title(groups = "title")` points at the title only, so the subtitle keeps its normal style:
 
 ```{r}
-tbl <- tbl |> 
-        tab_spanner_delim(".")
+tbl <- tbl |>
+  tab_style(
+    style = cell_text(color = "black", weight = "bold"),
+    locations = cells_title(groups = "title")
+  )
 
 tbl
 ```
 
-## Style Column Labels and Spanners
+To style the subtitle instead, you would use `groups = "subtitle"`.
 
-Ensure that your column labels and spanners are easily distinguishable by applying bold text and adjusting the size for spanners.
+## Stripe the rows
+
+Shading every other row makes a wide table easier to read across. We give odd-numbered rows a light grey background:
 
 ```{r}
-tbl <- tbl |> 
-        tab_style(
-                style = cell_text(weight = "bold"),
-                locations = cells_column_labels()
-        ) |> 
-        tab_style(
-                style = cell_text(weight = "bold",
-                                  size = "medium"),
-                locations = cells_column_spanners()
-        )
+tbl <- tbl |>
+  tab_style(
+    style = cell_fill(color = "grey90"),
+    locations = cells_body(rows = seq(1, nrow(iris_sample), by = 2))
+  )
 
 tbl
 ```
 
+`seq(1, nrow(iris_sample), by = 2)` produces the row numbers 1, 3, 5 and so on, up to the number of rows in the data. Using `nrow()` instead of typing the numbers means this still works if you change how many rows you keep.
 
+## Adjust table options
 
-## Make it Reusable
-
-We can write a reusable function that produces exactly the same theme.
-
+`tab_options()` controls settings that apply to the whole table. Here we stretch the table to the full width of the page, give the column labels a blue background, and left-align the title:
 
 ```{r}
+tbl <- tbl |>
+  tab_options(
+    table.width = pct(100),
+    column_labels.background.color = "steelblue",
+    heading.align = "left"
+  )
 
-my_gt_theme <- function(
-                gt_table,
-                title,
-                subtitle,
-                ...
-                ) {
-        
-        rows <- nrow(gt_table[["_data"]])
-        
-        my_table <- gt_table |> 
-                tab_header(
-                title = title,
-                subtitle = subtitle
-        ) |> 
-                tab_style(
-                style = cell_text(color = "black", 
-                                  weight = "bold"),
-                locations = cells_title(groups = "title")
-        ) |> 
-                tab_style(
-                style = cell_fill(color = "grey90"),
-                locations = cells_body(rows = seq(1, rows, 2))
-        ) |> 
-                tab_options(
-                table.width = pct(100),
-                column_labels.background.color = "steelblue",
-                heading.align = "left") |> 
-                tab_style(
-                style = cell_text(weight = "bold"),
-                locations = cells_column_labels()
-        ) |> 
-        tab_style(
-                style = cell_text(weight = "bold",
-                                  size = "medium"),
-                locations = cells_column_spanners()
-        ) |> 
-                tab_spanner_delim(...)
-        
-        return(my_table)
-        
+tbl
+```
+
+`pct(100)` means 100 percent of the available width. gt has over a hundred options like these; the [`tab_options()` reference page](https://gt.rstudio.com/reference/tab_options.html) lists them all.
+
+## Group columns with spanners
+
+The `iris` column names contain a pattern: `Sepal.Length`, `Sepal.Width`, `Petal.Length` and `Petal.Width`. The part before the dot is the flower part and the part after it is the measurement. `tab_spanner_delim()` splits each name at a delimiter (here the dot) and turns the first part into a spanner above the columns:
+
+```{r}
+tbl <- tbl |>
+  tab_spanner_delim(delim = ".")
+
+tbl
+```
+
+The four columns are now grouped under "Sepal" and "Petal", and each column label is just "Length" or "Width". The table is easier to read and narrower.
+
+## Make the labels stand out
+
+Finally, we make the column labels bold and the spanners bold and a little larger:
+
+```{r}
+tbl <- tbl |>
+  tab_style(
+    style = cell_text(weight = "bold"),
+    locations = cells_column_labels()
+  ) |>
+  tab_style(
+    style = cell_text(weight = "bold", size = "medium"),
+    locations = cells_column_spanners()
+  )
+
+tbl
+```
+
+Two `tab_style()` calls are chained with `|>` here: one for the labels and one for the spanners.
+
+## Add a source note
+
+A table in a report should say where its numbers come from. `tab_source_note()` adds a line to the footer:
+
+```{r}
+tbl <- tbl |>
+  tab_source_note(source_note = "Source: R's built-in iris dataset.")
+
+tbl
+```
+
+## Make it reusable
+
+We now have a table we like, but it took eight steps. Copying those steps for every table in a report would be slow, and the tables would drift apart as you tweak one and forget the others. A function solves this. (If functions are new to you, [my post on R functions](../importance-of-functions-in-r/index.qmd) covers the basics.)
+
+```{r}
+my_gt_theme <- function(gt_table, title, subtitle = NULL, delim = ".") {
+  gt_table |>
+    tab_header(title = title, subtitle = subtitle) |>
+    tab_style(
+      style = cell_text(color = "black", weight = "bold"),
+      locations = cells_title(groups = "title")
+    ) |>
+    opt_row_striping() |>
+    tab_options(
+      row.striping.background_color = "grey90",
+      table.width = pct(100),
+      column_labels.background.color = "steelblue",
+      heading.align = "left"
+    ) |>
+    tab_spanner_delim(delim = delim) |>
+    tab_style(
+      style = cell_text(weight = "bold"),
+      locations = cells_column_labels()
+    ) |>
+    tab_style(
+      style = cell_text(weight = "bold", size = "medium"),
+      locations = cells_column_spanners()
+    )
 }
 ```
 
+This is the same set of steps as above, with three changes worth pointing out:
 
-Then, we can store our function and apply it whenever we need it, without rewriting everything. It's impressive to do all that with a few lines of code (See code chunk below).
+- **The first argument is a gt table.** That means the function fits into a pipe: `gt(data) |> my_gt_theme(...)`, just like gt's own functions.
+- **Row striping uses `opt_row_striping()`.** Earlier we picked the odd rows ourselves with `nrow()`. Inside a function that receives a gt table, it is simpler to switch on gt's built-in striping and set its colour in `tab_options()`. The result looks the same.
+- **`subtitle` and `delim` have defaults.** `subtitle = NULL` means "no subtitle" unless you give one, and `delim = "."` matches the `iris` column names. You only need to supply them when you want something different.
 
+Now the whole table takes one line:
 
 ```{r}
-gt(data) |> 
-        my_gt_theme(
-                title = "Easy and Beautiful Theme",
-                subtitle = "With very minimal code",
-                delim = "."
-        )
+gt(iris_sample) |>
+  my_gt_theme(
+    title = "Easy and Beautiful Theme",
+    subtitle = "With very minimal code"
+  )
 ```
 
+And it works on any data frame. Here are the first six cars in `mtcars`. Their column names have no dots, so `tab_spanner_delim()` leaves them alone and no spanners appear:
 
-The end!
+```{r}
+head(mtcars) |>
+  gt(rownames_to_stub = TRUE) |>
+  my_gt_theme(title = "Motor Trend cars", subtitle = "First six rows")
+```
 
+`rownames_to_stub = TRUE` keeps the car names, which `mtcars` stores as row names, as the first column of the table.
 
+## Saving your table
 
+To use the table outside R, save it with `gtsave()`. The file extension decides the format:
 
+```{r}
+#| eval: false
+final_table <- gt(iris_sample) |>
+  my_gt_theme(title = "Iris measurements", subtitle = "First two plants per species")
 
+gtsave(final_table, "iris_table.html")   # web page
+gtsave(final_table, "iris_table.docx")   # Word document
+```
 
+Saving as an image (`.png`) also works, but needs the webshot2 package and a Chrome browser on your computer.
 
+## Common mistakes
 
+- **Forgetting to save the result.** `tbl |> tab_header(...)` prints a table with a header, but `tbl` itself does not change unless you write `tbl <- tbl |> ...`.
+- **Wrong location helper.** Styling column labels with `cells_body()` (or the other way round) runs without error but changes the wrong part of the table. Check which part you mean against the list at the top.
+- **Spanners that do not appear.** `tab_spanner_delim()` only works when the column names actually contain the delimiter. If yours use `_` instead of `.`, pass `delim = "_"`.
+- **Hard-coded row numbers.** `rows = c(1, 3, 5)` gives the wrong stripes, without any warning, as soon as the number of rows changes. Use `seq()` with `nrow()`, or `opt_row_striping()`.
 
+## Recap
+
+A gt table is built in layers: header, column labels, spanners, body and footer. `tab_header()`, `tab_spanner_delim()` and `tab_source_note()` add parts, `tab_style()` changes how a part looks by combining a *style* with a *location*, and `tab_options()` sets table-wide options. Once you are happy with a look, put the steps in a function that takes a gt table as its first argument. From then on, every table in your report gets the same style with one line, and changing the style means changing one function.
