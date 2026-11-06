@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Gutama Girja Urago">
 <meta name="dcterms.date" content="2025-05-15">
-<meta name="description" content="How to use stop(), warning(), try() and tryCatch() so R functions fail with clear messages and recover when they can.">
+<meta name="description" content="How to use stop(), warning(), message(), try() and tryCatch() so R functions fail with clear messages and recover when they can.">
 <title>Error Handling in R: A Guide for Data Analysts – Gutama Girja Urago</title>
 <style>
 /* Default styles provided by pandoc.
@@ -113,13 +113,13 @@ gtag('js', new Date());
 gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 </script><style>html{ scroll-behavior: smooth; }</style>
 <meta property="og:title" content="Error Handling in R: A Guide for Data Analysts – Gutama Girja Urago">
-<meta property="og:description" content="How to use stop(), warning(), try() and tryCatch() so R functions fail with clear messages and recover when they can.">
+<meta property="og:description" content="How to use stop(), warning(), message(), try() and tryCatch() so R functions fail with clear messages and recover when they can.">
 <meta property="og:image" content="https://guturago.github.io/images/blog-placeholder.png">
 <meta property="og:site_name" content="Gutama Girja Urago">
 <meta property="og:image:height" content="675">
 <meta property="og:image:width" content="1200">
 <meta name="twitter:title" content="Error Handling in R: A Guide for Data Analysts – Gutama Girja Urago">
-<meta name="twitter:description" content="How to use stop(), warning(), try() and tryCatch() so R functions fail with clear messages and recover when they can.">
+<meta name="twitter:description" content="How to use stop(), warning(), message(), try() and tryCatch() so R functions fail with clear messages and recover when they can.">
 <meta name="twitter:image" content="https://guturago.github.io/images/blog-placeholder.png">
 <meta name="twitter:image-height" content="675">
 <meta name="twitter:image-width" content="1200">
@@ -176,14 +176,14 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
       <h1 class="title">Error Handling in R: A Guide for Data Analysts</h1>
                   <div>
         <div class="description">
-          How to use stop(), warning(), try() and tryCatch() so R functions fail with clear messages and recover when they can.
+          How to use stop(), warning(), message(), try() and tryCatch() so R functions fail with clear messages and recover when they can.
         </div>
       </div>
                           <div class="quarto-categories">
-                <div class="quarto-category">dplyr</div>
                 <div class="quarto-category">R programming</div>
-                <div class="quarto-category">error-handling</div>
-                <div class="quarto-category">best-practices</div>
+                <div class="quarto-category">error handling</div>
+                <div class="quarto-category">functions</div>
+                <div class="quarto-category">beginners</div>
               </div>
                   </div>
   </div>
@@ -205,6 +205,12 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
       </div>
     </div>
     
+      <div>
+      <div class="quarto-title-meta-heading">Modified</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date-modified">November 6, 2026</p>
+      </div>
+    </div>
       
     </div>
     
@@ -216,72 +222,243 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul>
-<li><a href="#error-handling-in-r-functions-a-comprehensive-guide" id="toc-error-handling-in-r-functions-a-comprehensive-guide" class="nav-link active" data-scroll-target="#error-handling-in-r-functions-a-comprehensive-guide">Error Handling in R Functions: A Comprehensive Guide</a></li>
+<li><a href="#errors-warnings-and-messages" id="toc-errors-warnings-and-messages" class="nav-link active" data-scroll-target="#errors-warnings-and-messages">Errors, warnings and messages</a></li>
   <li>
-<a href="#why-implement-error-handling" id="toc-why-implement-error-handling" class="nav-link" data-scroll-target="#why-implement-error-handling">Why Implement Error Handling?</a>
+<a href="#stopping-early-with-stop" id="toc-stopping-early-with-stop" class="nav-link" data-scroll-target="#stopping-early-with-stop">1. Stopping early with <code>stop()</code></a>
   <ul class="collapse">
-<li><a href="#key-benefits" id="toc-key-benefits" class="nav-link" data-scroll-target="#key-benefits">Key Benefits:</a></li>
+<li><a href="#hiding-the-function-call-with-call.-false" id="toc-hiding-the-function-call-with-call.-false" class="nav-link" data-scroll-target="#hiding-the-function-call-with-call.-false">Hiding the function call with <code>call. = FALSE</code></a></li>
   </ul>
 </li>
-  <li><a href="#basic-error-handling-with-stop" id="toc-basic-error-handling-with-stop" class="nav-link" data-scroll-target="#basic-error-handling-with-stop">1. Basic Error Handling with <code>stop()</code></a></li>
-  <li><a href="#gentle-alerts-with-warning" id="toc-gentle-alerts-with-warning" class="nav-link" data-scroll-target="#gentle-alerts-with-warning">2. Gentle Alerts with <code>warning()</code></a></li>
-  <li><a href="#handling-runtime-errors-with-try-and-trycatch" id="toc-handling-runtime-errors-with-try-and-trycatch" class="nav-link" data-scroll-target="#handling-runtime-errors-with-try-and-trycatch">3. Handling Runtime Errors with <code>try()</code> and <code>tryCatch()</code></a></li>
-  <li><a href="#writing-informative-error-messages" id="toc-writing-informative-error-messages" class="nav-link" data-scroll-target="#writing-informative-error-messages">4. Writing Informative Error Messages</a></li>
-  <li><a href="#when-to-use-stop-warning-or-message" id="toc-when-to-use-stop-warning-or-message" class="nav-link" data-scroll-target="#when-to-use-stop-warning-or-message">5. When to Use <code>stop()</code>, <code>warning()</code>, or <code>message()</code></a></li>
-  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#writing-error-messages-people-can-act-on" id="toc-writing-error-messages-people-can-act-on" class="nav-link" data-scroll-target="#writing-error-messages-people-can-act-on">2. Writing error messages people can act on</a></li>
+  <li><a href="#quick-checks-with-stopifnot" id="toc-quick-checks-with-stopifnot" class="nav-link" data-scroll-target="#quick-checks-with-stopifnot">3. Quick checks with <code>stopifnot()</code></a></li>
+  <li><a href="#gentle-alerts-with-warning" id="toc-gentle-alerts-with-warning" class="nav-link" data-scroll-target="#gentle-alerts-with-warning">4. Gentle alerts with <code>warning()</code></a></li>
+  <li><a href="#keeping-the-user-informed-with-message" id="toc-keeping-the-user-informed-with-message" class="nav-link" data-scroll-target="#keeping-the-user-informed-with-message">5. Keeping the user informed with <code>message()</code></a></li>
+  <li>
+<a href="#recovering-from-failures-with-try-and-trycatch" id="toc-recovering-from-failures-with-try-and-trycatch" class="nav-link" data-scroll-target="#recovering-from-failures-with-try-and-trycatch">6. Recovering from failures with <code>try()</code> and <code>tryCatch()</code></a>
+  <ul class="collapse">
+<li><a href="#try" id="toc-try" class="nav-link" data-scroll-target="#try"><code>try()</code></a></li>
+  <li><a href="#trycatch" id="toc-trycatch" class="nav-link" data-scroll-target="#trycatch"><code>tryCatch()</code></a></li>
+  <li><a href="#reading-many-files-without-stopping" id="toc-reading-many-files-without-stopping" class="nav-link" data-scroll-target="#reading-many-files-without-stopping">Reading many files without stopping</a></li>
+  </ul>
+</li>
+  <li><a href="#which-one-should-i-use" id="toc-which-one-should-i-use" class="nav-link" data-scroll-target="#which-one-should-i-use">Which one should I use?</a></li>
+  <li><a href="#common-mistakes" id="toc-common-mistakes" class="nav-link" data-scroll-target="#common-mistakes">Common mistakes</a></li>
+  <li><a href="#recap" id="toc-recap" class="nav-link" data-scroll-target="#recap">Recap</a></li>
   </ul></nav>
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content"><section id="error-handling-in-r-functions-a-comprehensive-guide" class="level2"><h2 class="anchored" data-anchor-id="error-handling-in-r-functions-a-comprehensive-guide">Error Handling in R Functions: A Comprehensive Guide</h2>
-<p>As data analysts, we often rely on custom functions to automate repetitive tasks, clean datasets, and perform complex analyses. However, even the most well-written function can break unexpectedly—especially when it encounters invalid input. That’s where <strong>error handling</strong> comes in.</p>
-<p>This guide walks through best practices for incorporating error and warning handling into your R functions to make them more <strong>robust, user-friendly, and maintainable</strong>.</p>
-<hr></section><section id="why-implement-error-handling" class="level2"><h2 class="anchored" data-anchor-id="why-implement-error-handling">Why Implement Error Handling?</h2>
-<p>Without proper checks and feedback, functions can fail silently or return misleading results. Implementing error handling is not just a defensive programming habit—it is a <strong>critical part of writing reliable analytical code</strong>.</p>
-<section id="key-benefits" class="level3"><h3 class="anchored" data-anchor-id="key-benefits">Key Benefits:</h3>
-<ul>
-<li>🔍 <strong>Data Validation:</strong> Prevents incorrect types, structures, or values from corrupting your logic.</li>
-<li>🐞 <strong>Easier Debugging:</strong> Pinpoints the root cause of a failure more effectively.</li>
-<li>💡 <strong>Better UX:</strong> Communicates clearly with users, especially those who didn’t write the function.</li>
-<li>🔁 <strong>Reusability:</strong> Makes your functions portable and safe to use in larger pipelines.</li>
-</ul>
-<hr></section></section><section id="basic-error-handling-with-stop" class="level2"><h2 class="anchored" data-anchor-id="basic-error-handling-with-stop">1. Basic Error Handling with <code>stop()</code>
-</h2>
-<p>Use <code><a href="https://rdrr.io/r/base/stop.html">stop()</a></code> to halt execution and print a clear error message when the input doesn’t meet expectations.</p>
+<main class="content quarto-banner-title-block" id="quarto-document-content"><p>In the <a href="../../blog/importance-of-functions-in-r/index.html">previous post</a> we wrote <code>calc_stats()</code>, a small function that returns the mean and standard deviation of a column. It works well as long as you give it what it expects. Here is what happens when you make a typo in the column name:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">divide_numbers</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">calc_stats</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">column</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">values</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[[</span><span class="va">column</span><span class="op">]</span><span class="op">]</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>    variable <span class="op">=</span> <span class="va">column</span>,</span>
+<span>    mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">values</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">values</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">calc_stats</span><span class="op">(</span><span class="va">mtcars</span>, <span class="st">"mpgg"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in mean.default(values, na.rm = TRUE): argument is not numeric or
+logical: returning NA</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  variable mean sd
+1     mpgg   NA NA</code></pre>
+</div>
+</div>
+<p>R complains that an argument is “not numeric or logical” and hands back <code>NA</code> instead of numbers. The warning never mentions the real problem, which is that <code>mtcars</code> has no column called <code>mpgg</code>. Worse, the function did not stop, so those <code>NA</code> values can travel into later steps of your analysis. When this happens in the middle of a long script, you can lose a lot of time working out what went wrong.</p>
+<p>Error handling is the habit of checking inputs and reporting problems in words that point straight at the cause. This post covers the tools base R gives you for that.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>What you will learn
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>the difference between errors, warnings and messages, and how R shows each one</li>
+<li>how to stop a function early with <code><a href="https://rdrr.io/r/base/stop.html">stop()</a></code> and write messages people can act on</li>
+<li>quick input checks with <code><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot()</a></code>
+</li>
+<li>when to use <code><a href="https://rdrr.io/r/base/warning.html">warning()</a></code> and <code><a href="https://rdrr.io/r/base/message.html">message()</a></code> instead</li>
+<li>how to keep a script running when something fails, with <code><a href="https://rdrr.io/r/base/try.html">try()</a></code> and <code><a href="https://rdrr.io/r/base/conditions.html">tryCatch()</a></code>
+</li>
+</ul>
+</div>
+</div>
+<section id="errors-warnings-and-messages" class="level2"><h2 class="anchored" data-anchor-id="errors-warnings-and-messages">Errors, warnings and messages</h2>
+<p>R has three ways of telling you something. They look similar in the console, but they mean different things.</p>
+<p>An <strong>error</strong> stops the code. Nothing after it runs, and you get no result:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="st">"ten"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `log()`:
+! non-numeric argument to mathematical function</code></pre>
+</div>
+</div>
+<p>A <strong>warning</strong> lets the code finish and return a result, but tells you that something about it may be wrong:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in log(-1): NaNs produced</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] NaN</code></pre>
+</div>
+</div>
+<p>R still returned a value (<code>NaN</code>, “not a number”), together with a note that it had to produce one.</p>
+<p>A <strong>message</strong> is plain information. Nothing is wrong; the code is just telling you what it is doing:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"Reading the household file..."</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Reading the household file...</code></pre>
+</div>
+</div>
+<p>When you write your own functions, you can create all three yourself with <code><a href="https://rdrr.io/r/base/stop.html">stop()</a></code>, <code><a href="https://rdrr.io/r/base/warning.html">warning()</a></code> and <code><a href="https://rdrr.io/r/base/message.html">message()</a></code>.</p>
+</section><section id="stopping-early-with-stop" class="level2"><h2 class="anchored" data-anchor-id="stopping-early-with-stop">1. Stopping early with <code>stop()</code>
+</h2>
+<p><code><a href="https://rdrr.io/r/base/stop.html">stop()</a></code> raises an error with the text you give it. The idea is to check the inputs at the very top of the function, before any real work happens:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">divide_numbers</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">is.numeric</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">||</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">is.numeric</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"Both x and y must be numeric."</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="va">y</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"Division by zero is not allowed."</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
-<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">x</span> <span class="op">/</span> <span class="va">y</span><span class="op">)</span></span>
+<span>  <span class="va">x</span> <span class="op">/</span> <span class="va">y</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="co"># Test cases</span></span>
-<span><span class="fu">divide_numbers</span><span class="op">(</span><span class="fl">10</span>, <span class="fl">2</span><span class="op">)</span>      <span class="co"># Works fine</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="fu">divide_numbers</span><span class="op">(</span><span class="fl">10</span>, <span class="fl">2</span><span class="op">)</span>      <span class="co"># works</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">divide_numbers</span><span class="op">(</span><span class="fl">10</span>, <span class="st">"a"</span><span class="op">)</span>    <span class="co"># Triggers a type error</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">divide_numbers</span><span class="op">(</span><span class="fl">10</span>, <span class="st">"a"</span><span class="op">)</span>    <span class="co"># stops: y is text</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-error">
-<pre><code>Error in divide_numbers(10, "a"): Both x and y must be numeric.</code></pre>
+<pre><code>Error in `divide_numbers()`:
+! Both x and y must be numeric.</code></pre>
 </div>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">divide_numbers</span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span>      <span class="co"># Triggers division error</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">divide_numbers</span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0</span><span class="op">)</span>      <span class="co"># stops: y is zero</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-error">
-<pre><code>Error in divide_numbers(10, 0): Division by zero is not allowed.</code></pre>
+<pre><code>Error in `divide_numbers()`:
+! Division by zero is not allowed.</code></pre>
 </div>
 </div>
-<p>By proactively validating arguments, we avoid mysterious bugs later in the analysis.</p>
-<hr></section><section id="gentle-alerts-with-warning" class="level2"><h2 class="anchored" data-anchor-id="gentle-alerts-with-warning">2. Gentle Alerts with <code>warning()</code>
-</h2>
-<p>Use <code><a href="https://rdrr.io/r/base/warning.html">warning()</a></code> when you want to inform users of an issue without stopping execution.</p>
+<p>Reading the checks line by line:</p>
+<ul>
+<li>
+<code>is.numeric(x)</code> is <code>TRUE</code> when <code>x</code> is a number. The <code>!</code> in front flips it, so <code>!is.numeric(x)</code> means “x is <em>not</em> a number”.</li>
+<li>
+<code>||</code> means “or”. The first <code>if</code> is true when either <code>x</code> or <code>y</code> is not numeric.</li>
+<li>When an <code>if</code> condition is true, <code><a href="https://rdrr.io/r/base/stop.html">stop()</a></code> runs and the function ends right there. The division on the last line never happens.</li>
+</ul>
+<p>Without these checks, <code>divide_numbers(10, "a")</code> would still fail, but with R’s own message, <code>non-numeric argument to binary operator</code>, which is accurate but not much help to someone who has never seen it before.</p>
+<section id="hiding-the-function-call-with-call.-false" class="level3"><h3 class="anchored" data-anchor-id="hiding-the-function-call-with-call.-false">Hiding the function call with <code>call. = FALSE</code>
+</h3>
+<p>Notice that each error above starts with <code>Error in divide_numbers(10, "a")</code>. R adds the call that failed. That helps while you are writing the function, but for people using it, the message alone is often cleaner:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">log_value</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">divide_numbers</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">is.numeric</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">||</span> <span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">is.numeric</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"Both x and y must be numeric."</span>, call. <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">y</span> <span class="op">==</span> <span class="fl">0</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"Division by zero is not allowed."</span>, call. <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">x</span> <span class="op">/</span> <span class="va">y</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">divide_numbers</span><span class="op">(</span><span class="fl">10</span>, <span class="st">"a"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error:
+! Both x and y must be numeric.</code></pre>
+</div>
+</div>
+</section></section><section id="writing-error-messages-people-can-act-on" class="level2"><h2 class="anchored" data-anchor-id="writing-error-messages-people-can-act-on">2. Writing error messages people can act on</h2>
+<p>A useful error message answers three questions: what went wrong, why, and what to do about it. Compare:</p>
+<ul>
+<li>Not helpful: <code>Error in y</code>
+</li>
+<li>Helpful: <code>`y` must be a number, but you supplied text ("a").</code>
+</li>
+</ul>
+<p>You can build messages like the second one by pasting in the value you received. Here is <code>calc_stats()</code> from the start of the post, now checking its inputs:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">calc_stats</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>, <span class="va">column</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="va">column</span> <span class="op"><a href="https://rdrr.io/r/base/match.html">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span></span>
+<span>      <span class="st">"Column '"</span>, <span class="va">column</span>, <span class="st">"' was not found. "</span>,</span>
+<span>      <span class="st">"Available columns: "</span>, <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span>, collapse <span class="op">=</span> <span class="st">", "</span><span class="op">)</span>,</span>
+<span>      call. <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>    <span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="va">values</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">[[</span><span class="va">column</span><span class="op">]</span><span class="op">]</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">is.numeric</a></span><span class="op">(</span><span class="va">values</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/stop.html">stop</a></span><span class="op">(</span><span class="st">"Column '"</span>, <span class="va">column</span>, <span class="st">"' must be numeric."</span>, call. <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html">data.frame</a></span><span class="op">(</span></span>
+<span>    variable <span class="op">=</span> <span class="va">column</span>,</span>
+<span>    mean <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">values</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>    sd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">values</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">calc_stats</span><span class="op">(</span><span class="va">mtcars</span>, <span class="st">"mpgg"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error:
+! Column 'mpgg' was not found. Available columns: mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb</code></pre>
+</div>
+</div>
+<p>Now the message names the problem and lists the columns you could have meant. <code><a href="https://rdrr.io/r/base/stop.html">stop()</a></code> pastes all its pieces together, and <code>paste(names(data), collapse = ", ")</code> turns the vector of column names into one comma-separated string.</p>
+</section><section id="quick-checks-with-stopifnot" class="level2"><h2 class="anchored" data-anchor-id="quick-checks-with-stopifnot">3. Quick checks with <code>stopifnot()</code>
+</h2>
+<p>For simple conditions, writing an <code>if</code> and a <code><a href="https://rdrr.io/r/base/stop.html">stop()</a></code> for each one gets long. <code><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot()</a></code> takes a list of conditions and stops at the first one that is not <code>TRUE</code>:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb21"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">is.numeric</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">my_mean</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">8</span>, <span class="fl">15</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 9</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">my_mean</span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `my_mean()`:
+! is.numeric(x) is not TRUE</code></pre>
+</div>
+</div>
+<p>The default message just repeats the condition (<code>is.numeric(x) is not TRUE</code>). Since R 4.0 you can name each condition, and the name becomes the message:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span><span class="op">(</span></span>
+<span>    <span class="st">"`x` must be numeric"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">is.numeric</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>,</span>
+<span>    <span class="st">"`x` must contain at least one value"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span></span>
+<span>  <span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">my_mean</span><span class="op">(</span><span class="st">"a"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-error">
+<pre><code>Error in `my_mean()`:
+! `x` must be numeric</code></pre>
+</div>
+</div>
+</section><section id="gentle-alerts-with-warning" class="level2"><h2 class="anchored" data-anchor-id="gentle-alerts-with-warning">4. Gentle alerts with <code>warning()</code>
+</h2>
+<p>Use <code><a href="https://rdrr.io/r/base/warning.html">warning()</a></code> when the function can still give a sensible answer, but the user should know about something. Taking the log of a vector that contains zeros or negative numbers is a good example: you can return <code>NA</code> for those values and carry on.</p>
+<p>Here is a first attempt:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">log_value</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span><span class="op">(</span><span class="va">x</span> <span class="op">&lt;=</span> <span class="fl">0</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/warning.html">warning</a></span><span class="op">(</span><span class="st">"Input contains non-positive values; returning NA for those cases."</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
-<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="cn">NA</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
 <span><span class="fu">log_value</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span>, <span class="op">-</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -296,91 +473,230 @@ returning NA for those cases.</code></pre>
 <pre><code>[1] 0.000000 2.302585       NA</code></pre>
 </div>
 </div>
-<p>Warnings are especially useful for <strong>partial failures</strong>—when the function can continue but with caveats.</p>
-<hr></section><section id="handling-runtime-errors-with-try-and-trycatch" class="level2"><h2 class="anchored" data-anchor-id="handling-runtime-errors-with-try-and-trycatch">3. Handling Runtime Errors with <code>try()</code> and <code>tryCatch()</code>
-</h2>
-<p>When calling code that might fail unpredictably (e.g., reading a file or hitting an API), wrap it in <code><a href="https://rdrr.io/r/base/try.html">try()</a></code> or <code><a href="https://rdrr.io/r/base/conditions.html">tryCatch()</a></code> to recover gracefully.</p>
+<p>The result is right, but there are two warnings, not one. The second one, <code>NaNs produced</code>, comes from <code>log(x)</code>. <code><a href="https://rdrr.io/r/base/ifelse.html">ifelse()</a></code> computes <code><a href="https://rdrr.io/r/base/Log.html">log()</a></code> for <em>every</em> value first, including <code>-3</code>, and only then picks which results to keep. So R complains about <code>log(-3)</code> even though that value is thrown away.</p>
+<p>The fix is to replace the bad values with <code>NA</code> <em>before</em> taking the log:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">read_data_safe</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">path</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb31"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">log_value</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/any.html">any</a></span><span class="op">(</span><span class="va">x</span> <span class="op">&lt;=</span> <span class="fl">0</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/warning.html">warning</a></span><span class="op">(</span><span class="st">"Input contains zero or negative values; returning NA for those."</span>,</span>
+<span>            call. <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="va">x</span>, <span class="cn">NA</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">log_value</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span>, <span class="op">-</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Input contains zero or negative values; returning NA for those.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.000000 2.302585       NA</code></pre>
+</div>
+</div>
+<p>Now there is exactly one warning, and it is ours. <code>na.rm = TRUE</code> inside <code><a href="https://rdrr.io/r/base/any.html">any()</a></code> makes the check work even when <code>x</code> already contains missing values.</p>
+</section><section id="keeping-the-user-informed-with-message" class="level2"><h2 class="anchored" data-anchor-id="keeping-the-user-informed-with-message">5. Keeping the user informed with <code>message()</code>
+</h2>
+<p><code><a href="https://rdrr.io/r/base/message.html">message()</a></code> is for progress updates such as “Reading 12 files…” or “Dropped 3 duplicate rows”. It is better than <code><a href="https://rdrr.io/r/base/print.html">print()</a></code> or <code><a href="https://rdrr.io/r/base/cat.html">cat()</a></code> for this, because whoever calls your function can switch messages off when they do not need them:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb34"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">clean_ids</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">ids</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">dupes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/duplicated.html">duplicated</a></span><span class="op">(</span><span class="va">ids</span><span class="op">)</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"Dropped "</span>, <span class="va">dupes</span>, <span class="st">" duplicate ID(s)."</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">ids</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="fu">clean_ids</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">101</span>, <span class="fl">102</span>, <span class="fl">102</span>, <span class="fl">103</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Dropped 1 duplicate ID(s).</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 101 102 103</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb37"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/message.html">suppressMessages</a></span><span class="op">(</span><span class="fu">clean_ids</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">101</span>, <span class="fl">102</span>, <span class="fl">102</span>, <span class="fl">103</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 101 102 103</code></pre>
+</div>
+</div>
+</section><section id="recovering-from-failures-with-try-and-trycatch" class="level2"><h2 class="anchored" data-anchor-id="recovering-from-failures-with-try-and-trycatch">6. Recovering from failures with <code>try()</code> and <code>tryCatch()</code>
+</h2>
+<p>So far we have been <em>raising</em> problems. Sometimes you want the opposite: to <em>catch</em> a problem and keep going. A common case is reading many files in a loop, where one damaged file should not stop the other ninety-nine.</p>
+<section id="try" class="level3"><h3 class="anchored" data-anchor-id="try"><code>try()</code></h3>
+<p><code><a href="https://rdrr.io/r/base/try.html">try()</a></code> runs some code and, if it fails, returns a special “try-error” object instead of stopping:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb39"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">read_data_safe</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">path</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="va">result</span> <span class="op">&lt;-</span> <span class="kw"><a href="https://rdrr.io/r/base/try.html">try</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span>, silent <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/class.html">inherits</a></span><span class="op">(</span><span class="va">result</span>, <span class="st">"try-error"</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="kw"><a href="https://rdrr.io/r/base/warning.html">warning</a></span><span class="op">(</span><span class="st">"Could not read the file. Please check the path or format."</span><span class="op">)</span></span>
+<span>    <span class="kw"><a href="https://rdrr.io/r/base/warning.html">warning</a></span><span class="op">(</span><span class="st">"Could not read '"</span>, <span class="va">path</span>, <span class="st">"'. Check the path and format."</span>,</span>
+<span>            call. <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span>    <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
 <span>  <span class="op">}</span></span>
-<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">result</span><span class="op">)</span></span>
+<span>  <span class="va">result</span></span>
 <span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<p>Or, using <code><a href="https://rdrr.io/r/base/conditions.html">tryCatch()</a></code> for finer control:</p>
+<p><code>silent = TRUE</code> stops <code><a href="https://rdrr.io/r/base/try.html">try()</a></code> from printing the error itself, and <code>inherits(result, "try-error")</code> checks whether the reading failed. Let’s test it on a file that exists and one that does not. <code><a href="https://rdrr.io/r/base/tempfile.html">tempfile()</a></code> gives us a temporary file path, so this example does not touch any of your own files:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">read_data_robust</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">path</span><span class="op">)</span> <span class="op">{</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb40"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">good_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".csv"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.csv</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">mtcars</span>, <span class="fl">3</span><span class="op">)</span>, <span class="va">good_file</span>, row.names <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">read_data_safe</span><span class="op">(</span><span class="va">good_file</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   mpg cyl disp  hp drat    wt  qsec vs am gear carb
+1 21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+2 21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+3 22.8   4  108  93 3.85 2.320 18.61  1  1    4    1</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb42"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">read_data_safe</span><span class="op">(</span><span class="st">"no_such_file.csv"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in file(file, "rt"): cannot open file 'no_such_file.csv': No such file
+or directory</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Could not read 'no_such_file.csv'. Check the path and format.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
+</div>
+<p>The first call returns the data. The second returns <code>NULL</code> and the script continues. You see two warnings for it: the first comes from <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code> itself (it cannot open the file), and the second is ours, which says in plain words what to check.</p>
+</section><section id="trycatch" class="level3"><h3 class="anchored" data-anchor-id="trycatch"><code>tryCatch()</code></h3>
+<p><code><a href="https://rdrr.io/r/base/conditions.html">tryCatch()</a></code> gives you more control. You hand it the code to run, plus a separate <strong>handler</strong> function for each kind of problem:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb46"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">read_data_robust</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">path</span><span class="op">)</span> <span class="op">{</span></span>
 <span>  <span class="kw"><a href="https://rdrr.io/r/base/conditions.html">tryCatch</a></span><span class="op">(</span></span>
 <span>    <span class="op">{</span></span>
 <span>      <span class="va">df</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
 <span>      <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"File read successfully."</span><span class="op">)</span></span>
-<span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="va">df</span><span class="op">)</span></span>
+<span>      <span class="va">df</span></span>
 <span>    <span class="op">}</span>,</span>
 <span>    error <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">e</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"Error: "</span>, <span class="va">e</span><span class="op">$</span><span class="va">message</span><span class="op">)</span></span>
-<span>      <span class="kw"><a href="https://rdrr.io/r/base/function.html">return</a></span><span class="op">(</span><span class="cn">NULL</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"Error: "</span>, <span class="fu"><a href="https://rdrr.io/r/base/conditions.html">conditionMessage</a></span><span class="op">(</span><span class="va">e</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="cn">NULL</span></span>
 <span>    <span class="op">}</span>,</span>
 <span>    warning <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">w</span><span class="op">)</span> <span class="op">{</span></span>
-<span>      <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"Warning: "</span>, <span class="va">w</span><span class="op">$</span><span class="va">message</span><span class="op">)</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"Warning: "</span>, <span class="fu"><a href="https://rdrr.io/r/base/conditions.html">conditionMessage</a></span><span class="op">(</span><span class="va">w</span><span class="op">)</span><span class="op">)</span></span>
+<span>      <span class="cn">NULL</span></span>
+<span>    <span class="op">}</span>,</span>
+<span>    finally <span class="op">=</span> <span class="op">{</span></span>
+<span>      <span class="fu"><a href="https://rdrr.io/r/base/message.html">message</a></span><span class="op">(</span><span class="st">"Finished trying '"</span>, <span class="fu"><a href="https://rdrr.io/r/base/basename.html">basename</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span>, <span class="st">"'."</span><span class="op">)</span></span>
 <span>    <span class="op">}</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<hr></section><section id="writing-informative-error-messages" class="level2"><h2 class="anchored" data-anchor-id="writing-informative-error-messages">4. Writing Informative Error Messages</h2>
-<p>A good error message tells users <strong>what went wrong</strong>, <strong>why</strong>, and ideally <strong>how to fix it</strong>.</p>
-<p>✅ Good: <code>"Input 'y' must be a numeric vector of length greater than 0."</code><br>
-❌ Bad: <code>"Error in y"</code></p>
-<p>You can even use <code><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot()</a></code> for compact assertions:</p>
+<p>How it works:</p>
+<ul>
+<li>The first block, in <code><a href="https://rdrr.io/r/base/Paren.html">{ }</a></code>, is the code you want to run.</li>
+<li>If that code raises an error, R stops it and runs the <code>error</code> handler instead. The handler receives the error as <code>e</code>, and <code>conditionMessage(e)</code> gives you its text. Whatever the handler returns, here <code>NULL</code>, becomes the result of <code><a href="https://rdrr.io/r/base/conditions.html">tryCatch()</a></code>.</li>
+<li>The <code>warning</code> handler works the same way for warnings. Note that catching a warning also <strong>stops</strong> the main code, so this function returns <code>NULL</code> even for a small warning. If that is too strict, leave out the <code>warning</code> handler and let warnings pass through.</li>
+<li>
+<code>finally</code> runs at the end no matter what happened. It is the place for clean-up, such as closing a connection.</li>
+</ul>
+<p>Here it is on three files: a good one, a missing one, and one whose last line has no line ending, which makes <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code> raise a warning. The long random file names in the output come from <code><a href="https://rdrr.io/r/base/tempfile.html">tempfile()</a></code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">my_mean</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/numeric.html">is.numeric</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb47"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">odd_file</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempfile</a></span><span class="op">(</span>fileext <span class="op">=</span> <span class="st">".csv"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cat.html">cat</a></span><span class="op">(</span><span class="st">"a,b\n1,2"</span>, file <span class="op">=</span> <span class="va">odd_file</span><span class="op">)</span>   <span class="co"># no newline at the end</span></span>
+<span></span>
+<span><span class="fu">read_data_robust</span><span class="op">(</span><span class="va">good_file</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>File read successfully.</code></pre>
 </div>
-<hr></section><section id="when-to-use-stop-warning-or-message" class="level2"><h2 class="anchored" data-anchor-id="when-to-use-stop-warning-or-message">5. When to Use <code>stop()</code>, <code>warning()</code>, or <code>message()</code>
-</h2>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished trying 'file492877e412a2.csv'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   mpg cyl disp  hp drat    wt  qsec vs am gear carb
+1 21.0   6  160 110 3.90 2.620 16.46  0  1    4    4
+2 21.0   6  160 110 3.90 2.875 17.02  0  1    4    4
+3 22.8   4  108  93 3.85 2.320 18.61  1  1    4    1</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb51"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">read_data_robust</span><span class="op">(</span><span class="st">"no_such_file.csv"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: cannot open file 'no_such_file.csv': No such file or directory</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished trying 'no_such_file.csv'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb55"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu">read_data_robust</span><span class="op">(</span><span class="va">odd_file</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: incomplete final line found by readTableHeader on 'C:\Users\girja\AppData\Local\Temp\Rtmp80Fj8N\file492860dc636.csv'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Finished trying 'file492860dc636.csv'.</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>NULL</code></pre>
+</div>
+</div>
+</section><section id="reading-many-files-without-stopping" class="level3"><h3 class="anchored" data-anchor-id="reading-many-files-without-stopping">Reading many files without stopping</h3>
+<p>Look at the missing file. <code><a href="https://rdrr.io/r/utils/read.table.html">read.csv()</a></code> first raises a warning (“cannot open file”) and then an error, and since the warning comes first, the <code>warning</code> handler is the one that runs. Handlers react to whichever condition arrives first.</p>
+<p>Putting it together, here is the loop that motivated this section. <code><a href="https://rdrr.io/r/base/lapply.html">lapply()</a></code> reads each file, and one bad path does not stop the rest:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb59"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">paths</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">good_file</span>, <span class="st">"no_such_file.csv"</span>, <span class="va">good_file</span><span class="op">)</span></span>
+<span><span class="va">datasets</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/warning.html">suppressWarnings</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">paths</span>, <span class="va">read_data_safe</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/lengths.html">lengths</a></span><span class="op">(</span><span class="va">datasets</span><span class="op">)</span>   <span class="co"># number of columns in each result; 0 means it failed</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 11  0 11</code></pre>
+</div>
+</div>
+</section></section><section id="which-one-should-i-use" class="level2"><h2 class="anchored" data-anchor-id="which-one-should-i-use">Which one should I use?</h2>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 22%">
-<col style="width: 28%">
-<col style="width: 30%">
-<col style="width: 19%">
+<col style="width: 25%">
+<col style="width: 42%">
+<col style="width: 32%">
 </colgroup>
 <thead><tr class="header">
 <th>Function</th>
-<th>Stops execution</th>
-<th>User notification</th>
-<th>Ideal for</th>
+<th>Stops the code?</th>
+<th>Use it when</th>
 </tr></thead>
 <tbody>
 <tr class="odd">
 <td><code><a href="https://rdrr.io/r/base/stop.html">stop()</a></code></td>
-<td>✅</td>
-<td>🚨</td>
-<td>Fatal input errors</td>
+<td>Yes</td>
+<td>The input is wrong and no sensible result is possible</td>
 </tr>
 <tr class="even">
-<td><code><a href="https://rdrr.io/r/base/warning.html">warning()</a></code></td>
-<td>❌</td>
-<td>⚠️</td>
-<td>Soft alerts</td>
+<td><code><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot()</a></code></td>
+<td>Yes</td>
+<td>You have a few simple conditions to check quickly</td>
 </tr>
 <tr class="odd">
+<td><code><a href="https://rdrr.io/r/base/warning.html">warning()</a></code></td>
+<td>No</td>
+<td>You can return a result, but part of it needs attention</td>
+</tr>
+<tr class="even">
 <td><code><a href="https://rdrr.io/r/base/message.html">message()</a></code></td>
-<td>❌</td>
-<td>💬 (quiet alerts)</td>
-<td>Informational logs</td>
+<td>No</td>
+<td>You want to report progress or what the function did</td>
+</tr>
+<tr class="odd">
+<td><code><a href="https://rdrr.io/r/base/try.html">try()</a></code></td>
+<td>No</td>
+<td>You want to attempt something and check afterwards whether it failed</td>
+</tr>
+<tr class="even">
+<td><code><a href="https://rdrr.io/r/base/conditions.html">tryCatch()</a></code></td>
+<td>No</td>
+<td>You want different responses to errors and warnings, or clean-up with <code>finally</code>
+</td>
 </tr>
 </tbody>
-</table>
-<p>Use each intentionally to design an experience that matches the severity of the situation.</p>
-<hr></section><section id="conclusion" class="level2"><h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
-<p>Effective error handling makes your R code <strong>safer, more transparent, and more professional</strong>—especially when shared in collaborative settings or deployed in production dashboards and packages.</p>
-<p>Start small: add one or two checks to your most-used functions, and grow from there. As your codebase scales, you’ll thank yourself for the early investment in resilience.</p>
-<p>Happy coding!</p>
+</table></section><section id="common-mistakes" class="level2"><h2 class="anchored" data-anchor-id="common-mistakes">Common mistakes</h2>
+<ul>
+<li>
+<strong>Checking too late.</strong> Put input checks at the top of the function. If the function has already done half its work when it fails, it can leave things in a confusing state.</li>
+<li>
+<strong>Vague messages.</strong> “Invalid input” sends the user hunting. Say which argument is wrong and what you expected.</li>
+<li>
+<strong>Hiding every error.</strong> Wrapping everything in <code><a href="https://rdrr.io/r/base/conditions.html">tryCatch()</a></code> and returning <code>NULL</code> makes failures invisible. Catch only the problems you expect, and report them with a warning or message so they are not lost.</li>
+<li>
+<strong><code>if</code> with more than one value.</strong> <code>if (x == 0)</code> fails with <code>the condition has length &gt; 1</code> when <code>x</code> is a vector. Use <code>any(x == 0)</code> or <code>all(x == 0)</code> to say what you mean.</li>
+</ul></section><section id="recap" class="level2"><h2 class="anchored" data-anchor-id="recap">Recap</h2>
+<p>Errors stop the code, warnings let it finish with a caution, and messages are information. Use <code><a href="https://rdrr.io/r/base/stop.html">stop()</a></code> (or <code><a href="https://rdrr.io/r/base/stopifnot.html">stopifnot()</a></code> for short checks) at the top of a function to reject bad input with a message that says what went wrong and how to fix it. Use <code><a href="https://rdrr.io/r/base/warning.html">warning()</a></code> when you can still return something useful, and <code><a href="https://rdrr.io/r/base/message.html">message()</a></code> for progress updates. When you need a script to keep running past a failure, <code><a href="https://rdrr.io/r/base/try.html">try()</a></code> and <code><a href="https://rdrr.io/r/base/conditions.html">tryCatch()</a></code> let you catch the problem and decide what happens next.</p>
+<p>A good place to start is the function you use most. Add two or three checks to it, and the next time something goes wrong, the error will tell you where to look.</p>
 
 
 </section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">

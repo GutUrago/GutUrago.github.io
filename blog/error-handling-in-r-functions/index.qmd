@@ -1,39 +1,76 @@
 ---
 title: "Error Handling in R: A Guide for Data Analysts"
-description: "How to use stop(), warning(), try() and tryCatch() so R functions fail with clear messages and recover when they can."
+description: "How to use stop(), warning(), message(), try() and tryCatch() so R functions fail with clear messages and recover when they can."
 author: "Gutama Girja Urago"
 date: "2025-05-15"
-categories: [dplyr, R programming, error-handling, best-practices]
+date-modified: "2026-11-06"
+categories: [R programming, error handling, functions, beginners]
 editor_options:
   chunk_output_type: console
 ---
 
-## Error Handling in R Functions: A Comprehensive Guide
+In the [previous post](../importance-of-functions-in-r/index.qmd) we wrote `calc_stats()`, a small function that returns the mean and standard deviation of a column. It works well as long as you give it what it expects. Here is what happens when you make a typo in the column name:
 
-As data analysts, we often rely on custom functions to automate repetitive tasks, clean datasets, and perform complex analyses. However, even the most well-written function can break unexpectedly—especially when it encounters invalid input. That’s where **error handling** comes in.
+```{r}
+calc_stats <- function(data, column) {
+  values <- data[[column]]
+  data.frame(
+    variable = column,
+    mean = mean(values, na.rm = TRUE),
+    sd = sd(values, na.rm = TRUE)
+  )
+}
 
-This guide walks through best practices for incorporating error and warning handling into your R functions to make them more **robust, user-friendly, and maintainable**.
+calc_stats(mtcars, "mpgg")
+```
 
----
+R complains that an argument is "not numeric or logical" and hands back `NA` instead of numbers. The warning never mentions the real problem, which is that `mtcars` has no column called `mpgg`. Worse, the function did not stop, so those `NA` values can travel into later steps of your analysis. When this happens in the middle of a long script, you can lose a lot of time working out what went wrong.
 
-## Why Implement Error Handling?
+Error handling is the habit of checking inputs and reporting problems in words that point straight at the cause. This post covers the tools base R gives you for that.
 
-Without proper checks and feedback, functions can fail silently or return misleading results. Implementing error handling is not just a defensive programming habit—it is a **critical part of writing reliable analytical code**.
+::: {.callout-note}
+## What you will learn
 
-### Key Benefits:
+- the difference between errors, warnings and messages, and how R shows each one
+- how to stop a function early with `stop()` and write messages people can act on
+- quick input checks with `stopifnot()`
+- when to use `warning()` and `message()` instead
+- how to keep a script running when something fails, with `try()` and `tryCatch()`
+:::
 
-- 🔍 **Data Validation:** Prevents incorrect types, structures, or values from corrupting your logic.
-- 🐞 **Easier Debugging:** Pinpoints the root cause of a failure more effectively.
-- 💡 **Better UX:** Communicates clearly with users, especially those who didn't write the function.
-- 🔁 **Reusability:** Makes your functions portable and safe to use in larger pipelines.
+## Errors, warnings and messages
 
----
+R has three ways of telling you something. They look similar in the console, but they mean different things.
 
-## 1. Basic Error Handling with `stop()`
+An **error** stops the code. Nothing after it runs, and you get no result:
 
-Use `stop()` to halt execution and print a clear error message when the input doesn't meet expectations.
+```{r}
+#| error: true
+log("ten")
+```
 
-```{r, error=TRUE}
+A **warning** lets the code finish and return a result, but tells you that something about it may be wrong:
+
+```{r}
+log(-1)
+```
+
+R still returned a value (`NaN`, "not a number"), together with a note that it had to produce one.
+
+A **message** is plain information. Nothing is wrong; the code is just telling you what it is doing:
+
+```{r}
+message("Reading the household file...")
+```
+
+When you write your own functions, you can create all three yourself with `stop()`, `warning()` and `message()`.
+
+## 1. Stopping early with `stop()`
+
+`stop()` raises an error with the text you give it. The idea is to check the inputs at the very top of the function, before any real work happens:
+
+```{r}
+#| error: true
 divide_numbers <- function(x, y) {
   if (!is.numeric(x) || !is.numeric(y)) {
     stop("Both x and y must be numeric.")
@@ -41,54 +78,191 @@ divide_numbers <- function(x, y) {
   if (y == 0) {
     stop("Division by zero is not allowed.")
   }
-  return(x / y)
+  x / y
 }
 
-# Test cases
-divide_numbers(10, 2)      # Works fine
-divide_numbers(10, "a")    # Triggers a type error
-divide_numbers(10, 0)      # Triggers division error
+divide_numbers(10, 2)      # works
+divide_numbers(10, "a")    # stops: y is text
+divide_numbers(10, 0)      # stops: y is zero
 ```
 
-By proactively validating arguments, we avoid mysterious bugs later in the analysis.
+Reading the checks line by line:
 
----
+- `is.numeric(x)` is `TRUE` when `x` is a number. The `!` in front flips it, so `!is.numeric(x)` means "x is *not* a number".
+- `||` means "or". The first `if` is true when either `x` or `y` is not numeric.
+- When an `if` condition is true, `stop()` runs and the function ends right there. The division on the last line never happens.
 
-## 2. Gentle Alerts with `warning()`
+Without these checks, `divide_numbers(10, "a")` would still fail, but with R's own message, `non-numeric argument to binary operator`, which is accurate but not much help to someone who has never seen it before.
 
-Use `warning()` when you want to inform users of an issue without stopping execution.
+### Hiding the function call with `call. = FALSE`
+
+Notice that each error above starts with `Error in divide_numbers(10, "a")`. R adds the call that failed. That helps while you are writing the function, but for people using it, the message alone is often cleaner:
+
+```{r}
+#| error: true
+divide_numbers <- function(x, y) {
+  if (!is.numeric(x) || !is.numeric(y)) {
+    stop("Both x and y must be numeric.", call. = FALSE)
+  }
+  if (y == 0) {
+    stop("Division by zero is not allowed.", call. = FALSE)
+  }
+  x / y
+}
+
+divide_numbers(10, "a")
+```
+
+## 2. Writing error messages people can act on
+
+A useful error message answers three questions: what went wrong, why, and what to do about it. Compare:
+
+- Not helpful: `Error in y`
+- Helpful: `` `y` must be a number, but you supplied text ("a"). ``
+
+You can build messages like the second one by pasting in the value you received. Here is `calc_stats()` from the start of the post, now checking its inputs:
+
+```{r}
+#| error: true
+calc_stats <- function(data, column) {
+  if (!column %in% names(data)) {
+    stop(
+      "Column '", column, "' was not found. ",
+      "Available columns: ", paste(names(data), collapse = ", "),
+      call. = FALSE
+    )
+  }
+  values <- data[[column]]
+  if (!is.numeric(values)) {
+    stop("Column '", column, "' must be numeric.", call. = FALSE)
+  }
+  data.frame(
+    variable = column,
+    mean = mean(values, na.rm = TRUE),
+    sd = sd(values, na.rm = TRUE)
+  )
+}
+
+calc_stats(mtcars, "mpgg")
+```
+
+Now the message names the problem and lists the columns you could have meant. `stop()` pastes all its pieces together, and `paste(names(data), collapse = ", ")` turns the vector of column names into one comma-separated string.
+
+## 3. Quick checks with `stopifnot()`
+
+For simple conditions, writing an `if` and a `stop()` for each one gets long. `stopifnot()` takes a list of conditions and stops at the first one that is not `TRUE`:
+
+```{r}
+#| error: true
+my_mean <- function(x) {
+  stopifnot(is.numeric(x), length(x) > 0)
+  mean(x)
+}
+
+my_mean(c(4, 8, 15))
+my_mean("a")
+```
+
+The default message just repeats the condition (`is.numeric(x) is not TRUE`). Since R 4.0 you can name each condition, and the name becomes the message:
+
+```{r}
+#| error: true
+my_mean <- function(x) {
+  stopifnot(
+    "`x` must be numeric" = is.numeric(x),
+    "`x` must contain at least one value" = length(x) > 0
+  )
+  mean(x)
+}
+
+my_mean("a")
+```
+
+## 4. Gentle alerts with `warning()`
+
+Use `warning()` when the function can still give a sensible answer, but the user should know about something. Taking the log of a vector that contains zeros or negative numbers is a good example: you can return `NA` for those values and carry on.
+
+Here is a first attempt:
 
 ```{r}
 log_value <- function(x) {
   if (any(x <= 0)) {
     warning("Input contains non-positive values; returning NA for those cases.")
   }
-  return(ifelse(x > 0, log(x), NA))
+  ifelse(x > 0, log(x), NA)
 }
 
 log_value(c(1, 10, -3))
 ```
 
-Warnings are especially useful for **partial failures**—when the function can continue but with caveats.
+The result is right, but there are two warnings, not one. The second one, `NaNs produced`, comes from `log(x)`. `ifelse()` computes `log()` for *every* value first, including `-3`, and only then picks which results to keep. So R complains about `log(-3)` even though that value is thrown away.
 
----
+The fix is to replace the bad values with `NA` *before* taking the log:
 
-## 3. Handling Runtime Errors with `try()` and `tryCatch()`
+```{r}
+log_value <- function(x) {
+  if (any(x <= 0, na.rm = TRUE)) {
+    warning("Input contains zero or negative values; returning NA for those.",
+            call. = FALSE)
+  }
+  log(ifelse(x > 0, x, NA))
+}
 
-When calling code that might fail unpredictably (e.g., reading a file or hitting an API), wrap it in `try()` or `tryCatch()` to recover gracefully.
+log_value(c(1, 10, -3))
+```
+
+Now there is exactly one warning, and it is ours. `na.rm = TRUE` inside `any()` makes the check work even when `x` already contains missing values.
+
+## 5. Keeping the user informed with `message()`
+
+`message()` is for progress updates such as "Reading 12 files..." or "Dropped 3 duplicate rows". It is better than `print()` or `cat()` for this, because whoever calls your function can switch messages off when they do not need them:
+
+```{r}
+clean_ids <- function(ids) {
+  dupes <- sum(duplicated(ids))
+  message("Dropped ", dupes, " duplicate ID(s).")
+  unique(ids)
+}
+
+clean_ids(c(101, 102, 102, 103))
+suppressMessages(clean_ids(c(101, 102, 102, 103)))
+```
+
+## 6. Recovering from failures with `try()` and `tryCatch()`
+
+So far we have been *raising* problems. Sometimes you want the opposite: to *catch* a problem and keep going. A common case is reading many files in a loop, where one damaged file should not stop the other ninety-nine.
+
+### `try()`
+
+`try()` runs some code and, if it fails, returns a special "try-error" object instead of stopping:
 
 ```{r}
 read_data_safe <- function(path) {
   result <- try(read.csv(path), silent = TRUE)
   if (inherits(result, "try-error")) {
-    warning("Could not read the file. Please check the path or format.")
+    warning("Could not read '", path, "'. Check the path and format.",
+            call. = FALSE)
     return(NULL)
   }
-  return(result)
+  result
 }
 ```
 
-Or, using `tryCatch()` for finer control:
+`silent = TRUE` stops `try()` from printing the error itself, and `inherits(result, "try-error")` checks whether the reading failed. Let's test it on a file that exists and one that does not. `tempfile()` gives us a temporary file path, so this example does not touch any of your own files:
+
+```{r}
+good_file <- tempfile(fileext = ".csv")
+write.csv(head(mtcars, 3), good_file, row.names = FALSE)
+
+read_data_safe(good_file)
+read_data_safe("no_such_file.csv")
+```
+
+The first call returns the data. The second returns `NULL` and the script continues. You see two warnings for it: the first comes from `read.csv()` itself (it cannot open the file), and the second is ours, which says in plain words what to check.
+
+### `tryCatch()`
+
+`tryCatch()` gives you more control. You hand it the code to run, plus a separate **handler** function for each kind of problem:
 
 ```{r}
 read_data_robust <- function(path) {
@@ -96,56 +270,74 @@ read_data_robust <- function(path) {
     {
       df <- read.csv(path)
       message("File read successfully.")
-      return(df)
+      df
     },
     error = function(e) {
-      message("Error: ", e$message)
-      return(NULL)
+      message("Error: ", conditionMessage(e))
+      NULL
     },
     warning = function(w) {
-      message("Warning: ", w$message)
+      message("Warning: ", conditionMessage(w))
+      NULL
+    },
+    finally = {
+      message("Finished trying '", basename(path), "'.")
     }
   )
 }
 ```
 
----
+How it works:
 
-## 4. Writing Informative Error Messages
+- The first block, in `{ }`, is the code you want to run.
+- If that code raises an error, R stops it and runs the `error` handler instead. The handler receives the error as `e`, and `conditionMessage(e)` gives you its text. Whatever the handler returns, here `NULL`, becomes the result of `tryCatch()`.
+- The `warning` handler works the same way for warnings. Note that catching a warning also **stops** the main code, so this function returns `NULL` even for a small warning. If that is too strict, leave out the `warning` handler and let warnings pass through.
+- `finally` runs at the end no matter what happened. It is the place for clean-up, such as closing a connection.
 
-A good error message tells users **what went wrong**, **why**, and ideally **how to fix it**.
-
-✅ Good: `"Input 'y' must be a numeric vector of length greater than 0."`  
-❌ Bad: `"Error in y"`
-
-You can even use `stopifnot()` for compact assertions:
+Here it is on three files: a good one, a missing one, and one whose last line has no line ending, which makes `read.csv()` raise a warning. The long random file names in the output come from `tempfile()`:
 
 ```{r}
-my_mean <- function(x) {
-  stopifnot(is.numeric(x), length(x) > 0)
-  mean(x)
-}
+odd_file <- tempfile(fileext = ".csv")
+cat("a,b\n1,2", file = odd_file)   # no newline at the end
+
+read_data_robust(good_file)
+read_data_robust("no_such_file.csv")
+read_data_robust(odd_file)
 ```
 
----
+### Reading many files without stopping
 
-## 5. When to Use `stop()`, `warning()`, or `message()`
+Look at the missing file. `read.csv()` first raises a warning ("cannot open file") and then an error, and since the warning comes first, the `warning` handler is the one that runs. Handlers react to whichever condition arrives first.
 
-| Function     | Stops execution | User notification | Ideal for |
-|--------------|------------------|-------------------|------------|
-| `stop()`     | ✅                | 🚨                | Fatal input errors |
-| `warning()`  | ❌                | ⚠️                | Soft alerts |
-| `message()`  | ❌                | 💬 (quiet alerts) | Informational logs |
+Putting it together, here is the loop that motivated this section. `lapply()` reads each file, and one bad path does not stop the rest:
 
-Use each intentionally to design an experience that matches the severity of the situation.
+```{r}
+paths <- c(good_file, "no_such_file.csv", good_file)
+datasets <- suppressWarnings(lapply(paths, read_data_safe))
 
----
+lengths(datasets)   # number of columns in each result; 0 means it failed
+```
 
-## Conclusion
+## Which one should I use?
 
-Effective error handling makes your R code **safer, more transparent, and more professional**—especially when shared in collaborative settings or deployed in production dashboards and packages.
+| Function | Stops the code? | Use it when |
+|----------|-----------------|-------------|
+| `stop()` | Yes | The input is wrong and no sensible result is possible |
+| `stopifnot()` | Yes | You have a few simple conditions to check quickly |
+| `warning()` | No | You can return a result, but part of it needs attention |
+| `message()` | No | You want to report progress or what the function did |
+| `try()` | No | You want to attempt something and check afterwards whether it failed |
+| `tryCatch()` | No | You want different responses to errors and warnings, or clean-up with `finally` |
 
-Start small: add one or two checks to your most-used functions, and grow from there. As your codebase scales, you’ll thank yourself for the early investment in resilience.
+## Common mistakes
 
+- **Checking too late.** Put input checks at the top of the function. If the function has already done half its work when it fails, it can leave things in a confusing state.
+- **Vague messages.** "Invalid input" sends the user hunting. Say which argument is wrong and what you expected.
+- **Hiding every error.** Wrapping everything in `tryCatch()` and returning `NULL` makes failures invisible. Catch only the problems you expect, and report them with a warning or message so they are not lost.
+- **`if` with more than one value.** `if (x == 0)` fails with `the condition has length > 1` when `x` is a vector. Use `any(x == 0)` or `all(x == 0)` to say what you mean.
 
-Happy coding!  
+## Recap
+
+Errors stop the code, warnings let it finish with a caution, and messages are information. Use `stop()` (or `stopifnot()` for short checks) at the top of a function to reject bad input with a message that says what went wrong and how to fix it. Use `warning()` when you can still return something useful, and `message()` for progress updates. When you need a script to keep running past a failure, `try()` and `tryCatch()` let you catch the problem and decide what happens next.
+
+A good place to start is the function you use most. Add two or three checks to it, and the next time something goes wrong, the error will tell you where to look.
