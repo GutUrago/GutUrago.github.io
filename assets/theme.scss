@@ -683,17 +683,21 @@ h1, h2, h3, .h1, .h2, .h3 {
   }
 }
 
-// Latest posts listing on the home page
-.posts {
-  .quarto-listing-container-grid .card {
-    border: 1px solid $line;
-    border-radius: $border-radius-lg;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+// Post cards (home page and blog listing)
+.quarto-listing-container-grid .card {
+  border: 1px solid $line;
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 
-    &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 30px rgba($navy, 0.08);
-    }
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba($navy, 0.08);
+  }
+
+  .card-img-top {
+    object-fit: cover;
+    border-bottom: 1px solid $line;
   }
 
   .card-title {

@@ -1,5 +1,6 @@
 ---
 title: "Error Handling in R: A Guide for Data Analysts"
+description: "How to use stop(), warning(), try() and tryCatch() so R functions fail with clear messages and recover when they can."
 author: "Gutama Girja Urago"
 date: "2025-05-15"
 categories: [dplyr, R programming, error-handling, best-practices]

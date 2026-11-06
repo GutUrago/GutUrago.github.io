@@ -1,5 +1,6 @@
 ---
 title: "Web Scraping in R: Import table directly from website"
+description: "Import Ethiopia's GDP table from Worldometers into R with rvest, clean it with janitor and plot it with ggplot2."
 author: "Gutama Girja Urago"
 date: "2024-05-20"
 image: "inspect.png"

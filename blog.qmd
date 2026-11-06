@@ -1,12 +1,20 @@
 ---
+title: "Blog"
+subtitle: "Notes on R, Stata and working with survey data"
+title-block-banner: true
+page-layout: full
+toc: false
 listing:
   contents: blog
   feed: true
   sort: "date desc"
-  type: default
+  type: grid
+  grid-columns: 3
+  image-height: 190px
+  image-placeholder: images/blog-placeholder.png
+  fields: [image, date, title, description, categories, reading-time]
+  max-description-length: 160
   categories: true
   sort-ui: true
   filter-ui: true
-page-layout: full
-title-block-style: default
 ---

@@ -1,8 +1,11 @@
-# options specified here will apply to all posts in this folder
+# Options here apply to every post in this folder.
 
-# freeze computational output
+# Never re-run code when the site is rendered; reuse the frozen results
 # (see https://quarto.org/docs/projects/code-execution.html#freeze)
 freeze: true
 
-# Enable banner style title blocks
+author: "Gutama Girja Urago"
 title-block-banner: true
+image: /images/blog-placeholder.png
+toc: true
+toc-title: "On this page"

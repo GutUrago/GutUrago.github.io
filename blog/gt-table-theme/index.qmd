@@ -1,5 +1,6 @@
 ---
 title: "Table Template: Create your own {gt} table theme"
+description: "Build a reusable {gt} table theme step by step: header, row striping, spanners and column labels, then wrap it all in one function."
 author: "Gutama Girja Urago"
 date: "2024-04-02"
 categories: [gt, table]

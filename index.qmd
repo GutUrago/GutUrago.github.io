@@ -15,7 +15,9 @@ listing:
     type: grid
     max-items: 3
     grid-columns: 3
-    fields: [date, title, description, reading-time]
+    fields: [image, date, title, description, reading-time]
+    image-height: 170px
+    image-placeholder: images/blog-placeholder.png
     max-description-length: 140
     sort-ui: false
     filter-ui: false

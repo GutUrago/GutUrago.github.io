@@ -1,5 +1,6 @@
 ---
 title: "Importance of R Functions: A Guide for Data Analysts"
+description: "Why analysis code in R should be built from functions, with examples for summary statistics and data transformation."
 author: "Gutama Girja Urago"
 date: "2025-05-15"
 categories: [dplyr]
