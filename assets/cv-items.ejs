@@ -1,0 +1,26 @@
+```{=html}
+<ul class="cv-list">
+<% for (const item of items) { %>
+<% if (item.name) { %>
+<%
+const kinds = [];
+if (item.cran) kinds.push("R package (CRAN)");
+if (item.ssc) kinds.push("Stata module (SSC)");
+const href = item.docs || ("https://CRAN.R-project.org/package=" + item.cran);
+%>
+<li <%= metadataAttrs(item) %>><span class="cv-list-year"><%= item.since %></span><span><a href="<%= href %>"><strong><%= item.name %></strong></a> &middot; <%= kinds.join(" and ") %>. <%= item.tagline %>.</span></li>
+<% } else { %>
+<%
+let venue = item.venue || "";
+let tail = "";
+if (item.volume) tail += ", " + item.volume;
+if (item.issue) tail += "(" + item.issue + ")";
+if (item.pages) tail += ", " + item.pages;
+const authors = String(item.authors).replace("Urago, G. G.", "<strong>Urago, G. G.</strong>");
+const isThesis = item.group === "thesis";
+%>
+<li <%= metadataAttrs(item) %>><span class="cv-list-year"><%= item.year %></span><span><%= authors %> (<%= item.year %>). <% if (item.doi) { %><a href="https://doi.org/<%= item.doi %>"><%= item.title %></a><% } else { %><%= item.title %><% } %>. <% if (isThesis) { %><%= venue %>.<% } else { %><em><%= venue %></em><%= tail %>.<% } %><% if (item.group === "review") { %> Under review.<% } %></span></li>
+<% } %>
+<% } %>
+</ul>
+```

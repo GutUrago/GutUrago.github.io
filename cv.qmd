@@ -1,0 +1,215 @@
+---
+pagetitle: "CV | Gutama Girja Urago"
+description: "Curriculum vitae of Gutama Girja Urago, agricultural economist and research analyst in Addis Ababa."
+page-layout: custom
+toc: false
+aliases:
+  - resume.html
+listing:
+  - id: cv-review
+    contents: data/publications.yml
+    template: assets/cv-items.ejs
+    include:
+      group: "review"
+    sort: false
+  - id: cv-articles
+    contents: data/publications.yml
+    template: assets/cv-items.ejs
+    include:
+      group: "article"
+    sort: false
+  - id: cv-theses
+    contents: data/publications.yml
+    template: assets/cv-items.ejs
+    include:
+      group: "thesis"
+    sort: false
+  - id: cv-software
+    contents: data/software.yml
+    template: assets/cv-items.ejs
+    sort: false
+---
+
+```{=html}
+<section class="cv-header">
+  <div class="container cv-header-inner">
+    <div>
+      <span class="eyebrow eyebrow-light">Curriculum vitae</span>
+      <h1 class="cv-name">Gutama Girja Urago</h1>
+      <p class="cv-role">Agricultural economist &middot; Research analyst</p>
+    </div>
+    <div class="hero-actions">
+      <a class="btn btn-accent" href="files/Gutama_Girja_Urago_CV.pdf" download><i class="bi bi-download"></i> Download PDF</a>
+      <a class="btn btn-ghost" href="mailto:girjagutama@gmail.com"><i class="bi bi-envelope"></i> Email</a>
+    </div>
+  </div>
+</section>
+
+<section class="cv-body">
+<div class="container cv-wrap">
+
+<div class="cv-side">
+  <img class="cv-photo" src="images/profile-web.jpg" alt="Portrait of Gutama Girja Urago" width="800" height="800">
+
+  <h2 class="cv-side-h">Contact</h2>
+  <ul class="cv-contact">
+    <li><i class="bi bi-geo-alt"></i> Addis Ababa, Ethiopia</li>
+    <li><i class="bi bi-envelope"></i> <a href="mailto:girjagutama@gmail.com">girjagutama@gmail.com</a></li>
+    <li><i class="bi bi-github"></i> <a href="https://github.com/GutUrago">github.com/GutUrago</a></li>
+    <li><i class="bi bi-linkedin"></i> <a href="https://www.linkedin.com/in/gutama-girja/">linkedin.com/in/gutama-girja</a></li>
+    <li><i class="bi bi-orcid"></i> <a href="https://orcid.org/0000-0001-5588-2301">0000-0001-5588-2301</a></li>
+  </ul>
+
+  <h2 class="cv-side-h">Programming</h2>
+  <div class="cv-tags">
+    <span class="tag">R (package development)</span><span class="tag">tidyverse</span><span class="tag">httr2</span><span class="tag">Stata (ado and Mata)</span><span class="tag">Python (pandas)</span><span class="tag">Git and GitHub</span>
+  </div>
+
+  <h2 class="cv-side-h">Survey and data systems</h2>
+  <div class="cv-tags">
+    <span class="tag">SurveyCTO</span><span class="tag">ODK / XLSForm</span><span class="tag">Survey Solutions CAPI</span><span class="tag">REST APIs</span><span class="tag">Data-quality dashboards</span>
+  </div>
+
+  <h2 class="cv-side-h">Spatial</h2>
+  <div class="cv-tags">
+    <span class="tag">QGIS</span><span class="tag">ArcGIS</span><span class="tag">Leaflet</span>
+  </div>
+
+  <h2 class="cv-side-h">Methods</h2>
+  <div class="cv-tags">
+    <span class="tag">Stochastic frontier analysis</span><span class="tag">Panel data econometrics</span><span class="tag">Sampling design</span><span class="tag">Theory of change and MEL</span>
+  </div>
+
+  <h2 class="cv-side-h">Languages</h2>
+  <ul class="cv-langs">
+    <li><span>Afaan Oromo</span><span>Native</span></li>
+    <li><span>Amharic</span><span>Native</span></li>
+    <li><span>English</span><span>Fluent</span></li>
+    <li><span>Turkish</span><span>Advanced (C1)</span></li>
+    <li><span>Dutch</span><span>Basic</span></li>
+  </ul>
+</div>
+
+<div class="cv-main">
+
+  <section class="cv-sec">
+    <h2 class="cv-h">Research interests</h2>
+    <p>Smallholder productivity and input adoption; crop commercialization; food insecurity and vulnerability to shocks; applied microeconometrics with household panel data.</p>
+  </section>
+
+  <section class="cv-sec">
+    <h2 class="cv-h">Experience</h2>
+    <div class="cv-entry">
+      <div class="cv-entry-head"><h3>Research Analyst, Laterite</h3><span class="cv-date">Aug 2024 &ndash; present</span></div>
+      <p class="cv-org">Addis Ababa, Ethiopia</p>
+      <p>Design surveys, build data systems and analyse data for research and evaluation studies in Ethiopia and elsewhere in Africa.</p>
+      <ul>
+        <li>Run the technical side of field studies: questionnaire design, sampling, SurveyCTO programming, data-quality monitoring during fieldwork, cleaning and analysis.</li>
+        <li>Design monitoring, evaluation and learning frameworks, including theories of change, indicators and verification sampling.</li>
+        <li>Work on household, business, health-facility and phone surveys, including panels of several thousand respondents, in agriculture, clean energy, health, nutrition, education and refugee livelihoods.</li>
+        <li>Write R and Stata code for automated data pipelines and data-quality dashboards.</li>
+        <li>Act as a technical contact for clients, co-write field reports and contribute to literature reviews.</li>
+      </ul>
+    </div>
+    <div class="cv-entry">
+      <div class="cv-entry-head"><h3>Graduate Teaching Assistant, Haramaya University</h3><span class="cv-date">Aug 2018 &ndash; Sep 2019</span></div>
+      <p class="cv-org">Department of Agricultural Economics, Ethiopia</p>
+      <p>Taught undergraduate courses in Development Economics, Statistics for Economists and Farm Management.</p>
+    </div>
+  </section>
+
+  <section class="cv-sec">
+    <h2 class="cv-h">Education</h2>
+    <div class="cv-entry">
+      <div class="cv-entry-head"><h3>International MSc in Rural Development</h3><span class="cv-date">2022 &ndash; 2024</span></div>
+      <p class="cv-org">Erasmus Mundus Joint Master's: Ghent University (Belgium), Slovak University of Agriculture in Nitra (Slovakia), University of Pisa (Italy)</p>
+      <p>Summa cum laude (851/1000). Joint highest first-year score in a cohort of 51.</p>
+      <p class="cv-thesis">Thesis: <em>The impact of cereal commercialization on the technical efficiency of farmers in Ethiopia.</em> Supervisors: F. Riccioli and S. Saia.</p>
+    </div>
+    <div class="cv-entry">
+      <div class="cv-entry-head"><h3>MSc in Agricultural Economics</h3><span class="cv-date">2019 &ndash; 2022</span></div>
+      <p class="cv-org">Ondokuz Mayıs University, Samsun, Türkiye</p>
+      <p>CGPA 3.88/4.00 (97.6/100). Included a one-year Turkish preparatory programme (C1).</p>
+      <p class="cv-thesis">Thesis: <em>Credit utilization and satisfaction of farmers from microfinance institutions: The case of Oromia Credit and Savings Share Company in Wadera District, Ethiopia.</em> Supervisor: M. Bozoğlu.</p>
+    </div>
+    <div class="cv-entry">
+      <div class="cv-entry-head"><h3>BSc in Agricultural Economics</h3><span class="cv-date">2015 &ndash; 2018</span></div>
+      <p class="cv-org">Haramaya University, Ethiopia</p>
+      <p>CGPA 3.99/4.00, great distinction. Gold medal for outstanding academic achievement.</p>
+    </div>
+  </section>
+
+  <section class="cv-sec">
+    <h2 class="cv-h">Publications and manuscripts</h2>
+    <h3 class="cv-sub">Under review</h3>
+```
+
+::: {#cv-review}
+:::
+
+```{=html}
+    <h3 class="cv-sub">Peer-reviewed articles</h3>
+```
+
+::: {#cv-articles}
+:::
+
+```{=html}
+    <h3 class="cv-sub">Theses</h3>
+```
+
+::: {#cv-theses}
+:::
+
+```{=html}
+  </section>
+
+  <section class="cv-sec">
+    <h2 class="cv-h">Research software</h2>
+```
+
+::: {#cv-software}
+:::
+
+```{=html}
+    <p class="cv-note">Source code for all packages: <a href="https://github.com/GutUrago">github.com/GutUrago</a>. More on the <a href="software.html">software page</a>.</p>
+  </section>
+
+  <section class="cv-sec">
+    <h2 class="cv-h">Teaching, mentoring and academic service</h2>
+    <ul>
+      <li>Taught Development Economics, Statistics for Economists and Farm Management undergraduate courses at Haramaya University (2018 &ndash; 2019).</li>
+      <li>Supervised an intern at Laterite (June &ndash; September 2026) through an introduction to how Laterite produces high-quality data for research with social impact.</li>
+      <li>Peer reviewer for <em>Journal of Agricultural Extension and Rural Development</em> and <em>Journal of Recycling Economy &amp; Sustainability Policy</em>.</li>
+    </ul>
+  </section>
+
+  <section class="cv-sec">
+    <h2 class="cv-h">Honours and scholarships</h2>
+    <ul class="cv-list">
+      <li><span class="cv-list-year">2022</span><span><strong>Erasmus Mundus Joint Master's Scholarship</strong>, European Union (2022 &ndash; 2024)</span></li>
+      <li><span class="cv-list-year">2019</span><span><strong>Türkiye Bursları Scholarship</strong>, Government of Türkiye (2019 &ndash; 2022)</span></li>
+      <li><span class="cv-list-year">2018</span><span><strong>Gold Medal</strong> for outstanding academic achievement (CGPA 3.99/4.00), Haramaya University</span></li>
+      <li><span class="cv-list-year">2017</span><span><strong>Merit Awards</strong> for best academic achievement in Agricultural Economics, Haramaya University (2016 and 2017)</span></li>
+    </ul>
+  </section>
+
+  <section class="cv-sec">
+    <h2 class="cv-h">Selected training</h2>
+    <ul class="cv-list">
+      <li><span class="cv-list-year">2026</span><span><strong>Introduction to Agent-Based Models</strong>, United Nations University-MERIT</span></li>
+      <li><span class="cv-list-year">2026</span><span><strong>Fundamentals of Data Visualization</strong>, World Bank Group. Credential ID 69cbc77f53cc7e3bd30b69c2</span></li>
+      <li><span class="cv-list-year">2025</span><span><strong>Reproducible Research Fundamentals</strong>, World Bank Group. Credential ID 675efc9f6317e96fa60ef8ff</span></li>
+      <li><span class="cv-list-year">2025</span><span><strong>SDG Indicator 2.1.2: Using the Food Insecurity Experience Scale (FIES)</strong>, FAO. <a href="https://elearning.fao.org/admin/tool/certificate/index.php?code=0058248231GU">Verify certificate</a></span></li>
+    </ul>
+  </section>
+
+  <section class="cv-sec">
+    <h2 class="cv-h">References</h2>
+    <p>Available on request.</p>
+  </section>
+
+</div>
+</div>
+</section>
+```

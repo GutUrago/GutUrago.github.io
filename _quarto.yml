@@ -1,6 +1,8 @@
 project:
   type: website
   output-dir: docs
+  resources:
+    - "files/*.pdf"
 
 website:
   title: "Gutama Girja Urago"

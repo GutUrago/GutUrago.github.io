@@ -1142,6 +1142,283 @@ h2.sw-name {
   }
 }
 
+// ---------- CV page ----------
+
+#quarto-content {
+  > .cv-header {
+    padding: 3.2rem 0 3rem;
+  }
+
+  > .cv-body {
+    padding: 3rem 0 4rem;
+  }
+}
+
+.cv-header {
+  color: #FFFFFF;
+  background:
+    radial-gradient(rgba(255, 255, 255, 0.07) 1px, transparent 1px) 0 0 / 22px 22px,
+    linear-gradient(140deg, $navy 0%, $navy-2 55%, $navy-3 100%);
+}
+
+.cv-header-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.cv-name {
+  font-size: clamp(2rem, 4.5vw, 3rem);
+  color: #FFFFFF;
+  margin: 0.2rem 0 0.3rem;
+  border: none;
+}
+
+.cv-role {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 1.1rem;
+}
+
+.cv-wrap {
+  display: grid;
+  grid-template-columns: 18.5rem 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+.cv-wrap > * {
+  min-width: 0;
+}
+
+.cv-side {
+  position: sticky;
+  top: 5rem;
+  background: $soft;
+  border: 1px solid $line;
+  border-radius: $border-radius-lg;
+  padding: 1.6rem 1.4rem;
+}
+
+.cv-photo {
+  display: block;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid #FFFFFF;
+  box-shadow: 0 0 0 3px $orange;
+  margin: 0 auto 1.2rem;
+}
+
+h2.cv-side-h {
+  font-family: $font-family-sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: $orange-ink;
+  margin: 1.4rem 0 0.6rem;
+  padding: 0;
+  border: none;
+}
+
+.cv-contact {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.88rem;
+
+  li {
+    display: flex;
+    gap: 0.55rem;
+    align-items: baseline;
+    margin-bottom: 0.4rem;
+    word-break: break-word;
+  }
+
+  i {
+    color: $navy;
+  }
+}
+
+.cv-tags .tag {
+  white-space: normal;
+}
+
+.cv-langs {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  font-size: 0.9rem;
+
+  li {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px dashed $line;
+    padding: 0.3rem 0;
+
+    span:last-child {
+      color: $muted;
+    }
+  }
+}
+
+.cv-sec {
+  margin-bottom: 2.4rem;
+
+  ul {
+    padding-left: 1.2rem;
+  }
+
+  li {
+    margin-bottom: 0.35rem;
+  }
+}
+
+h2.cv-h {
+  font-size: 1.45rem;
+  margin: 0 0 1rem;
+  padding-bottom: 0.45rem;
+  border-bottom: 2px solid $line;
+  position: relative;
+
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -2px;
+    width: 56px;
+    height: 2px;
+    background: $orange;
+  }
+}
+
+h3.cv-sub {
+  font-family: $font-family-sans-serif;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: $muted;
+  margin: 1.2rem 0 0.4rem;
+}
+
+.cv-entry {
+  position: relative;
+  padding-left: 1.2rem;
+  border-left: 2px solid $line;
+  margin-bottom: 1.5rem;
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: -7px;
+    top: 0.35rem;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #FFFFFF;
+    border: 3px solid $orange;
+  }
+
+  p {
+    margin-bottom: 0.35rem;
+  }
+}
+
+.cv-entry-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.2rem 1rem;
+
+  h3 {
+    font-size: 1.12rem;
+    margin: 0;
+  }
+}
+
+.cv-date {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: $orange-ink;
+  white-space: nowrap;
+}
+
+.cv-org {
+  color: $muted;
+  font-size: 0.92rem;
+}
+
+.cv-thesis {
+  font-size: 0.95rem;
+}
+
+ul.cv-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  li {
+    display: grid;
+    grid-template-columns: 3.4rem 1fr;
+    gap: 0.6rem;
+    padding: 0.45rem 0;
+    border-bottom: 1px solid $line;
+    margin: 0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.cv-list-year {
+  font-weight: 600;
+  color: $orange-ink;
+  font-size: 0.9rem;
+}
+
+.cv-note {
+  margin-top: 0.8rem;
+  font-size: 0.9rem;
+  color: $muted;
+}
+
+@media (max-width: 991.98px) {
+  .cv-wrap {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .cv-side {
+    position: static;
+  }
+}
+
+@media print {
+  .navbar, .nav-footer, .cv-header .hero-actions, #quarto-back-to-top {
+    display: none !important;
+  }
+
+  .cv-header {
+    color: $navy;
+    background: none;
+  }
+
+  .cv-name, .cv-role {
+    color: $navy;
+  }
+
+  .cv-side {
+    position: static;
+  }
+}
+
 // ---------- Motion ----------
 
 @media (prefers-reduced-motion: reduce) {

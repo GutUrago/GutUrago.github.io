@@ -3,6 +3,8 @@ pagetitle: "Gutama Girja Urago | Agricultural economist"
 description: "Agricultural economist and research analyst in Addis Ababa. Research on smallholder productivity, crop commercialization and food insecurity in Ethiopia; open-source R and Stata tools for survey data."
 page-layout: custom
 toc: false
+aliases:
+  - about.html
 include-in-header:
   text: |
     <script>document.documentElement.classList.add("js-reveal");</script>
