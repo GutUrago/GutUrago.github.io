@@ -1,0 +1,61 @@
+# Publications shown on research.qmd.
+# group: review | article | thesis (decides which list an entry appears in).
+# Entries appear in the order written here, newest first.
+
+- title: "The fragility of the urban advantage: Vulnerability to food insecurity under systemic shocks"
+  authors: "Urago, G. G."
+  year: 2026
+  group: review
+  venue: "Scientific Reports"
+  status: "Under review"
+  note: "Second round of peer review"
+  tags: [Food insecurity, Urban households, Shocks]
+
+- title: "Estimation of the potential hazelnut plantation areas in Türkiye using a geographic information system"
+  authors: "Bozoğlu, M., Dengiz, O., Başer, U., Turan, İ. D., & Urago, G. G."
+  year: 2024
+  group: article
+  venue: "Applied Fruit Science"
+  volume: 66
+  issue: 4
+  pages: "1319–1330"
+  doi: "10.1007/s10341-024-01126-4"
+  tags: [GIS, Land suitability, Hazelnut]
+
+- title: "Türkiye's competitive power in the world hazelnut market"
+  authors: "Yıldırım, Ç., Bozoğlu, M., & Urago, G. G."
+  year: 2024
+  group: article
+  venue: "Applied Fruit Science"
+  volume: 66
+  issue: 3
+  pages: "921–928"
+  doi: "10.1007/s10341-024-01053-4"
+  tags: [Trade, Competitiveness, Hazelnut]
+
+- title: "Literature review on farmers' agricultural credit access in Ethiopia"
+  authors: "Urago, G. G., & Bozoğlu, M."
+  year: 2022
+  group: article
+  venue: "Anadolu Tarım Bilimleri Dergisi"
+  volume: 37
+  issue: 2
+  pages: "301–316"
+  doi: "10.7161/omuanajas.978056"
+  tags: [Rural finance, Credit access, Ethiopia]
+
+- title: "The impact of cereal commercialization on the technical efficiency of farmers in Ethiopia"
+  authors: "Urago, G. G."
+  year: 2024
+  group: thesis
+  venue: "MSc thesis, Ghent University, Belgium"
+  note: "Supervisors: F. Riccioli and S. Saia"
+  tags: [Stochastic frontier, Instrumental variables, Commercialization]
+
+- title: "Credit utilization and satisfaction of farmers from microfinance institutions: The case of Oromia Credit and Savings Share Company in Wadera District, Ethiopia"
+  authors: "Urago, G. G."
+  year: 2022
+  group: thesis
+  venue: "MSc thesis, Ondokuz Mayıs University, Türkiye"
+  note: "Supervisor: M. Bozoğlu"
+  tags: [Microfinance, Household survey, Ethiopia]

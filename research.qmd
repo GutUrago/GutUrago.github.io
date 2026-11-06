@@ -1,0 +1,88 @@
+---
+title: "Research"
+subtitle: "Smallholder productivity, crop commercialization and household food insecurity in Ethiopia"
+title-block-banner: true
+toc: false
+listing:
+  - id: pubs-review
+    contents: data/publications.yml
+    template: assets/publications.ejs
+    include:
+      group: "review"
+    sort: false
+  - id: pubs-articles
+    contents: data/publications.yml
+    template: assets/publications.ejs
+    include:
+      group: "article"
+    sort: false
+  - id: pubs-theses
+    contents: data/publications.yml
+    template: assets/publications.ejs
+    include:
+      group: "thesis"
+    sort: false
+---
+
+::: {.research-intro}
+My research uses household survey and panel data from Ethiopia to study how smallholder farmers produce and sell, and how households cope when shocks hit. Most of it is applied microeconometrics: stochastic frontier models, instrumental variables and panel data methods.
+
+[ORCID profile](https://orcid.org/0000-0001-5588-2301){.btn .btn-outline-navy} [View CV](cv.qmd){.btn .btn-outline-navy}
+:::
+
+## Interests {.research-h2}
+
+::: {.card-grid .card-grid-3 .research-interests}
+::: {.card-soft .interest}
+[[]{.bi .bi-flower1}]{.interest-icon}
+
+### Smallholder productivity
+
+Technical efficiency and input adoption on Ethiopian farms, measured with stochastic frontier models.
+:::
+
+::: {.card-soft .interest}
+[[]{.bi .bi-shop}]{.interest-icon}
+
+### Crop commercialization
+
+Whether farmers who sell more of their cereal harvest are more efficient. My Ghent thesis used instrumental variables to answer it, and I am reworking it into a paper on productivity misallocation.
+:::
+
+::: {.card-soft .interest}
+[[]{.bi .bi-basket}]{.interest-icon}
+
+### Food insecurity and shocks
+
+How exposed urban and rural households are when a shock hits the whole economy, and whether the urban advantage in food security holds up.
+:::
+:::
+
+## Under review {.research-h2}
+
+::: {#pubs-review}
+:::
+
+## Peer-reviewed articles {.research-h2}
+
+::: {#pubs-articles}
+:::
+
+## Theses {.research-h2}
+
+::: {#pubs-theses}
+:::
+
+```{=html}
+<script>
+document.addEventListener("click", function (e) {
+  var btn = e.target.closest(".copy-cite");
+  if (!btn || !navigator.clipboard) return;
+  navigator.clipboard.writeText(btn.getAttribute("data-cite")).then(function () {
+    var label = btn.innerHTML;
+    btn.innerHTML = '<i class="bi bi-check2"></i> Copied';
+    setTimeout(function () { btn.innerHTML = label; }, 1600);
+  });
+});
+</script>
+```

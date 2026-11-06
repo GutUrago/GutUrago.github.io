@@ -1,0 +1,27 @@
+```{=html}
+<div class="pub-list">
+<% for (const item of items) { %>
+<%
+const isThesis = item.group === "thesis";
+let venue = item.venue || "";
+if (item.volume) venue += ", " + item.volume;
+if (item.issue) venue += "(" + item.issue + ")";
+if (item.pages) venue += ", " + item.pages;
+let cite = item.authors + " (" + item.year + "). " + item.title + (item.group === "review" ? " [Manuscript under review]" : "") + ". " + venue + ".";
+if (item.doi) cite += " https://doi.org/" + item.doi;
+const authors = String(item.authors).replace("Urago, G. G.", "<strong>Urago, G. G.</strong>");
+const venueTail = venue.slice(String(item.venue).length);
+%>
+<article class="pub" <%= metadataAttrs(item) %>>
+<div class="pub-year"><%= item.year %></div>
+<div class="pub-body">
+<h3 class="pub-title"><% if (item.doi) { %><a href="https://doi.org/<%= item.doi %>"><%= item.title %></a><% } else { %><%= item.title %><% } %></h3>
+<p class="pub-authors"><%= authors %></p>
+<p class="pub-venue"><% if (isThesis) { %><%= venue %><% } else { %><em><%= item.venue %></em><%= venueTail %><% } %><% if (item.note) { %> &middot; <%= item.note %><% } %></p>
+<div class="pub-meta"><% if (item.status) { %><span class="pub-status"><%= item.status %></span><% } %><% for (const t of (item.tags || [])) { %><span class="tag"><%= t %></span><% } %></div>
+<div class="pub-actions"><% if (item.doi) { %><a class="pub-btn" href="https://doi.org/<%= item.doi %>"><i class="bi bi-box-arrow-up-right"></i> DOI</a><% } %><button type="button" class="pub-btn copy-cite" data-cite="<%= cite %>"><i class="bi bi-clipboard"></i> Copy citation</button></div>
+</div>
+</article>
+<% } %>
+</div>
+```
