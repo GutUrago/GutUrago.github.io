@@ -3,67 +3,85 @@ project:
   output-dir: docs
 
 website:
+  title: "Gutama Girja Urago"
+  description: "Agricultural economist and research analyst working on smallholder productivity, food security and open-source tools for survey data in R and Stata."
+  site-url: https://guturago.github.io
+  image: images/profile-web.jpg
+  favicon: images/favicon.png
+  google-analytics: "G-VVGT96KRKH"
+  open-graph: true
+  twitter-card: true
+  back-to-top-navigation: true
   search:
     location: navbar
-    type: textbox
-  site-url: https://guturago.github.io
-  google-analytics: "G-VVGT96KRKH" 
-  #title: "Gutama Girja Urago"
-  image: "./images/favicon.png"
-  favicon: "./images/favicon.png"
+    type: overlay
+
   navbar:
     background: "#00263A"
-    logo: "./images/favicon.png"
+    logo: images/favicon.png
+    logo-alt: "GutUrago logo"
+    title: "Gutama Girja Urago"
+    collapse-below: lg
     right:
-      - text: Blogs
-        href: blog.html
-      - text: Packages
-        menu: 
-          - text: "R package to work with Ethiopian dates"
-            href: https://guturago.github.io/ethiodate
-            target: "_blank"
-          - text: "Stata module to provide Ethiopian date conversion utilities"
-            href: https://www.statalist.org/forums/forum/general-stata-discussion/general/1779202-ethiodate-stata-module-to-provide-ethiopian-date-conversion-utilities
-            target: "_blank"
-      - text: Resume
-        href: resume.html
-      - text: About
-        href: about.html
-        
-    tools: 
-      - text: GutUrago Github
-        icon: github
+      - text: Home
+        href: index.qmd
+      - text: Research
+        href: research.qmd
+      - text: Software
+        href: software.qmd
+      - text: Blog
+        href: blog.qmd
+      - text: CV
+        href: cv.qmd
+    tools:
+      - icon: github
         href: https://github.com/GutUrago
-      - text: Linkedin
-        icon: linkedin
+        aria-label: GitHub
+      - icon: linkedin
         href: https://www.linkedin.com/in/gutama-girja/
-      - text: GutUrago Blog RSS
-        icon: rss
+        aria-label: LinkedIn
+      - icon: orcid
+        href: https://orcid.org/0000-0001-5588-2301
+        aria-label: ORCID
+      - icon: rss
         href: blog.xml
-        
-  page-footer: 
-    center: 
-      - text: "All rights are reserved!"
-    background: "#DCE3E3"
-  
+        aria-label: Blog RSS feed
+
+  page-footer:
+    background: "#00263A"
+    left: "© 2026 Gutama Girja Urago"
+    center: "Made with [Quarto](https://quarto.org) and R"
+    right:
+      - icon: github
+        href: https://github.com/GutUrago
+        aria-label: GitHub
+      - icon: linkedin
+        href: https://www.linkedin.com/in/gutama-girja/
+        aria-label: LinkedIn
+      - icon: orcid
+        href: https://orcid.org/0000-0001-5588-2301
+        aria-label: ORCID
+      - icon: envelope
+        href: mailto:girjagutama@gmail.com
+        aria-label: Email
 
 format:
   html:
-    fontsize: 0.9em
-    linkcolor: "blue"
+    theme:
+      - cosmo
+      - assets/theme.scss
+    smooth-scroll: true
+    link-external-newwindow: true
     code-copy: true
     code-fold: false
     code-tools: false
     code-link: true
-    code-block-border-left: true
+    code-block-border-left: "#FC7700"
     code-overflow: wrap
     code-block-bg: true
-    theme: cosmo
-    #css: styles.css
     toc: true
-    grid: 
+    grid:
       content-mode: auto
 
 execute:
   freeze: true
-# set freeze to auto -> automatically render when source changes

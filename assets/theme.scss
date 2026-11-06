@@ -1,0 +1,284 @@
+/*-- scss:defaults --*/
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,500;8..60,600;8..60,700&display=swap");
+
+// Palette
+$navy:        #00263A;
+$navy-2:      #0A3A56;
+$navy-3:      #12506F;
+$orange:      #FC7700;
+$orange-ink:  #B35300;
+$sky:         #94D9EA;
+$ink:         #1B2733;
+$muted:       #5B6B78;
+$line:        #E3E8ED;
+$soft:        #F5F7F9;
+
+// Bootstrap / Quarto variables
+$primary:     $navy;
+$secondary:   $muted;
+$body-color:  $ink;
+$body-bg:     #FFFFFF;
+$link-color:  #0B5C8A;
+$link-decoration: none;
+
+$font-family-sans-serif: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$headings-font-family:   "Source Serif 4", Georgia, "Times New Roman", serif;
+$headings-font-weight:   600;
+$headings-color:         $navy;
+$font-size-root:         16px;
+$line-height-base:       1.65;
+
+$navbar-bg: $navy;
+$navbar-fg: rgba(255, 255, 255, 0.82);
+$navbar-hl: $orange;
+
+$footer-bg: $navy;
+$footer-fg: rgba(255, 255, 255, 0.75);
+
+$border-radius:    0.5rem;
+$border-radius-lg: 0.85rem;
+
+$code-color: #A23B00;
+
+
+/*-- scss:rules --*/
+
+// ---------- Base ----------
+
+body {
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+h1, h2, h3, .h1, .h2, .h3 {
+  letter-spacing: -0.01em;
+}
+
+::selection {
+  background: rgba($orange, 0.25);
+}
+
+// ---------- Navbar ----------
+
+.navbar {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06), 0 4px 18px rgba(0, 0, 0, 0.12);
+
+  .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+  }
+
+  .navbar-logo {
+    max-height: 30px;
+  }
+
+  .navbar-title {
+    font-family: $headings-font-family;
+    font-weight: 600;
+    font-size: 1.15rem;
+    letter-spacing: 0.01em;
+    color: #FFFFFF;
+  }
+
+  .nav-link {
+    font-weight: 500;
+    font-size: 0.95rem;
+    position: relative;
+  }
+
+  .navbar-nav .nav-link.active::after {
+    content: "";
+    position: absolute;
+    left: 0.5rem;
+    right: 0.5rem;
+    bottom: 0.1rem;
+    height: 2px;
+    border-radius: 2px;
+    background: $orange;
+  }
+
+  .quarto-navbar-tools a {
+    font-size: 1.05rem;
+  }
+
+  @media (max-width: 575.98px) {
+    .navbar-title {
+      font-size: 1rem;
+    }
+
+    .navbar-logo {
+      max-height: 24px;
+    }
+  }
+}
+
+// ORCID has no Bootstrap icon, so draw it with a mask that inherits the link colour
+.bi-orcid::before {
+  content: "";
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  background-color: currentColor;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 0a12 12 0 1 0 0 24a12 12 0 1 0 0-24zM7.4 5.85a1.05 1.05 0 1 0 0 2.1a1.05 1.05 0 1 0 0-2.1zM6.6 9.2h1.6v8.3H6.6zM10.1 9.2h3.3c2.7 0 4.4 1.9 4.4 4.15s-1.7 4.15-4.4 4.15h-3.3zM11.7 10.6v5.5h1.6c1.75 0 2.85-1.15 2.85-2.75s-1.1-2.75-2.85-2.75z'/%3E%3C/svg%3E") no-repeat center / contain;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 0a12 12 0 1 0 0 24a12 12 0 1 0 0-24zM7.4 5.85a1.05 1.05 0 1 0 0 2.1a1.05 1.05 0 1 0 0-2.1zM6.6 9.2h1.6v8.3H6.6zM10.1 9.2h3.3c2.7 0 4.4 1.9 4.4 4.15s-1.7 4.15-4.4 4.15h-3.3zM11.7 10.6v5.5h1.6c1.75 0 2.85-1.15 2.85-2.75s-1.1-2.75-2.85-2.75z'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
+// ---------- Buttons ----------
+
+.btn {
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.6rem 1.25rem;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+
+  &:hover {
+    text-decoration: none;
+    transform: translateY(-1px);
+  }
+}
+
+.btn-accent {
+  background: $orange;
+  border: 1px solid $orange;
+  color: $navy;
+
+  &:hover, &:focus {
+    background: lighten($orange, 6%);
+    border-color: lighten($orange, 6%);
+    color: $navy;
+    box-shadow: 0 6px 18px rgba($orange, 0.35);
+  }
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  color: #FFFFFF;
+
+  &:hover, &:focus {
+    background: rgba(255, 255, 255, 0.1);
+    border-color: #FFFFFF;
+    color: #FFFFFF;
+  }
+}
+
+.btn-outline-navy {
+  background: transparent;
+  border: 1px solid $navy;
+  color: $navy;
+
+  &:hover, &:focus {
+    background: $navy;
+    color: #FFFFFF;
+  }
+}
+
+// ---------- Shared building blocks ----------
+
+.eyebrow {
+  display: inline-block;
+  font-family: $font-family-sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: $orange-ink;
+  margin-bottom: 0.4rem;
+}
+
+.section-title {
+  font-size: 1.9rem;
+  margin: 0 0 0.4rem;
+  padding: 0;
+  border: none;
+}
+
+.section-lead {
+  color: $muted;
+  max-width: 46rem;
+  margin-bottom: 1.6rem;
+}
+
+.card-soft {
+  background: #FFFFFF;
+  border: 1px solid $line;
+  border-radius: $border-radius-lg;
+  padding: 1.4rem 1.5rem;
+  height: 100%;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    border-color: rgba($navy, 0.18);
+    box-shadow: 0 12px 30px rgba($navy, 0.08);
+  }
+}
+
+.tag {
+  display: inline-block;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: $navy-2;
+  background: rgba($sky, 0.28);
+  border-radius: 999px;
+  padding: 0.15rem 0.65rem;
+  margin: 0 0.3rem 0.35rem 0;
+  white-space: nowrap;
+}
+
+.text-muted-ink {
+  color: $muted;
+}
+
+// ---------- Page titles ----------
+
+.quarto-title-banner {
+  background: linear-gradient(135deg, $navy 0%, $navy-2 60%, $navy-3 100%);
+  color: #FFFFFF;
+
+  .title, .subtitle, .description {
+    color: #FFFFFF;
+  }
+
+  .quarto-category {
+    color: #FFFFFF;
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+}
+
+// ---------- Footer ----------
+
+.nav-footer {
+  border-top: 3px solid $orange;
+  font-size: 0.88rem;
+  padding: 1.2rem 0;
+
+  a {
+    color: rgba(255, 255, 255, 0.85);
+
+    &:hover {
+      color: $orange;
+    }
+  }
+
+  .nav-footer-center {
+    min-height: auto;
+  }
+}
+
+// ---------- Motion ----------
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
