@@ -1,8 +1,9 @@
 # Options here apply to every post in this folder.
 
-# Never re-run code when the site is rendered; reuse the frozen results
+# Re-run a post's code only when that post's source file changes;
+# otherwise reuse its saved results
 # (see https://quarto.org/docs/projects/code-execution.html#freeze)
-freeze: true
+freeze: auto
 
 author: "Gutama Girja Urago"
 title-block-banner: true
