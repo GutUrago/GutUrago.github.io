@@ -1,143 +1,256 @@
 ---
 title: "Web Scraping in R: Import table directly from website"
-description: "Import Ethiopia's GDP table from Worldometers into R with rvest, clean it with janitor and plot it with ggplot2."
+description: "Import Ethiopia's GDP table from Worldometers into R with rvest, clean it with janitor and readr, and plot it with ggplot2."
 author: "Gutama Girja Urago"
 date: "2024-05-20"
+date-modified: "2026-11-06"
 image: "inspect.png"
-categories: [web scraping, rvest, ggplot2]
-editor_options: 
+categories: [web scraping, rvest, ggplot2, beginners]
+editor_options:
   chunk_output_type: console
 ---
 
-# What and why?
+Plenty of useful data sits in tables on web pages. The slow way to get it into R is to select the table in your browser, paste it into Excel, fix the formatting, save it as a CSV and then read the CSV. It works, but it takes time, and every manual step is a chance to drop a row or paste into the wrong cell. When the page is updated, you have to do it all again.
 
-In this blog, we are going to import table from website into R. This is very important because it saves a time to copy the table manually and going through a lot of pain in excel to import the table into R. Doing it in that way is time consuming, tedious and prone to mistake. That's why `rvest` (harvest) package is there for you on CRAN. Install the package from CRAN using `install.packages()` function and let's dive in.
+The [rvest](https://rvest.tidyverse.org/) package (say "harvest") reads a web page straight into R and turns its tables into data frames. In this post we use it to pull Ethiopia's GDP history from [Worldometers](https://www.worldometers.info/gdp/ethiopia-gdp/), clean the numbers, and draw two charts.
 
-# Web Scrapping
+::: {.callout-note}
+## What you will learn
 
-First we need to have the url for the website from which we are planning to import the data as a dataframe in R. Here I am using Ethiopian GDP table from [worldmeters](https://www.worldometers.info/gdp/ethiopia-gdp/) website. Once we have the link to the website, we have to load the package and read html file from that page of website, which also contains the table of interest.
+- how to check whether a website is happy for you to scrape it
+- what HTML is and how CSS selectors point at parts of a page
+- how to read a page and extract its tables with rvest
+- how to turn text such as "$127,145,000,000" and "−2.1%" into real numbers, including one trap that silently flips signs
+- how to plot the result with ggplot2
+:::
 
+## Before you scrape: is it allowed?
 
-```{r}
-# install.packages(rvest)         # Install the package if you do
+Scraping means a program, not a person, is reading the website. Before you start, take two minutes to check that the site is fine with that:
 
-library(rvest)
+1. **Read the `robots.txt` file.** Most websites publish one at the root of the domain, for example [www.worldometers.info/robots.txt](https://www.worldometers.info/robots.txt). It lists the parts of the site that automated tools should stay away from. When I checked Worldometers' file for this post, it did not block any pages.
+2. **Read the terms of use.** Worldometers' [disclaimer page](https://www.worldometers.info/disclaimer/) does not mention scraping, and the site marks its content "All rights reserved". Reading a public table for your own analysis or for learning, as we do here, is a common use. Republishing large amounts of the data is a different matter and would need permission.
+3. **Be gentle.** Download the page once, save what you need, and work from your saved copy. Do not run a scraper in a loop that hits the same page again and again.
 
-tbl_url <- "https://www.worldometers.info/gdp/ethiopia-gdp/"
+One more point: Worldometers republishes figures from the IMF and the World Bank. For a report or a paper, cite and download from the original source. Scraping is a quick way to get started and a good skill to learn, not a replacement for the official data.
 
-raw_html <- read_html(tbl_url)
-
-
-raw_html
-```
-
-
-The above HTML content contains two main parts: the head and the body. The body part of the document typically contains the content of interest. HTML documents are usually styled using CSS, and the CSS selector helps us pick specific elements that we are interested in. To find the CSS of the element that we are interested in, **right-click** on the element of interest on the web and select **inspect**. Next, move your mouse over the codes in the Elements section until it highlights all parts of the table in blue. 
-
-![](inspect.png)
-
-There are two widely used CSS selectors, namely, class and id. One HTML element can have multiple classes. In this case, a table is one of the class selectors. Whenever you use the class selector, put a dot (.) before the class name. The precise CSS selector is the code that appears at the top of the table (shown by a red arrow), but it requires a significant amount of time to write. So, let's start with the first class name, which is table. We could have also used xpath instead of CSS to select an element, but let's keep it aside for now.
-
+## Install and load the packages
 
 ```{r}
- 
-element <- html_elements(raw_html, css = ".table")
-element
-```
-
-Once you select the element, it's still in HTML format and hard to understand. So, let's convert it into an R object. Now, we see that there are actually two table objects in the returned HTML.
-
-
-```{r}
-tables <- html_table(element)
-tables
-```
-
-It is stored as a list, let extract it and the rest is cleaning.
-
-
-```{r}
-gdp_tbl <- tables[[1]] 
-gdp_tbl
-```
-
-## Cleaning the Data
-
-Below we can see that all columns, except year, are stored as character because of dollar sign ($) and commas (,), which R doesn't allow to happen.
-
-```{r}
-#| warning: false
 #| message: false
 
-gdp_tbl <- janitor::clean_names(gdp_tbl)
-
-
-library(tidyverse)
-
-glimpse(gdp_tbl)
-
-
+# install.packages(c("rvest", "janitor", "dplyr", "readr", "stringr", "ggplot2"))  # run once
+library(rvest)
+library(dplyr)
+library(readr)
+library(stringr)
+library(ggplot2)
 ```
 
+The commented `install.packages()` line installs everything this post uses. Note that package names go in quotes.
 
-Let's remove all unnecessary characters and convert to numeric with a short function.
+## Read the web page
+
+`read_html()` downloads the page and stores it in R:
 
 ```{r}
-convert_to_numeric <- function(x) {
-  as.numeric(str_remove_all(x, "[$,%\\s]"))
+gdp_url <- "https://www.worldometers.info/gdp/ethiopia-gdp/"
+page <- read_html(gdp_url)
+page
+```
+
+What you see is the start of the page's **HTML**, the language web pages are written in. An HTML page is a set of nested elements, each marked with a tag: `<head>` holds information about the page, `<body>` holds what you see, `<p>` is a paragraph, and `<table>` is a table. Our data is inside one of the `<table>` elements.
+
+## Finding the table: CSS selectors
+
+To tell rvest which part of the page you want, you use a **CSS selector**, a short pattern that matches elements. The three you will use most often are:
+
+| Selector | Matches | Example |
+|----------|---------|---------|
+| `table` | every element with that tag | all tables on the page |
+| `.name` (dot first) | every element with that **class** | `.table` matches elements with `class="table"` |
+| `#name` (hash first) | the one element with that **id** | `#gdp` matches `id="gdp"` |
+
+To see the tags, classes and ids behind a page, open it in Chrome or Firefox, right-click the table and choose **Inspect**. The developer tools open and highlight the HTML for the element you clicked. As you move the mouse over the code, the matching part of the page lights up.
+
+![Inspecting the GDP table with the browser's developer tools (screenshot from 2024; the page has been redesigned since then).](inspect.png)
+
+When I first wrote this post in 2024, the table had the class `table`, so the selector was `.table`. Worldometers has since redesigned the page. That is a normal hazard of scraping: a selector that depends on a class name breaks when the designers rename the class. Here we use the tag selector `table` instead, which matches every table on the page whatever its class.
+
+## Extract the tables
+
+`html_elements()` finds all elements that match a selector, and `html_table()` turns each HTML table into a data frame:
+
+```{r}
+table_nodes <- html_elements(page, "table")
+tables <- html_table(table_nodes)
+
+length(tables)
+```
+
+The page has several tables, so `tables` is a list of data frames. Before picking one, look at the column names of each:
+
+```{r}
+lapply(tables, names)
+```
+
+The first table has the yearly figures we want: nominal GDP, GDP growth, GDP per capita and population change. We take it out of the list with double brackets:
+
+```{r}
+gdp_raw <- tables[[1]]
+gdp_raw
+```
+
+If Worldometers reorders its tables in future, the `lapply(tables, names)` output tells you which number to use instead of `1`.
+
+## Clean the data
+
+The table looks right, but R does not see numbers yet:
+
+```{r}
+glimpse(gdp_raw)
+```
+
+Every column except `Year` is stored as text (`<chr>`), because the values contain dollar signs, commas, percent signs and plus signs. We also have column names with spaces and brackets, which are awkward to type in R. Two steps fix this.
+
+### Step 1: tidy the column names
+
+`clean_names()` from the janitor package converts names to lower case with underscores, so "GDP Nominal (Current USD)" becomes `gdp_nominal_current_usd`:
+
+```{r}
+gdp <- janitor::clean_names(gdp_raw)
+names(gdp)
+```
+
+### Step 2: turn text into numbers (and avoid a sign trap)
+
+`parse_number()` from readr reads the number out of a piece of text and ignores symbols around it. It handles dollar signs, commas and percent signs. There is one catch, though. Worldometers writes negative growth with the typographic minus sign "−" (Unicode U+2212), not the ordinary hyphen "-" on your keyboard. They look almost the same, but `parse_number()` only understands the hyphen, and it drops the other one without telling you:
+
+```{r}
+parse_number("-2.1%")         # ordinary hyphen
+parse_number("−2.1%")    # typographic minus: the sign is lost
+```
+
+The second result is `2.1`, a positive number. If we did not catch this, every year of negative growth would turn into positive growth in our charts. So we write a small function that first swaps the typographic minus for a hyphen and then parses the number:
+
+```{r}
+to_number <- function(x) {
+  x <- str_replace_all(as.character(x), "−", "-")
+  parse_number(x)
 }
 
-gdp_tbl <- gdp_tbl |> 
-        mutate_all(convert_to_numeric)
-
-glimpse(gdp_tbl)
+to_number(c("$127,145,000,000", "9.2%", "+2.53%", "−2.1%"))
 ```
 
-
-## Making a Graph
-
-
-With a minimal code, we can produce the same graph and customize the way we want.
+Now apply it to every column at once with `across()`:
 
 ```{r}
-gdp_tbl |> 
-        ggplot() + 
-        geom_line(aes(x = factor(year), 
-                      y = gdp_nominal_current_usd,
-                      group = 1),
-                  color = "blue", linewidth = 1) + 
-        scale_y_continuous(labels = scales::dollar_format(
-          scale = 1/1000000000,
-          suffix = " billion")) +
- 
-        labs(x = "Year",
-             y = "Nominal GDP",
-             title = "Ethiopia GDP (Nominal, $USD) 2003-2022",
-             caption = "Source: https://www.worldometers.info/gdp/ethiopia-gdp/") + 
-        theme_bw() + 
-        theme(axis.text.x = element_text(angle = 45, vjust = 0.5))
+gdp <- gdp |>
+  mutate(across(everything(), to_number))
+
+glimpse(gdp)
 ```
 
+`mutate(across(everything(), to_number))` means "for every column, replace its values with `to_number()` of those values". All columns are now numeric (`<dbl>`).
 
+### Check the result
 
-Here is the second graph as well.
+Cleaning steps can go wrong without any error, as the minus sign just showed. A quick check against the website is always worth it. Here are the years with negative growth; compare them with the page:
 
 ```{r}
-gdp_tbl |>
-  mutate(growth = ifelse(gdp_change > 0, "positve", "negative")) |> 
-  ggplot(aes(x = factor(year), y = gdp_change, fill = growth)) + 
-  geom_col() + 
-  labs(title = "GDP change (%)",
-       y = "Ethiopia GDP Change %",
-       x = "Year",
-       fill = "",
-       caption = "Source: https://www.worldometers.info/gdp/ethiopia-gdp/") +
-  theme_bw() + 
-  theme(axis.text.x = element_text(angle = 45, vjust = 0.5),
-        legend.position = "none")
+gdp |>
+  filter(gdp_growth < 0) |>
+  select(year, gdp_growth)
 ```
 
+If this returns no rows while the website shows some negative years, the minus signs were lost somewhere. A cell that was empty on the website shows up as `NA`, which is what we want.
 
+Finally, save a copy so you do not need to download the page again every time you work on the analysis:
 
+```{r}
+#| eval: false
+write_csv(gdp, "ethiopia_gdp_worldometers.csv")
+```
 
+## Plot nominal GDP
 
+With clean numbers, ggplot2 needs only a few lines:
+
+```{r}
+gdp |>
+  ggplot(aes(x = year, y = gdp_nominal_current_usd)) +
+  geom_line(color = "steelblue", linewidth = 1) +
+  geom_point(color = "steelblue", size = 1.5) +
+  scale_y_continuous(labels = scales::label_dollar(scale = 1e-9, suffix = "B")) +
+  labs(
+    title = "Ethiopia's nominal GDP (current US dollars)",
+    subtitle = paste0(min(gdp$year), " to ", max(gdp$year)),
+    x = NULL,
+    y = "Nominal GDP",
+    caption = "Source: Worldometers, based on IMF data"
+  ) +
+  theme_bw()
+```
+
+A few things worth knowing:
+
+- `aes(x = year, y = gdp_nominal_current_usd)` maps the columns to the axes. Because `year` is a number, ggplot2 spaces the years correctly and picks sensible tick marks for us.
+- `scales::label_dollar(scale = 1e-9, suffix = "B")` divides the values by one billion and shows them as "$100B" instead of "100000000000".
+- The subtitle is built from the data with `min()` and `max()`, so it stays correct when the website adds a new year.
+
+Nominal GDP in US dollars moves with the exchange rate as well as with the economy. If you see a sharp drop in the most recent years, the likely cause is Ethiopia's move to a market-based exchange rate for the birr in 2024. Check the growth chart below: if growth stayed positive in those years, the economy did not shrink, and the drop comes from converting birr into dollars at a new rate.
+
+## Plot GDP growth
+
+The second chart shows yearly growth, with positive and negative years in different colours:
+
+```{r}
+gdp |>
+  filter(!is.na(gdp_growth)) |>
+  mutate(direction = if_else(gdp_growth >= 0, "Growth", "Decline")) |>
+  ggplot(aes(x = year, y = gdp_growth, fill = direction)) +
+  geom_col() +
+  geom_hline(yintercept = 0, linewidth = 0.3) +
+  scale_fill_manual(values = c(Growth = "#2E8B57", Decline = "#C0392B")) +
+  labs(
+    title = "Ethiopia's GDP growth (%)",
+    x = NULL,
+    y = "GDP growth (%)",
+    fill = NULL,
+    caption = "Source: Worldometers, based on IMF data"
+  ) +
+  theme_bw() +
+  theme(legend.position = "top")
+```
+
+- `filter(!is.na(gdp_growth))` drops the year with no growth value, so ggplot2 does not warn about it.
+- `if_else()` labels each year "Growth" or "Decline", and `fill = direction` colours the bars by that label.
+- `scale_fill_manual()` sets the two colours by name.
+
+This is the chart where the minus-sign fix matters. Without it, the decline years would show as green bars.
+
+## Scraping politely with the polite package
+
+For anything beyond a single page, have a look at the [polite](https://dmi3kno.github.io/polite/) package. It reads `robots.txt` for you, introduces itself to the website, and waits between requests. The code is almost the same as before:
+
+```{r}
+#| eval: false
+library(polite)
+
+session <- bow(gdp_url, user_agent = "GDP tutorial by Gutama Girja Urago")
+page <- scrape(session)
+```
+
+`bow()` checks that you are allowed to visit the page, and `scrape()` downloads it. The rest of the post works unchanged.
+
+## Common mistakes
+
+- **The selector returns nothing.** `html_elements()` gives an empty result when nothing matches. Inspect the page again: the class or id may have changed, as it did for this page.
+- **Picking the wrong table.** A page often has several tables. Check `lapply(tables, names)` before choosing one by number.
+- **Numbers that are still text.** If a column shows `<chr>` in `glimpse()`, it has not been converted. Plotting it gives odd results, and arithmetic fails.
+- **Silent changes to values.** Look-alike characters, such as the typographic minus here or thin spaces in large numbers, can change values without any error. Always compare a few cleaned values with the website.
+- **Pages built by JavaScript.** Some sites load their tables after the page opens. `read_html()` only sees the original HTML, so those tables will be missing. In that case, look for a download button or an API instead.
+
+## Recap
+
+Check `robots.txt` and the terms of use, then read the page with `read_html()`, find the tables with `html_elements()` and turn them into data frames with `html_table()`. Clean the column names with `janitor::clean_names()` and convert text to numbers with `parse_number()`, after replacing any typographic minus signs. Check a few values against the website, save a local copy, and plot. The same steps work for most tables you find on the web. The two parts that change from site to site are the selector and the cleaning.

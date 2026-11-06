@@ -6,7 +6,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <meta name="author" content="Gutama Girja Urago">
 <meta name="dcterms.date" content="2024-05-20">
-<meta name="description" content="Import Ethiopia’s GDP table from Worldometers into R with rvest, clean it with janitor and plot it with ggplot2.">
+<meta name="description" content="Import Ethiopia’s GDP table from Worldometers into R with rvest, clean it with janitor and readr, and plot it with ggplot2.">
 <title>Web Scraping in R: Import table directly from website – Gutama Girja Urago</title>
 <style>
 /* Default styles provided by pandoc.
@@ -80,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-8d06cbfed1d39b5a49b73aa8493e58f4.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../../site_libs/bootstrap/bootstrap-1863e35706ec46c33ad0928399851cca.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -113,13 +113,13 @@ gtag('js', new Date());
 gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
 </script><style>html{ scroll-behavior: smooth; }</style>
 <meta property="og:title" content="Web Scraping in R: Import table directly from website – Gutama Girja Urago">
-<meta property="og:description" content="Import Ethiopia’s GDP table from Worldometers into R with rvest, clean it with janitor and plot it with ggplot2.">
+<meta property="og:description" content="Import Ethiopia’s GDP table from Worldometers into R with rvest, clean it with janitor and readr, and plot it with ggplot2.">
 <meta property="og:image" content="https://guturago.github.io/blog/web-craping-using-rvest/inspect.png">
 <meta property="og:site_name" content="Gutama Girja Urago">
 <meta property="og:image:height" content="861">
 <meta property="og:image:width" content="1895">
 <meta name="twitter:title" content="Web Scraping in R: Import table directly from website – Gutama Girja Urago">
-<meta name="twitter:description" content="Import Ethiopia’s GDP table from Worldometers into R with rvest, clean it with janitor and plot it with ggplot2.">
+<meta name="twitter:description" content="Import Ethiopia’s GDP table from Worldometers into R with rvest, clean it with janitor and readr, and plot it with ggplot2.">
 <meta name="twitter:image" content="https://guturago.github.io/blog/web-craping-using-rvest/inspect.png">
 <meta name="twitter:image-height" content="861">
 <meta name="twitter:image-width" content="1895">
@@ -131,7 +131,7 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
   <header id="quarto-header" class="headroom fixed-top quarto-banner"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
       <div class="navbar-brand-container mx-auto">
     <a href="../../index.html" class="navbar-brand navbar-brand-logo">
-    <img src="../../images/favicon.png" alt="GutUrago logo" class="navbar-logo light-content"><img src="../../images/favicon.png" alt="GutUrago logo" class="navbar-logo dark-content"></a>
+    <img src="../../images/logo.svg" alt="Gutama Girja Urago logo" class="navbar-logo light-content"><img src="../../images/logo.svg" alt="Gutama Girja Urago logo" class="navbar-logo dark-content"></a>
     <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Gutama Girja Urago</span>
     </a>
@@ -176,13 +176,14 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
       <h1 class="title">Web Scraping in R: Import table directly from website</h1>
                   <div>
         <div class="description">
-          Import Ethiopia’s GDP table from Worldometers into R with rvest, clean it with janitor and plot it with ggplot2.
+          Import Ethiopia’s GDP table from Worldometers into R with rvest, clean it with janitor and readr, and plot it with ggplot2.
         </div>
       </div>
                           <div class="quarto-categories">
                 <div class="quarto-category">web scraping</div>
                 <div class="quarto-category">rvest</div>
                 <div class="quarto-category">ggplot2</div>
+                <div class="quarto-category">beginners</div>
               </div>
                   </div>
   </div>
@@ -204,6 +205,12 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
       </div>
     </div>
     
+      <div>
+      <div class="quarto-title-meta-heading">Modified</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date-modified">November 6, 2026</p>
+      </div>
+    </div>
       
     </div>
     
@@ -215,190 +222,374 @@ gtag('config', 'G-VVGT96KRKH', { 'anonymize_ip': true});
         <nav id="TOC" role="doc-toc" class="toc-active"><h2 id="toc-title">On this page</h2>
    
   <ul>
-<li><a href="#what-and-why" id="toc-what-and-why" class="nav-link active" data-scroll-target="#what-and-why">What and why?</a></li>
+<li><a href="#before-you-scrape-is-it-allowed" id="toc-before-you-scrape-is-it-allowed" class="nav-link active" data-scroll-target="#before-you-scrape-is-it-allowed">Before you scrape: is it allowed?</a></li>
+  <li><a href="#install-and-load-the-packages" id="toc-install-and-load-the-packages" class="nav-link" data-scroll-target="#install-and-load-the-packages">Install and load the packages</a></li>
+  <li><a href="#read-the-web-page" id="toc-read-the-web-page" class="nav-link" data-scroll-target="#read-the-web-page">Read the web page</a></li>
+  <li><a href="#finding-the-table-css-selectors" id="toc-finding-the-table-css-selectors" class="nav-link" data-scroll-target="#finding-the-table-css-selectors">Finding the table: CSS selectors</a></li>
+  <li><a href="#extract-the-tables" id="toc-extract-the-tables" class="nav-link" data-scroll-target="#extract-the-tables">Extract the tables</a></li>
   <li>
-<a href="#web-scrapping" id="toc-web-scrapping" class="nav-link" data-scroll-target="#web-scrapping">Web Scrapping</a>
+<a href="#clean-the-data" id="toc-clean-the-data" class="nav-link" data-scroll-target="#clean-the-data">Clean the data</a>
   <ul class="collapse">
-<li><a href="#cleaning-the-data" id="toc-cleaning-the-data" class="nav-link" data-scroll-target="#cleaning-the-data">Cleaning the Data</a></li>
-  <li><a href="#making-a-graph" id="toc-making-a-graph" class="nav-link" data-scroll-target="#making-a-graph">Making a Graph</a></li>
+<li><a href="#step-1-tidy-the-column-names" id="toc-step-1-tidy-the-column-names" class="nav-link" data-scroll-target="#step-1-tidy-the-column-names">Step 1: tidy the column names</a></li>
+  <li><a href="#step-2-turn-text-into-numbers-and-avoid-a-sign-trap" id="toc-step-2-turn-text-into-numbers-and-avoid-a-sign-trap" class="nav-link" data-scroll-target="#step-2-turn-text-into-numbers-and-avoid-a-sign-trap">Step 2: turn text into numbers (and avoid a sign trap)</a></li>
+  <li><a href="#check-the-result" id="toc-check-the-result" class="nav-link" data-scroll-target="#check-the-result">Check the result</a></li>
   </ul>
 </li>
+  <li><a href="#plot-nominal-gdp" id="toc-plot-nominal-gdp" class="nav-link" data-scroll-target="#plot-nominal-gdp">Plot nominal GDP</a></li>
+  <li><a href="#plot-gdp-growth" id="toc-plot-gdp-growth" class="nav-link" data-scroll-target="#plot-gdp-growth">Plot GDP growth</a></li>
+  <li><a href="#scraping-politely-with-the-polite-package" id="toc-scraping-politely-with-the-polite-package" class="nav-link" data-scroll-target="#scraping-politely-with-the-polite-package">Scraping politely with the polite package</a></li>
+  <li><a href="#common-mistakes" id="toc-common-mistakes" class="nav-link" data-scroll-target="#common-mistakes">Common mistakes</a></li>
+  <li><a href="#recap" id="toc-recap" class="nav-link" data-scroll-target="#recap">Recap</a></li>
   </ul></nav>
     </div>
 <!-- main -->
-<main class="content quarto-banner-title-block" id="quarto-document-content"><section id="what-and-why" class="level1"><h1>What and why?</h1>
-<p>In this blog, we are going to import table from website into R. This is very important because it saves a time to copy the table manually and going through a lot of pain in excel to import the table into R. Doing it in that way is time consuming, tedious and prone to mistake. That’s why <code>rvest</code> (harvest) package is there for you on CRAN. Install the package from CRAN using <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> function and let’s dive in.</p>
-</section><section id="web-scrapping" class="level1"><h1>Web Scrapping</h1>
-<p>First we need to have the url for the website from which we are planning to import the data as a dataframe in R. Here I am using Ethiopian GDP table from <a href="https://www.worldometers.info/gdp/ethiopia-gdp/">worldmeters</a> website. Once we have the link to the website, we have to load the package and read html file from that page of website, which also contains the table of interest.</p>
+<main class="content quarto-banner-title-block" id="quarto-document-content"><p>Plenty of useful data sits in tables on web pages. The slow way to get it into R is to select the table in your browser, paste it into Excel, fix the formatting, save it as a CSV and then read the CSV. It works, but it takes time, and every manual step is a chance to drop a row or paste into the wrong cell. When the page is updated, you have to do it all again.</p>
+<p>The <a href="https://rvest.tidyverse.org/">rvest</a> package (say “harvest”) reads a web page straight into R and turns its tables into data frames. In this post we use it to pull Ethiopia’s GDP history from <a href="https://www.worldometers.info/gdp/ethiopia-gdp/">Worldometers</a>, clean the numbers, and draw two charts.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Note</span>What you will learn
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>how to check whether a website is happy for you to scrape it</li>
+<li>what HTML is and how CSS selectors point at parts of a page</li>
+<li>how to read a page and extract its tables with rvest</li>
+<li>how to turn text such as “$127,145,000,000” and “−2.1%” into real numbers, including one trap that silently flips signs</li>
+<li>how to plot the result with ggplot2</li>
+</ul>
+</div>
+</div>
+<section id="before-you-scrape-is-it-allowed" class="level2"><h2 class="anchored" data-anchor-id="before-you-scrape-is-it-allowed">Before you scrape: is it allowed?</h2>
+<p>Scraping means a program, not a person, is reading the website. Before you start, take two minutes to check that the site is fine with that:</p>
+<ol type="1">
+<li>
+<strong>Read the <code>robots.txt</code> file.</strong> Most websites publish one at the root of the domain, for example <a href="https://www.worldometers.info/robots.txt">www.worldometers.info/robots.txt</a>. It lists the parts of the site that automated tools should stay away from. When I checked Worldometers’ file for this post, it did not block any pages.</li>
+<li>
+<strong>Read the terms of use.</strong> Worldometers’ <a href="https://www.worldometers.info/disclaimer/">disclaimer page</a> does not mention scraping, and the site marks its content “All rights reserved”. Reading a public table for your own analysis or for learning, as we do here, is a common use. Republishing large amounts of the data is a different matter and would need permission.</li>
+<li>
+<strong>Be gentle.</strong> Download the page once, save what you need, and work from your saved copy. Do not run a scraper in a loop that hits the same page again and again.</li>
+</ol>
+<p>One more point: Worldometers republishes figures from the IMF and the World Bank. For a report or a paper, cite and download from the original source. Scraping is a quick way to get started and a good skill to learn, not a replacement for the official data.</p>
+</section><section id="install-and-load-the-packages" class="level2"><h2 class="anchored" data-anchor-id="install-and-load-the-packages">Install and load the packages</h2>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># install.packages(rvest)         # Install the package if you do</span></span>
-<span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># install.packages(c("rvest", "janitor", "dplyr", "readr", "stringr", "ggplot2"))  # run once</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://rvest.tidyverse.org/">rvest</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">tbl_url</span> <span class="op">&lt;-</span> <span class="st">"https://www.worldometers.info/gdp/ethiopia-gdp/"</span></span>
-<span></span>
-<span><span class="va">raw_html</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://xml2.r-lib.org/reference/read_xml.html">read_html</a></span><span class="op">(</span><span class="va">tbl_url</span><span class="op">)</span></span>
-<span></span>
-<span></span>
-<span><span class="va">raw_html</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://stringr.tidyverse.org">stringr</a></span><span class="op">)</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org">ggplot2</a></span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The commented <code><a href="https://rdrr.io/r/utils/install.packages.html">install.packages()</a></code> line installs everything this post uses. Note that package names go in quotes.</p>
+</section><section id="read-the-web-page" class="level2"><h2 class="anchored" data-anchor-id="read-the-web-page">Read the web page</h2>
+<p><code><a href="http://xml2.r-lib.org/reference/read_xml.html">read_html()</a></code> downloads the page and stores it in R:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gdp_url</span> <span class="op">&lt;-</span> <span class="st">"https://www.worldometers.info/gdp/ethiopia-gdp/"</span></span>
+<span><span class="va">page</span> <span class="op">&lt;-</span> <span class="fu"><a href="http://xml2.r-lib.org/reference/read_xml.html">read_html</a></span><span class="op">(</span><span class="va">gdp_url</span><span class="op">)</span></span>
+<span><span class="va">page</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>{html_document}
-&lt;html lang="en"&gt;
+&lt;html data-astro-transition-scope="astro-m2otfycz-2" lang="en" dir="ltr" class="highcharts-light"&gt;
 [1] &lt;head&gt;\n&lt;meta http-equiv="Content-Type" content="text/html; charset=UTF-8 ...
-[2] &lt;body&gt;\n&lt;!-- Google tag (gtag.js) --&gt;&lt;script async src="https://www.googl ...</code></pre>
+[2] &lt;body class="font-body text-base"&gt;\n&lt;div class="flex flex-col" data-wm-pa ...</code></pre>
 </div>
 </div>
-<p>The above HTML content contains two main parts: the head and the body. The body part of the document typically contains the content of interest. HTML documents are usually styled using CSS, and the CSS selector helps us pick specific elements that we are interested in. To find the CSS of the element that we are interested in, <strong>right-click</strong> on the element of interest on the web and select <strong>inspect</strong>. Next, move your mouse over the codes in the Elements section until it highlights all parts of the table in blue.</p>
-<p><img src="inspect.png" class="img-fluid"></p>
-<p>There are two widely used CSS selectors, namely, class and id. One HTML element can have multiple classes. In this case, a table is one of the class selectors. Whenever you use the class selector, put a dot (.) before the class name. The precise CSS selector is the code that appears at the top of the table (shown by a red arrow), but it requires a significant amount of time to write. So, let’s start with the first class name, which is table. We could have also used xpath instead of CSS to select an element, but let’s keep it aside for now.</p>
+<p>What you see is the start of the page’s <strong>HTML</strong>, the language web pages are written in. An HTML page is a set of nested elements, each marked with a tag: <code>&lt;head&gt;</code> holds information about the page, <code>&lt;body&gt;</code> holds what you see, <code>&lt;p&gt;</code> is a paragraph, and <code>&lt;table&gt;</code> is a table. Our data is inside one of the <code>&lt;table&gt;</code> elements.</p>
+</section><section id="finding-the-table-css-selectors" class="level2"><h2 class="anchored" data-anchor-id="finding-the-table-css-selectors">Finding the table: CSS selectors</h2>
+<p>To tell rvest which part of the page you want, you use a <strong>CSS selector</strong>, a short pattern that matches elements. The three you will use most often are:</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 35%">
+<col style="width: 32%">
+<col style="width: 32%">
+</colgroup>
+<thead><tr class="header">
+<th>Selector</th>
+<th>Matches</th>
+<th>Example</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code>table</code></td>
+<td>every element with that tag</td>
+<td>all tables on the page</td>
+</tr>
+<tr class="even">
+<td>
+<code>.name</code> (dot first)</td>
+<td>every element with that <strong>class</strong>
+</td>
+<td>
+<code>.table</code> matches elements with <code>class="table"</code>
+</td>
+</tr>
+<tr class="odd">
+<td>
+<code>#name</code> (hash first)</td>
+<td>the one element with that <strong>id</strong>
+</td>
+<td>
+<code>#gdp</code> matches <code>id="gdp"</code>
+</td>
+</tr>
+</tbody>
+</table>
+<p>To see the tags, classes and ids behind a page, open it in Chrome or Firefox, right-click the table and choose <strong>Inspect</strong>. The developer tools open and highlight the HTML for the element you clicked. As you move the mouse over the code, the matching part of the page lights up.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure"><p><img src="inspect.png" class="img-fluid figure-img"></p>
+<figcaption>Inspecting the GDP table with the browser’s developer tools (screenshot from 2024; the page has been redesigned since then).</figcaption></figure>
+</div>
+<p>When I first wrote this post in 2024, the table had the class <code>table</code>, so the selector was <code>.table</code>. Worldometers has since redesigned the page. That is a normal hazard of scraping: a selector that depends on a class name breaks when the designers rename the class. Here we use the tag selector <code>table</code> instead, which matches every table on the page whatever its class.</p>
+</section><section id="extract-the-tables" class="level2"><h2 class="anchored" data-anchor-id="extract-the-tables">Extract the tables</h2>
+<p><code><a href="https://rvest.tidyverse.org/reference/html_element.html">html_elements()</a></code> finds all elements that match a selector, and <code><a href="https://rvest.tidyverse.org/reference/html_table.html">html_table()</a></code> turns each HTML table into a data frame:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">element</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rvest.tidyverse.org/reference/html_element.html">html_elements</a></span><span class="op">(</span><span class="va">raw_html</span>, css <span class="op">=</span> <span class="st">".table"</span><span class="op">)</span></span>
-<span><span class="va">element</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">table_nodes</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rvest.tidyverse.org/reference/html_element.html">html_elements</a></span><span class="op">(</span><span class="va">page</span>, <span class="st">"table"</span><span class="op">)</span></span>
+<span><span class="va">tables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rvest.tidyverse.org/reference/html_table.html">html_table</a></span><span class="op">(</span><span class="va">table_nodes</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/length.html">length</a></span><span class="op">(</span><span class="va">tables</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>{xml_nodeset (1)}
-[1] &lt;table class="table table-striped table-bordered table-hover table-conden ...</code></pre>
+<pre><code>[1] 5</code></pre>
 </div>
 </div>
-<p>Once you select the element, it’s still in HTML format and hard to understand. So, let’s convert it into an R object. Now, we see that there are actually two table objects in the returned HTML.</p>
+<p>The page has several tables, so <code>tables</code> is a list of data frames. Before picking one, look at the column names of each:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">tables</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rvest.tidyverse.org/reference/html_table.html">html_table</a></span><span class="op">(</span><span class="va">element</span><span class="op">)</span></span>
-<span><span class="va">tables</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">tables</span>, <span class="va">names</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[[1]]
-# A tibble: 30 × 7
-    Year `GDP Nominal (Current USD)` `GDP Real  (Inflation adj.)` `GDP change`
-   &lt;int&gt; &lt;chr&gt;                       &lt;chr&gt;                        &lt;chr&gt;       
- 1  2022 $126,783,000,000            $105,776,000,000             5.32%       
- 2  2021 $111,262,000,000            $100,435,000,000             5.64%       
- 3  2020 $107,658,000,000            $95,071,776,945              6.06%       
- 4  2019 $95,912,607,970             $89,640,012,689              8.36%       
- 5  2018 $84,269,196,152             $82,721,145,212              6.82%       
- 6  2017 $81,770,886,909             $77,442,546,767              9.56%       
- 7  2016 $74,296,745,599             $70,682,352,527              9.43%       
- 8  2015 $64,589,329,345             $64,589,329,345              10.39%      
- 9  2014 $55,612,228,234             $58,508,821,687              10.26%      
-10  2013 $47,648,276,190             $53,065,619,502              10.58%      
-# ℹ 20 more rows
-# ℹ 3 more variables: `GDP per capita` &lt;chr&gt;, `Pop. change` &lt;chr&gt;,
-#   Population &lt;chr&gt;</code></pre>
+[1] "Year"                      "GDP Nominal (Current USD)"
+[3] "GDP Growth"                "GDP per capita"           
+[5] "Pop. Change"              
+
+[[2]]
+[1] "Year"                  "GDP PPP"               "GDP PPP per Capita"   
+[4] "PPP Per Capita Change" "Pop. Change"          
+
+[[3]]
+[1] "Year"                                   
+[2] "GDP Nominal (Current USD)"              
+[3] "GDP Real (Constant, Inflation Adjusted)"
+[4] "Pop. Change"                            
+
+[[4]]
+[1] "Year"                      "GDP Nominal (Current USD)"
+[3] "GDP Growth"                "GDP per capita"           
+[5] "Pop. Change"              
+
+[[5]]
+[1] "Year"                  "GDP PPP"               "GDP PPP per Capita"   
+[4] "PPP Per Capita Change" "Pop. Change"          </code></pre>
 </div>
 </div>
-<p>It is stored as a list, let extract it and the rest is cleaning.</p>
+<p>The first table has the yearly figures we want: nominal GDP, GDP growth, GDP per capita and population change. We take it out of the list with double brackets:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gdp_tbl</span> <span class="op">&lt;-</span> <span class="va">tables</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span> </span>
-<span><span class="va">gdp_tbl</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gdp_raw</span> <span class="op">&lt;-</span> <span class="va">tables</span><span class="op">[[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span></span>
+<span><span class="va">gdp_raw</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code># A tibble: 30 × 7
-    Year `GDP Nominal (Current USD)` `GDP Real  (Inflation adj.)` `GDP change`
-   &lt;int&gt; &lt;chr&gt;                       &lt;chr&gt;                        &lt;chr&gt;       
- 1  2022 $126,783,000,000            $105,776,000,000             5.32%       
- 2  2021 $111,262,000,000            $100,435,000,000             5.64%       
- 3  2020 $107,658,000,000            $95,071,776,945              6.06%       
- 4  2019 $95,912,607,970             $89,640,012,689              8.36%       
- 5  2018 $84,269,196,152             $82,721,145,212              6.82%       
- 6  2017 $81,770,886,909             $77,442,546,767              9.56%       
- 7  2016 $74,296,745,599             $70,682,352,527              9.43%       
- 8  2015 $64,589,329,345             $64,589,329,345              10.39%      
- 9  2014 $55,612,228,234             $58,508,821,687              10.26%      
-10  2013 $47,648,276,190             $53,065,619,502              10.58%      
-# ℹ 20 more rows
-# ℹ 3 more variables: `GDP per capita` &lt;chr&gt;, `Pop. change` &lt;chr&gt;,
-#   Population &lt;chr&gt;</code></pre>
+<pre><code># A tibble: 47 × 5
+    Year `GDP Nominal (Current USD)` `GDP Growth` `GDP per capita` `Pop. Change`
+   &lt;int&gt; &lt;chr&gt;                       &lt;chr&gt;        &lt;chr&gt;            &lt;chr&gt;        
+ 1  2026 $127,145,000,000            9.2%         $1,131           +2.53%       
+ 2  2025 $126,351,000,000            9.2%         $1,142           +2.58%       
+ 3  2024 $210,000,000,000            8.1%         $1,937           +2.62%       
+ 4  2023 $163,709,000,000            7.2%         $1,549           +2.64%       
+ 5  2022 $126,770,000,000            6.4%         $1,218           +2.66%       
+ 6  2021 $111,266,000,000            6.3%         $1,092           +2.71%       
+ 7  2020 $107,672,000,000            6.1%         $1,080           +2.75%       
+ 8  2019 $95,945,000,000             9.0%         $983             +2.73%       
+ 9  2018 $84,298,000,000             7.7%         $883             +2.73%       
+10  2017 $81,788,000,000             10.2%        $876             +2.76%       
+# ℹ 37 more rows</code></pre>
 </div>
 </div>
-<section id="cleaning-the-data" class="level2"><h2 class="anchored" data-anchor-id="cleaning-the-data">Cleaning the Data</h2>
-<p>Below we can see that all columns, except year, are stored as character because of dollar sign ($) and commas (,), which R doesn’t allow to happen.</p>
+<p>If Worldometers reorders its tables in future, the <code>lapply(tables, names)</code> output tells you which number to use instead of <code>1</code>.</p>
+</section><section id="clean-the-data" class="level2"><h2 class="anchored" data-anchor-id="clean-the-data">Clean the data</h2>
+<p>The table looks right, but R does not see numbers yet:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gdp_tbl</span> <span class="op">&lt;-</span> <span class="fu">janitor</span><span class="fu">::</span><span class="fu"><a href="https://sfirke.github.io/janitor/reference/clean_names.html">clean_names</a></span><span class="op">(</span><span class="va">gdp_tbl</span><span class="op">)</span></span>
-<span></span>
-<span></span>
-<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://tidyverse.tidyverse.org">tidyverse</a></span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">gdp_tbl</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">gdp_raw</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Rows: 30
-Columns: 7
-$ year                    &lt;int&gt; 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015…
-$ gdp_nominal_current_usd &lt;chr&gt; "$126,783,000,000", "$111,262,000,000", "$107,…
-$ gdp_real_inflation_adj  &lt;chr&gt; "$105,776,000,000", "$100,435,000,000", "$95,0…
-$ gdp_change              &lt;chr&gt; "5.32%", "5.64%", "6.06%", "8.36%", "6.82%", "…
-$ gdp_per_capita          &lt;chr&gt; "$857", "$835", "$811", "$785", "$744", "$716"…
-$ pop_change              &lt;chr&gt; "2.57 %", "2.64 %", "2.69 %", "2.69 %", "2.71 …
-$ population              &lt;chr&gt; "123,379,924", "120,283,026", "117,190,911", "…</code></pre>
+<pre><code>Rows: 47
+Columns: 5
+$ Year                        &lt;int&gt; 2026, 2025, 2024, 2023, 2022, 2021, 2020, …
+$ `GDP Nominal (Current USD)` &lt;chr&gt; "$127,145,000,000", "$126,351,000,000", "$…
+$ `GDP Growth`                &lt;chr&gt; "9.2%", "9.2%", "8.1%", "7.2%", "6.4%", "6…
+$ `GDP per capita`            &lt;chr&gt; "$1,131", "$1,142", "$1,937", "$1,549", "$…
+$ `Pop. Change`               &lt;chr&gt; "+2.53%", "+2.58%", "+2.62%", "+2.64%", "+…</code></pre>
 </div>
 </div>
-<p>Let’s remove all unnecessary characters and convert to numeric with a short function.</p>
+<p>Every column except <code>Year</code> is stored as text (<code>&lt;chr&gt;</code>), because the values contain dollar signs, commas, percent signs and plus signs. We also have column names with spaces and brackets, which are awkward to type in R. Two steps fix this.</p>
+<section id="step-1-tidy-the-column-names" class="level3"><h3 class="anchored" data-anchor-id="step-1-tidy-the-column-names">Step 1: tidy the column names</h3>
+<p><code>clean_names()</code> from the janitor package converts names to lower case with underscores, so “GDP Nominal (Current USD)” becomes <code>gdp_nominal_current_usd</code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">convert_to_numeric</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/numeric.html">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://stringr.tidyverse.org/reference/str_remove.html">str_remove_all</a></span><span class="op">(</span><span class="va">x</span>, <span class="st">"[$,%\\s]"</span><span class="op">)</span><span class="op">)</span></span>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gdp</span> <span class="op">&lt;-</span> <span class="fu">janitor</span><span class="fu">::</span><span class="fu"><a href="https://sfirke.github.io/janitor/reference/clean_names.html">clean_names</a></span><span class="op">(</span><span class="va">gdp_raw</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/names.html">names</a></span><span class="op">(</span><span class="va">gdp</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "year"                    "gdp_nominal_current_usd"
+[3] "gdp_growth"              "gdp_per_capita"         
+[5] "pop_change"             </code></pre>
+</div>
+</div>
+</section><section id="step-2-turn-text-into-numbers-and-avoid-a-sign-trap" class="level3"><h3 class="anchored" data-anchor-id="step-2-turn-text-into-numbers-and-avoid-a-sign-trap">Step 2: turn text into numbers (and avoid a sign trap)</h3>
+<p><code><a href="https://readr.tidyverse.org/reference/parse_number.html">parse_number()</a></code> from readr reads the number out of a piece of text and ignores symbols around it. It handles dollar signs, commas and percent signs. There is one catch, though. Worldometers writes negative growth with the typographic minus sign “−” (Unicode U+2212), not the ordinary hyphen “-” on your keyboard. They look almost the same, but <code><a href="https://readr.tidyverse.org/reference/parse_number.html">parse_number()</a></code> only understands the hyphen, and it drops the other one without telling you:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readr.tidyverse.org/reference/parse_number.html">parse_number</a></span><span class="op">(</span><span class="st">"-2.1%"</span><span class="op">)</span>         <span class="co"># ordinary hyphen</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -2.1</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readr.tidyverse.org/reference/parse_number.html">parse_number</a></span><span class="op">(</span><span class="st">"−2.1%"</span><span class="op">)</span>    <span class="co"># typographic minus: the sign is lost</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.1</code></pre>
+</div>
+</div>
+<p>The second result is <code>2.1</code>, a positive number. If we did not catch this, every year of negative growth would turn into positive growth in our charts. So we write a small function that first swaps the typographic minus for a hyphen and then parses the number:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">to_number</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://stringr.tidyverse.org/reference/str_replace.html">str_replace_all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/character.html">as.character</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="st">"−"</span>, <span class="st">"-"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="https://readr.tidyverse.org/reference/parse_number.html">parse_number</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span><span class="op">}</span></span>
 <span></span>
-<span><span class="va">gdp_tbl</span> <span class="op">&lt;-</span> <span class="va">gdp_tbl</span> <span class="op">|&gt;</span> </span>
-<span>        <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate_all.html">mutate_all</a></span><span class="op">(</span><span class="va">convert_to_numeric</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">gdp_tbl</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span><span class="fu">to_number</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"$127,145,000,000"</span>, <span class="st">"9.2%"</span>, <span class="st">"+2.53%"</span>, <span class="st">"−2.1%"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Rows: 30
-Columns: 7
-$ year                    &lt;dbl&gt; 2022, 2021, 2020, 2019, 2018, 2017, 2016, 2015…
-$ gdp_nominal_current_usd &lt;dbl&gt; 126783000000, 111262000000, 107658000000, 9591…
-$ gdp_real_inflation_adj  &lt;dbl&gt; 105776000000, 100435000000, 95071776945, 89640…
-$ gdp_change              &lt;dbl&gt; 5.32, 5.64, 6.06, 8.36, 6.82, 9.56, 9.43, 10.3…
-$ gdp_per_capita          &lt;dbl&gt; 857, 835, 811, 785, 744, 716, 671, 630, 587, 5…
-$ pop_change              &lt;dbl&gt; 2.57, 2.64, 2.69, 2.69, 2.71, 2.76, 2.75, 2.73…
-$ population              &lt;dbl&gt; 123379924, 120283026, 117190911, 114120594, 11…</code></pre>
+<pre><code>[1]  1.27145e+11  9.20000e+00  2.53000e+00 -2.10000e+00</code></pre>
 </div>
 </div>
-</section><section id="making-a-graph" class="level2"><h2 class="anchored" data-anchor-id="making-a-graph">Making a Graph</h2>
-<p>With a minimal code, we can produce the same graph and customize the way we want.</p>
+<p>Now apply it to every column at once with <code><a href="https://dplyr.tidyverse.org/reference/across.html">across()</a></code>:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gdp_tbl</span> <span class="op">|&gt;</span> </span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span>, </span>
-<span>                      y <span class="op">=</span> <span class="va">gdp_nominal_current_usd</span>,</span>
-<span>                      group <span class="op">=</span> <span class="fl">1</span><span class="op">)</span>,</span>
-<span>                  color <span class="op">=</span> <span class="st">"blue"</span>, linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/dollar_format.html">dollar_format</a></span><span class="op">(</span></span>
-<span>          scale <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="fl">1000000000</span>,</span>
-<span>          suffix <span class="op">=</span> <span class="st">" billion"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
-<span> </span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>x <span class="op">=</span> <span class="st">"Year"</span>,</span>
-<span>             y <span class="op">=</span> <span class="st">"Nominal GDP"</span>,</span>
-<span>             title <span class="op">=</span> <span class="st">"Ethiopia GDP (Nominal, $USD) 2003-2022"</span>,</span>
-<span>             caption <span class="op">=</span> <span class="st">"Source: https://www.worldometers.info/gdp/ethiopia-gdp/"</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>        <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, vjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gdp</span> <span class="op">&lt;-</span> <span class="va">gdp</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/across.html">across</a></span><span class="op">(</span><span class="fu"><a href="https://tidyselect.r-lib.org/reference/everything.html">everything</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">to_number</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse</a></span><span class="op">(</span><span class="va">gdp</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 47
+Columns: 5
+$ year                    &lt;dbl&gt; 2026, 2025, 2024, 2023, 2022, 2021, 2020, 2019…
+$ gdp_nominal_current_usd &lt;dbl&gt; 1.27145e+11, 1.26351e+11, 2.10000e+11, 1.63709…
+$ gdp_growth              &lt;dbl&gt; 9.2, 9.2, 8.1, 7.2, 6.4, 6.3, 6.1, 9.0, 7.7, 1…
+$ gdp_per_capita          &lt;dbl&gt; 1131, 1142, 1937, 1549, 1218, 1092, 1080, 983,…
+$ pop_change              &lt;dbl&gt; 2.53, 2.58, 2.62, 2.64, 2.66, 2.71, 2.75, 2.73…</code></pre>
+</div>
+</div>
+<p><code>mutate(across(everything(), to_number))</code> means “for every column, replace its values with <code>to_number()</code> of those values”. All columns are now numeric (<code>&lt;dbl&gt;</code>).</p>
+</section><section id="check-the-result" class="level3"><h3 class="anchored" data-anchor-id="check-the-result">Check the result</h3>
+<p>Cleaning steps can go wrong without any error, as the minus sign just showed. A quick check against the website is always worth it. Here are the years with negative growth; compare them with the page:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gdp</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="va">gdp_growth</span> <span class="op">&lt;</span> <span class="fl">0</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">year</span>, <span class="va">gdp_growth</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 7 × 2
+   year gdp_growth
+  &lt;dbl&gt;      &lt;dbl&gt;
+1  2003       -2.1
+2  1998       -4.2
+3  1992       -8.9
+4  1991       -7.2
+5  1989       -0.5
+6  1985      -11.4
+7  1984       -2.3</code></pre>
+</div>
+</div>
+<p>If this returns no rows while the website shows some negative years, the minus signs were lost somewhere. A cell that was empty on the website shows up as <code>NA</code>, which is what we want.</p>
+<p>Finally, save a copy so you do not need to download the page again every time you work on the analysis:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="fu"><a href="https://readr.tidyverse.org/reference/write_delim.html">write_csv</a></span><span class="op">(</span><span class="va">gdp</span>, <span class="st">"ethiopia_gdp_worldometers.csv"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section></section><section id="plot-nominal-gdp" class="level2"><h2 class="anchored" data-anchor-id="plot-nominal-gdp">Plot nominal GDP</h2>
+<p>With clean numbers, ggplot2 needs only a few lines:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb25"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gdp</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">gdp_nominal_current_usd</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_path.html">geom_line</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"steelblue"</span>, linewidth <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html">geom_point</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"steelblue"</span>, size <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_continuous.html">scale_y_continuous</a></span><span class="op">(</span>labels <span class="op">=</span> <span class="fu">scales</span><span class="fu">::</span><span class="fu"><a href="https://scales.r-lib.org/reference/dollar_format.html">label_dollar</a></span><span class="op">(</span>scale <span class="op">=</span> <span class="fl">1e-9</span>, suffix <span class="op">=</span> <span class="st">"B"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Ethiopia's nominal GDP (current US dollars)"</span>,</span>
+<span>    subtitle <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste0</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">gdp</span><span class="op">$</span><span class="va">year</span><span class="op">)</span>, <span class="st">" to "</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">gdp</span><span class="op">$</span><span class="va">year</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>    x <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"Nominal GDP"</span>,</span>
+<span>    caption <span class="op">=</span> <span class="st">"Source: Worldometers, based on IMF data"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>Here is the second graph as well.</p>
+<p>A few things worth knowing:</p>
+<ul>
+<li>
+<code>aes(x = year, y = gdp_nominal_current_usd)</code> maps the columns to the axes. Because <code>year</code> is a number, ggplot2 spaces the years correctly and picks sensible tick marks for us.</li>
+<li>
+<code>scales::label_dollar(scale = 1e-9, suffix = "B")</code> divides the values by one billion and shows them as “$100B” instead of “100000000000”.</li>
+<li>The subtitle is built from the data with <code><a href="https://rdrr.io/r/base/Extremes.html">min()</a></code> and <code><a href="https://rdrr.io/r/base/Extremes.html">max()</a></code>, so it stays correct when the website adds a new year.</li>
+</ul>
+<p>Nominal GDP in US dollars moves with the exchange rate as well as with the economy. If you see a sharp drop in the most recent years, the likely cause is Ethiopia’s move to a market-based exchange rate for the birr in 2024. Check the growth chart below: if growth stayed positive in those years, the economy did not shrink, and the drop comes from converting birr into dollars at a new rate.</p>
+</section><section id="plot-gdp-growth" class="level2"><h2 class="anchored" data-anchor-id="plot-gdp-growth">Plot GDP growth</h2>
+<p>The second chart shows yearly growth, with positive and negative years in different colours:</p>
 <div class="cell">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gdp_tbl</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>growth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html">ifelse</a></span><span class="op">(</span><span class="va">gdp_change</span> <span class="op">&gt;</span> <span class="fl">0</span>, <span class="st">"positve"</span>, <span class="st">"negative"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html">factor</a></span><span class="op">(</span><span class="va">year</span><span class="op">)</span>, y <span class="op">=</span> <span class="va">gdp_change</span>, fill <span class="op">=</span> <span class="va">growth</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"GDP change (%)"</span>,</span>
-<span>       y <span class="op">=</span> <span class="st">"Ethiopia GDP Change %"</span>,</span>
-<span>       x <span class="op">=</span> <span class="st">"Year"</span>,</span>
-<span>       fill <span class="op">=</span> <span class="st">""</span>,</span>
-<span>       caption <span class="op">=</span> <span class="st">"Source: https://www.worldometers.info/gdp/ethiopia-gdp/"</span><span class="op">)</span> <span class="op">+</span></span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
-<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">45</span>, vjust <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
-<span>        legend.position <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gdp</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">gdp_growth</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>direction <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else</a></span><span class="op">(</span><span class="va">gdp_growth</span> <span class="op">&gt;=</span> <span class="fl">0</span>, <span class="st">"Growth"</span>, <span class="st">"Decline"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html">ggplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">year</span>, y <span class="op">=</span> <span class="va">gdp_growth</span>, fill <span class="op">=</span> <span class="va">direction</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_bar.html">geom_col</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_abline.html">geom_hline</a></span><span class="op">(</span>yintercept <span class="op">=</span> <span class="fl">0</span>, linewidth <span class="op">=</span> <span class="fl">0.3</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual</a></span><span class="op">(</span>values <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span>Growth <span class="op">=</span> <span class="st">"#2E8B57"</span>, Decline <span class="op">=</span> <span class="st">"#C0392B"</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/labs.html">labs</a></span><span class="op">(</span></span>
+<span>    title <span class="op">=</span> <span class="st">"Ethiopia's GDP growth (%)"</span>,</span>
+<span>    x <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    y <span class="op">=</span> <span class="st">"GDP growth (%)"</span>,</span>
+<span>    fill <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>    caption <span class="op">=</span> <span class="st">"Source: Worldometers, based on IMF data"</span></span>
+<span>  <span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggtheme.html">theme_bw</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html">theme</a></span><span class="op">(</span>legend.position <span class="op">=</span> <span class="st">"top"</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output-display">
 <div>
-<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></p>
+<figure class="figure"><p><img src="index_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
+<ul>
+<li>
+<code>filter(!is.na(gdp_growth))</code> drops the year with no growth value, so ggplot2 does not warn about it.</li>
+<li>
+<code><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else()</a></code> labels each year “Growth” or “Decline”, and <code>fill = direction</code> colours the bars by that label.</li>
+<li>
+<code><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual()</a></code> sets the two colours by name.</li>
+</ul>
+<p>This is the chart where the minus-sign fix matters. Without it, the decline years would show as green bars.</p>
+</section><section id="scraping-politely-with-the-polite-package" class="level2"><h2 class="anchored" data-anchor-id="scraping-politely-with-the-polite-package">Scraping politely with the polite package</h2>
+<p>For anything beyond a single page, have a look at the <a href="https://dmi3kno.github.io/polite/">polite</a> package. It reads <code>robots.txt</code> for you, introduces itself to the website, and waits between requests. The code is almost the same as before:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">polite</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">session</span> <span class="op">&lt;-</span> <span class="fu">bow</span><span class="op">(</span><span class="va">gdp_url</span>, user_agent <span class="op">=</span> <span class="st">"GDP tutorial by Gutama Girja Urago"</span><span class="op">)</span></span>
+<span><span class="va">page</span> <span class="op">&lt;-</span> <span class="fu">scrape</span><span class="op">(</span><span class="va">session</span><span class="op">)</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>bow()</code> checks that you are allowed to visit the page, and <code>scrape()</code> downloads it. The rest of the post works unchanged.</p>
+</section><section id="common-mistakes" class="level2"><h2 class="anchored" data-anchor-id="common-mistakes">Common mistakes</h2>
+<ul>
+<li>
+<strong>The selector returns nothing.</strong> <code><a href="https://rvest.tidyverse.org/reference/html_element.html">html_elements()</a></code> gives an empty result when nothing matches. Inspect the page again: the class or id may have changed, as it did for this page.</li>
+<li>
+<strong>Picking the wrong table.</strong> A page often has several tables. Check <code>lapply(tables, names)</code> before choosing one by number.</li>
+<li>
+<strong>Numbers that are still text.</strong> If a column shows <code>&lt;chr&gt;</code> in <code><a href="https://pillar.r-lib.org/reference/glimpse.html">glimpse()</a></code>, it has not been converted. Plotting it gives odd results, and arithmetic fails.</li>
+<li>
+<strong>Silent changes to values.</strong> Look-alike characters, such as the typographic minus here or thin spaces in large numbers, can change values without any error. Always compare a few cleaned values with the website.</li>
+<li>
+<strong>Pages built by JavaScript.</strong> Some sites load their tables after the page opens. <code><a href="http://xml2.r-lib.org/reference/read_xml.html">read_html()</a></code> only sees the original HTML, so those tables will be missing. In that case, look for a download button or an API instead.</li>
+</ul></section><section id="recap" class="level2"><h2 class="anchored" data-anchor-id="recap">Recap</h2>
+<p>Check <code>robots.txt</code> and the terms of use, then read the page with <code><a href="http://xml2.r-lib.org/reference/read_xml.html">read_html()</a></code>, find the tables with <code><a href="https://rvest.tidyverse.org/reference/html_element.html">html_elements()</a></code> and turn them into data frames with <code><a href="https://rvest.tidyverse.org/reference/html_table.html">html_table()</a></code>. Clean the column names with <code><a href="https://sfirke.github.io/janitor/reference/clean_names.html">janitor::clean_names()</a></code> and convert text to numbers with <code><a href="https://readr.tidyverse.org/reference/parse_number.html">parse_number()</a></code>, after replacing any typographic minus signs. Check a few values against the website, save a local copy, and plot. The same steps work for most tables you find on the web. The two parts that change from site to site are the selector and the cleaning.</p>
 
 
-</section></section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+</section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
     const anchorJS = new window.AnchorJS();
