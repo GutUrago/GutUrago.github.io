@@ -76,7 +76,11 @@ h1, h2, h3, .h1, .h2, .h3 {
   }
 
   .navbar-logo {
-    max-height: 30px;
+    width: 32px;
+    height: 32px;
+    max-height: none;
+    border-radius: 8px;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
   }
 
   .navbar-title {
@@ -114,7 +118,8 @@ h1, h2, h3, .h1, .h2, .h3 {
     }
 
     .navbar-logo {
-      max-height: 24px;
+      width: 26px;
+      height: 26px;
     }
   }
 }

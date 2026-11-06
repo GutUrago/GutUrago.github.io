@@ -20,8 +20,8 @@ website:
 
   navbar:
     background: "#00263A"
-    logo: images/favicon.png
-    logo-alt: "GutUrago logo"
+    logo: images/logo.svg
+    logo-alt: "Gutama Girja Urago logo"
     title: "Gutama Girja Urago"
     collapse-below: lg
     right:
