@@ -411,42 +411,6 @@ h1, h2, h3, .h1, .h2, .h3 {
   }
 }
 
-.chip {
-  position: absolute;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  white-space: nowrap;
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: $navy;
-  background: #FFFFFF;
-  border-radius: 999px;
-  padding: 0.45rem 0.9rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
-  animation: bob 5s ease-in-out infinite;
-
-  i {
-    color: $orange-ink;
-  }
-}
-
-.chip-1 {
-  top: 12%;
-  left: -18%;
-}
-
-.chip-2 {
-  bottom: 10%;
-  right: -14%;
-  animation-delay: -2.5s;
-}
-
-@keyframes bob {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-8px); }
-}
-
 // Stats strip overlapping the hero
 .stats-wrap {
   position: relative;
@@ -768,10 +732,6 @@ h1, h2, h3, .h1, .h2, .h3 {
   .hero-actions,
   .hero-social {
     justify-content: center;
-  }
-
-  .chip {
-    display: none;
   }
 
   .stats {
