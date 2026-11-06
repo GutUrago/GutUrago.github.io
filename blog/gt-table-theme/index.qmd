@@ -65,7 +65,7 @@ iris_sample
 
 What each step does:
 
-- `mutate(Species = stringr::str_to_title(Species))` capitalises the species names, so "setosa" becomes "Setosa". The `stringr::` prefix lets us use one function from the stringr package without loading the whole package.
+- `mutate(Species = stringr::str_to_title(Species))` capitalizes the species names, so "setosa" becomes "Setosa". The `stringr::` prefix lets us use one function from the stringr package without loading the whole package.
 - `group_by(Species)` and `slice_head(n = 2)` keep the first two rows of each species. `ungroup()` removes the grouping again so it does not affect later steps.
 - `select(Species, everything())` moves `Species` to the first column and keeps all the others after it.
 
@@ -98,9 +98,9 @@ In a real report, the title says what the table shows ("Iris measurements by spe
 
 ## How styling works: `tab_style()`
 
-Before we change any colours, it helps to see how gt thinks about style. `tab_style()` always takes two arguments:
+Before we change any colors, it helps to see how gt thinks about style. `tab_style()` always takes two arguments:
 
-- `style`: **what** to change. Helper functions describe it, for example `cell_text()` for the font, `cell_fill()` for the background colour and `cell_borders()` for the lines.
+- `style`: **what** to change. Helper functions describe it, for example `cell_text()` for the font, `cell_fill()` for the background color and `cell_borders()` for the lines.
 - `locations`: **where** to change it. Another set of helpers points at a part of the table: `cells_title()`, `cells_column_labels()`, `cells_column_spanners()`, `cells_body()` and so on, matching the parts listed earlier.
 
 So "make the title bold" becomes "style = bold text, location = the title".
@@ -123,7 +123,7 @@ To style the subtitle instead, you would use `groups = "subtitle"`.
 
 ## Stripe the rows
 
-Shading every other row makes a wide table easier to read across. We give odd-numbered rows a light grey background:
+Shading every other row makes a wide table easier to read across. We give odd-numbered rows a light gray background:
 
 ```{r}
 tbl <- tbl |>
@@ -232,7 +232,7 @@ my_gt_theme <- function(gt_table, title, subtitle = NULL, delim = ".") {
 This is the same set of steps as above, with three changes worth pointing out:
 
 - **The first argument is a gt table.** That means the function fits into a pipe: `gt(data) |> my_gt_theme(...)`, just like gt's own functions.
-- **Row striping uses `opt_row_striping()`.** Earlier we picked the odd rows ourselves with `nrow()`. Inside a function that receives a gt table, it is simpler to switch on gt's built-in striping and set its colour in `tab_options()`. The result looks the same.
+- **Row striping uses `opt_row_striping()`.** Earlier we picked the odd rows ourselves with `nrow()`. Inside a function that receives a gt table, it is simpler to switch on gt's built-in striping and set its color in `tab_options()`. The result looks the same.
 - **`subtitle` and `delim` have defaults.** `subtitle = NULL` means "no subtitle" unless you give one, and `delim = "."` matches the `iris` column names. You only need to supply them when you want something different.
 
 Now the whole table takes one line:

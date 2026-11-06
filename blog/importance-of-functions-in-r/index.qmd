@@ -156,7 +156,7 @@ mpg_stats$mean
 
 ### A small improvement: return a data frame
 
-A list is fine for one column, but when you summarise several columns you usually want a table. If the function returns a one-row data frame, the results stack neatly:
+A list is fine for one column, but when you summarize several columns you usually want a table. If the function returns a one-row data frame, the results stack neatly:
 
 ```{r}
 calc_stats <- function(data, column) {

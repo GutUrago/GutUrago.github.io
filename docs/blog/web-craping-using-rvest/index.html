@@ -80,7 +80,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../../site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../../site_libs/bootstrap/bootstrap-1863e35706ec46c33ad0928399851cca.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
+<link href="../../site_libs/bootstrap/bootstrap-a8a324db0b5aa67279659ad2b0da30b6.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light"><script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
   "collapse-after": 3,
@@ -420,7 +420,7 @@ $ `GDP per capita`            &lt;chr&gt; "$1,131", "$1,142", "$1,937", "$1,549"
 $ `Pop. Change`               &lt;chr&gt; "+2.53%", "+2.58%", "+2.62%", "+2.64%", "+…</code></pre>
 </div>
 </div>
-<p>Every column except <code>Year</code> is stored as text (<code>&lt;chr&gt;</code>), because the values contain dollar signs, commas, percent signs and plus signs. We also have column names with spaces and brackets, which are awkward to type in R. Two steps fix this.</p>
+<p>Every column except <code>Year</code> is stored as text (<code>&lt;chr&gt;</code>), because the values contain dollar signs, commas, percent signs and plus signs. We also have column names with spaces and parentheses, which are awkward to type in R. Two steps fix this.</p>
 <section id="step-1-tidy-the-column-names" class="level3"><h3 class="anchored" data-anchor-id="step-1-tidy-the-column-names">Step 1: tidy the column names</h3>
 <p><code>clean_names()</code> from the janitor package converts names to lower case with underscores, so “GDP Nominal (Current USD)” becomes <code>gdp_nominal_current_usd</code>:</p>
 <div class="cell">
@@ -530,7 +530,7 @@ $ pop_change              &lt;dbl&gt; 2.53, 2.58, 2.62, 2.64, 2.66, 2.71, 2.75, 
 </ul>
 <p>Nominal GDP in US dollars moves with the exchange rate as well as with the economy. If you see a sharp drop in the most recent years, the likely cause is Ethiopia’s move to a market-based exchange rate for the birr in 2024. Check the growth chart below: if growth stayed positive in those years, the economy did not shrink, and the drop comes from converting birr into dollars at a new rate.</p>
 </section><section id="plot-gdp-growth" class="level2"><h2 class="anchored" data-anchor-id="plot-gdp-growth">Plot GDP growth</h2>
-<p>The second chart shows yearly growth, with positive and negative years in different colours:</p>
+<p>The second chart shows yearly growth, with positive and negative years in different colors:</p>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">gdp</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html">is.na</a></span><span class="op">(</span><span class="va">gdp_growth</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
@@ -559,9 +559,9 @@ $ pop_change              &lt;dbl&gt; 2.53, 2.58, 2.62, 2.64, 2.66, 2.71, 2.75, 
 <li>
 <code>filter(!is.na(gdp_growth))</code> drops the year with no growth value, so ggplot2 does not warn about it.</li>
 <li>
-<code><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else()</a></code> labels each year “Growth” or “Decline”, and <code>fill = direction</code> colours the bars by that label.</li>
+<code><a href="https://dplyr.tidyverse.org/reference/if_else.html">if_else()</a></code> labels each year “Growth” or “Decline”, and <code>fill = direction</code> colors the bars by that label.</li>
 <li>
-<code><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual()</a></code> sets the two colours by name.</li>
+<code><a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">scale_fill_manual()</a></code> sets the two colors by name.</li>
 </ul>
 <p>This is the chart where the minus-sign fix matters. Without it, the decline years would show as green bars.</p>
 </section><section id="scraping-politely-with-the-polite-package" class="level2"><h2 class="anchored" data-anchor-id="scraping-politely-with-the-polite-package">Scraping politely with the polite package</h2>

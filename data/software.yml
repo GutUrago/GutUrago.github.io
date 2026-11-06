@@ -6,7 +6,7 @@
   icon: bi-cloud-download
   since: 2026
   tagline: "A data pipeline for SurveyCTO in R and Stata"
-  description: "An R client for the SurveyCTO REST API, built on httr2. It downloads form submissions and tidies them: fields get their proper types, geopoints are split and select_multiple columns are filled in. It also handles encrypted forms, attachments and server datasets, and writes Stata labelling do-files. The Stata module uses the same command names."
+  description: "An R client for the SurveyCTO REST API, built on httr2. It downloads form submissions and tidies them: fields get their proper types, geopoints are split and select_multiple columns are filled in. It also handles encrypted forms, attachments and server datasets, and writes Stata labeling do-files. The Stata module uses the same command names."
   functions: ["cto_connect()", "cto_form_data()", "cto_form_data_attachment()", "cto_form_dofile()"]
   cran: ctoclient
   ssc: ctoclient

@@ -91,7 +91,7 @@ listing:
         I'm an agricultural economist and a research analyst at Laterite in Addis Ababa.
         My work covers the whole life of a survey: designing the questionnaire and the sample,
         programming it in SurveyCTO, checking data quality while teams are in the field,
-        then cleaning and analysing what comes back. The studies cover agriculture, clean energy,
+        then cleaning and analyzing what comes back. The studies cover agriculture, clean energy,
         health, nutrition, education and refugee livelihoods, in Ethiopia and elsewhere in Africa.
       </p>
       <p>

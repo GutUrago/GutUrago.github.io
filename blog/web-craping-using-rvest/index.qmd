@@ -111,7 +111,7 @@ The table looks right, but R does not see numbers yet:
 glimpse(gdp_raw)
 ```
 
-Every column except `Year` is stored as text (`<chr>`), because the values contain dollar signs, commas, percent signs and plus signs. We also have column names with spaces and brackets, which are awkward to type in R. Two steps fix this.
+Every column except `Year` is stored as text (`<chr>`), because the values contain dollar signs, commas, percent signs and plus signs. We also have column names with spaces and parentheses, which are awkward to type in R. Two steps fix this.
 
 ### Step 1: tidy the column names
 
@@ -202,7 +202,7 @@ Nominal GDP in US dollars moves with the exchange rate as well as with the econo
 
 ## Plot GDP growth
 
-The second chart shows yearly growth, with positive and negative years in different colours:
+The second chart shows yearly growth, with positive and negative years in different colors:
 
 ```{r}
 gdp |>
@@ -224,8 +224,8 @@ gdp |>
 ```
 
 - `filter(!is.na(gdp_growth))` drops the year with no growth value, so ggplot2 does not warn about it.
-- `if_else()` labels each year "Growth" or "Decline", and `fill = direction` colours the bars by that label.
-- `scale_fill_manual()` sets the two colours by name.
+- `if_else()` labels each year "Growth" or "Decline", and `fill = direction` colors the bars by that label.
+- `scale_fill_manual()` sets the two colors by name.
 
 This is the chart where the minus-sign fix matters. Without it, the decline years would show as green bars.
 

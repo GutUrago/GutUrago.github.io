@@ -124,7 +124,7 @@ h1, h2, h3, .h1, .h2, .h3 {
   }
 }
 
-// ORCID has no Bootstrap icon, so draw it with a mask that inherits the link colour
+// ORCID has no Bootstrap icon, so draw it with a mask that inherits the link color
 .bi-orcid::before {
   content: "";
   display: inline-block;
