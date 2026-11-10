@@ -33,4 +33,5 @@
   description: "Searches microdata catalogs that run on NADA, including those of the World Bank, IHSN, FAO, UNHCR and ILO, and returns study metadata, file lists and data dictionaries as data frames. Built on httr2."
   functions: ["catalogs()", "search_catalog()", "data_files()", "data_dictionary()"]
   cran: nadaverse
+  docs: "https://guturago.github.io/nadaverse/"
   github: "https://github.com/GutUrago/nadaverse"
